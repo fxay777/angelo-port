@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="big-title">Olá</h1>
+<h3>Eu sou o {{ nome }}</h3>
+
+<p>
+    Eu sou um Produtor Audiovisual que trabalho principalmente com edição de
+    vídeo, sou formado em Produção Audiovisual pela Universidade Estácio de Sá
+    na qual em Julho de 2026 eu conclui minha graduação.
+</p>
+<p>
+    Obrigado por visitar meu portfólio. Espero que você goste de explorar o
+    mesmo tanto quanto eu gostei de construí-lo. Se tiver dúvidas ou quiser
+    bater um papo, sinta-se à vontade para entrar em contato usando
+    <a href="/showcase/contato">esse formulário</a> ou mandando um email via
+    <a href="mailto:{{ email }}">{{ email }}</a>.
+</p>
+
+<hr class="divider">
+
+<h3>{{ sobre.titulo }}</h3>
+<p>{{ sobre.paragrafo }}</p>
+
+<div class="captioned-image">
+    <img src="{{ url_for('static', filename='images/' + sobre.foto) }}" alt="">
+    <p><b>{{ sobre.legenda_foto }}</b></p>
+</div>
+
+<hr class="divider">
+
+<h3>{{ hobbies.titulo }}</h3>
+<p>{{ hobbies.paragrafo_1 }}</p>
+<p>{{ hobbies.paragrafo_2 }}</p>
+
+<div class="captioned-image">
+    <img src="{{ url_for('static', filename='images/' + hobbies.foto) }}" alt="">
+    <p><b>{{ hobbies.legenda_foto }}</b></p>
+</div>
+
+<p>{{ hobbies.paragrafo_3 }}</p>
+<p>
+    {{ hobbies.paragrafo_4_intro }}
+    <a href="/showcase/contato">{{ hobbies.link_contato_texto }}</a>
+    {{ hobbies.paragrafo_4_fim }}
+    <a href="mailto:{{ email }}">{{ email }}</a>.
+</p>
+{% endblock %}

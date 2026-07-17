@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+<div class="home-hero">
+    <h1>{{ nome }}</h1>
+    <h2>{{ cargo }}</h2>
+    <nav>
+        <a href="/showcase/sobre">SOBRE</a>
+        <a href="/showcase/projetos">PROJETOS</a>
+        <a href="/showcase/contato">CONTATO</a>
+    </nav>
+</div>
+{% endblock %}

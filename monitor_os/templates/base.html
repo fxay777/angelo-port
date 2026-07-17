@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo_janela }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Sem a moldura de janela aqui - o desktop.js já fornece isso
+           quando essa página é aberta dentro de uma janela (iframe). */
+        body { background: #fff; }
+    </style>
+</head>
+<body>
+    <div class="window-body" style="min-height: 100vh;">
+        {% block sidebar %}
+        <div class="sidebar">
+            <h1>{{ nome.split(' ')[0] }}</h1>
+            <h1>{{ nome.split(' ', 1)[1] if ' ' in nome else '' }}</h1>
+            <p class="showcase-label">Showcase '{{ titulo_janela[-2:] }}</p>
+            <nav>
+                {% for item in menu %}
+                <a href="/showcase{{ '' if item.rota == 'home' else '/' + item.rota }}"
+                   class="{{ 'ativo' if pagina_ativa == item.rota else '' }}">
+                    {{ item.label }}
+                </a>
+                {% endfor %}
+            </nav>
+        </div>
+        {% endblock %}
+
+        <div class="content">
+            {% block content %}{% endblock %}
+
+            {% if pagina_ativa != 'contato' %}
+            <div class="contact-cta">
+                <span>Tem alguma dúvida ou quer bater um papo?</span>
+                <a href="/showcase/contato">Fale comigo →</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="status-bar">{{ copyright }}</div>
+    <script>
+        const somMouseDown = new Audio('/static/audio/mouse_down.mp3');
+        const somMouseUp = new Audio('/static/audio/mouse_up.mp3');
+        somMouseDown.volume = 0.5;
+        somMouseUp.volume = 0.5;
+        function tocarSom(audioEl) {
+            const clone = audioEl.cloneNode();
+            clone.volume = audioEl.volume;
+            clone.play().catch(() => {});
+        }
+        document.addEventListener('mousedown', () => tocarSom(somMouseDown));
+        document.addEventListener('mouseup', () => tocarSom(somMouseUp));
+    </script>
+</body>
+</html>

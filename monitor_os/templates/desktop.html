@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Miguel Angelo - OS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='jsdos/js-dos/js-dos.css') }}">
+    <script>
+        // pathPrefix precisa ser configurado ANTES de carregar o js-dos.js
+        var emulatorsPathPrefix = "{{ url_for('static', filename='jsdos/js-dos/') }}";
+    </script>
+    <script src="{{ url_for('static', filename='jsdos/js-dos/js-dos.js') }}"></script>
+    <script>
+        if (typeof emulators !== 'undefined') {
+            emulators.pathPrefix = emulatorsPathPrefix;
+        }
+    </script>
+</head>
+<body>
+    <div id="desktop-root">
+        <div class="icons-column">
+            <div class="desktop-icon" onclick="abrirShowcase()">
+                <img src="{{ url_for('static', filename='icons/showcaseIcon.png') }}" alt="">
+                <span>My Showcase</span>
+            </div>
+            <div class="desktop-icon" onclick="abrirDoom()">
+                <img src="{{ url_for('static', filename='icons/doomIcon.png') }}" alt="">
+                <span>Doom</span>
+            </div>
+            <div class="desktop-icon" onclick="abrirWolf3D()">
+                <img src="{{ url_for('static', filename='icons/wolf3dIcon.png') }}" alt="">
+                <span>Wolfenstein 3D</span>
+            </div>
+            <div class="desktop-icon" onclick="abrirDigger()">
+                <img src="{{ url_for('static', filename='icons/diggerIcon.png') }}" alt="">
+                <span>Digger</span>
+            </div>
+            <div class="desktop-icon" onclick="abrirTetris()">
+                <img src="{{ url_for('static', filename='icons/tetrisIcon.png') }}" alt="">
+                <span>Tetris</span>
+            </div>
+            <div class="desktop-icon" onclick="abrirScrabble()">
+                <img src="{{ url_for('static', filename='icons/scrabbleIcon.png') }}" alt="">
+                <span>Scrabble</span>
+            </div>
+            <div class="desktop-icon" onclick="abrirCreditos()">
+                <img src="{{ url_for('static', filename='icons/credits.png') }}" alt="">
+                <span>Credits</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="taskbar">
+        <div style="position:relative;">
+            <button class="start-btn" id="start-btn" onclick="toggleStartMenu()">☰ Start</button>
+            <div id="start-menu" class="start-menu" style="display:none;">
+                <div class="start-menu-item" onclick="tocarSequenciaDeDesligamento(); toggleStartMenu();">
+                    <span>🔌</span> Desligar...
+                </div>
+            </div>
+        </div>
+        <div class="taskbar-items" id="taskbar-items"></div>
+        <div class="clock" id="clock"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/shutdown.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/tetris.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/desktop.js') }}"></script>
+</body>
+</html>
