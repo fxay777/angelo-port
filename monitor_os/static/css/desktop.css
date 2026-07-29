@@ -222,3 +222,107 @@ body {
     font-family: 'MSSerif', Tahoma, sans-serif;
     font-size: 12px;
 }
+
+/* ---------- Janela em tela cheia (usada no mobile) ---------- */
+.win-fullscreen-mobile {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: calc(100% - 40px) !important; /* deixa espaço pra barra de tarefas */
+}
+
+/* ---------- Controles de toque do Tetris (só aparecem no mobile) ---------- */
+.tetris-touch-controls {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .tetris-desktop-hint {
+        display: none;
+    }
+
+    .tetris-touch-controls {
+        display: grid;
+        grid-template-columns: repeat(3, 56px);
+        gap: 8px;
+        margin-top: 12px;
+        justify-content: center;
+    }
+
+    .tetris-touch-controls button {
+        background: var(--surface);
+        box-shadow: var(--border-raised-outer), var(--border-raised-inner);
+        border: none;
+        font-size: 20px;
+        padding: 12px 0;
+        font-family: 'MSSerif', Tahoma, sans-serif;
+        cursor: pointer;
+    }
+
+    .tetris-touch-controls button:active {
+        box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
+    }
+
+    .tetris-touch-controls button:last-child {
+        grid-column: span 3;
+        font-size: 14px;
+    }
+}
+
+/* ---------- Responsivo: celulares e tablets ---------- */
+@media (max-width: 768px) {
+    .icons-column {
+        top: 10px;
+        left: 4px;
+        gap: 2px;
+    }
+
+    .desktop-icon {
+        width: 76px;
+        padding: 8px 2px; /* alvo de toque um pouco maior */
+    }
+
+    .desktop-icon img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .desktop-icon span {
+        font-size: 11px;
+    }
+
+    .win-titlebar {
+        padding: 8px 6px; /* barra de título mais alta, fácil de tocar */
+        font-size: 14px;
+    }
+
+    .win-buttons button {
+        width: 30px;
+        height: 28px;
+        font-size: 15px;
+    }
+
+    .taskbar {
+        height: 40px;
+    }
+
+    .start-btn {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .task-item {
+        max-width: 90px;
+        padding: 6px 8px;
+    }
+
+    .clock {
+        font-size: 11px;
+        padding: 6px 8px;
+    }
+
+    .start-menu-item {
+        padding: 12px 16px; /* alvo de toque maior */
+        font-size: 15px;
+    }
+}

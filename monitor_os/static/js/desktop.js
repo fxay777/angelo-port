@@ -25,9 +25,61 @@ function tocarSom(audioEl) {
 document.addEventListener('mousedown', () => tocarSom(somMouseDown));
 document.addEventListener('mouseup', () => tocarSom(somMouseUp));
 
+// ---------- Cursor falso pra toque (celular/tablet) ----------
+// Dá a mesma sensação de "estar controlando um mouse" pra quem usa
+// touch, já que a maioria das pessoas usa PC e a interface foi pensada
+// em torno de um cursor visível.
+(function setupTouchCursor() {
+    const isTouchDevice =
+        'ontouchstart' in window ||
+        (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+    if (!isTouchDevice) return;
+
+    const cursor = document.createElement('div');
+    cursor.id = 'fake-touch-cursor';
+    cursor.innerHTML = `
+        <svg width="28" height="28" viewBox="0 0 28 28">
+            <path d="M4 2 L4 22 L9.5 17.5 L13 25 L16.5 23.5 L13 16 L20 16 Z"
+                  fill="#ffffff" stroke="#000000" stroke-width="1.5" stroke-linejoin="round" />
+        </svg>
+    `;
+    cursor.style.cssText = `
+        position: fixed; top: -2px; left: -2px; z-index: 9999999;
+        pointer-events: none; display: none; will-change: transform;
+        filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));
+    `;
+    document.body.appendChild(cursor);
+
+    function moveCursor(x, y) {
+        cursor.style.display = 'block';
+        cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    }
+
+    document.addEventListener(
+        'touchstart',
+        (e) => {
+            const t = e.touches[0];
+            if (t) moveCursor(t.clientX, t.clientY);
+        },
+        { passive: true }
+    );
+    document.addEventListener(
+        'touchmove',
+        (e) => {
+            const t = e.touches[0];
+            if (t) moveCursor(t.clientX, t.clientY);
+        },
+        { passive: true }
+    );
+})();
+
 let zTop = 10;
 const openWindows = {};
 const dosInstances = {}; // guarda as instâncias do emulador DOS abertas, por id de janela
+
+function isMobile() {
+    return window.innerWidth <= 768;
+}
 
 function openWindow(id, opts) {
     // Se já está aberta, só foca/restaura
@@ -39,10 +91,18 @@ function openWindow(id, opts) {
 
     const win = document.createElement('div');
     win.className = 'win';
-    win.style.top = opts.top + 'px';
-    win.style.left = opts.left + 'px';
-    win.style.width = opts.width + 'px';
-    win.style.height = opts.height + 'px';
+
+    if (isMobile()) {
+        // Em telas pequenas, toda janela abre em tela cheia (menos a
+        // barra de tarefas) — não faz sentido arrastar/redimensionar
+        // janela flutuante pequena no celular.
+        win.classList.add('win-fullscreen-mobile');
+    } else {
+        win.style.top = opts.top + 'px';
+        win.style.left = opts.left + 'px';
+        win.style.width = opts.width + 'px';
+        win.style.height = opts.height + 'px';
+    }
     win.style.zIndex = ++zTop;
 
     win.innerHTML = `
@@ -71,6 +131,7 @@ function openWindow(id, opts) {
     addTaskbarItem(id, opts.title);
 
     win.addEventListener('mousedown', () => focusWindow(id));
+    win.addEventListener('touchstart', () => focusWindow(id), { passive: true });
 
     if (opts.onMount) {
         // Espera o próximo frame pra garantir que o elemento já está no DOM
@@ -118,28 +179,61 @@ function restoreWindow(id) {
 }
 
 function makeDraggable(win, id) {
+    // Em tela cheia no mobile não tem o que arrastar
+    if (win.classList.contains('win-fullscreen-mobile')) return;
+
     const bar = win.querySelector('.win-titlebar');
     let dragging = false;
     let offsetX = 0;
     let offsetY = 0;
 
-    bar.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('win-btn')) return;
+    function startDrag(clientX, clientY, target) {
+        if (target.classList.contains('win-btn')) return;
         dragging = true;
-        offsetX = e.clientX - win.offsetLeft;
-        offsetY = e.clientY - win.offsetTop;
+        offsetX = clientX - win.offsetLeft;
+        offsetY = clientY - win.offsetTop;
         focusWindow(id);
-    });
+    }
 
-    document.addEventListener('mousemove', (e) => {
+    function moveDrag(clientX, clientY) {
         if (!dragging) return;
-        win.style.left = Math.max(0, e.clientX - offsetX) + 'px';
-        win.style.top = Math.max(0, e.clientY - offsetY) + 'px';
-    });
+        win.style.left = Math.max(0, clientX - offsetX) + 'px';
+        win.style.top = Math.max(0, clientY - offsetY) + 'px';
+    }
 
-    document.addEventListener('mouseup', () => {
+    function endDrag() {
         dragging = false;
+    }
+
+    // Mouse (desktop)
+    bar.addEventListener('mousedown', (e) => {
+        startDrag(e.clientX, e.clientY, e.target);
     });
+    document.addEventListener('mousemove', (e) => {
+        moveDrag(e.clientX, e.clientY);
+    });
+    document.addEventListener('mouseup', endDrag);
+
+    // Toque (celular/tablet)
+    bar.addEventListener(
+        'touchstart',
+        (e) => {
+            const touch = e.touches[0];
+            startDrag(touch.clientX, touch.clientY, e.target);
+        },
+        { passive: true }
+    );
+    document.addEventListener(
+        'touchmove',
+        (e) => {
+            if (!dragging) return;
+            const touch = e.touches[0];
+            moveDrag(touch.clientX, touch.clientY);
+            e.preventDefault(); // evita rolar a página enquanto arrasta
+        },
+        { passive: false }
+    );
+    document.addEventListener('touchend', endDrag);
 }
 
 // ---------- Barra de tarefas ----------
@@ -247,8 +341,15 @@ function abrirTetris() {
             <div style="display:flex; flex-direction:column; align-items:center; background:#000; height:100%; padding:8px; box-sizing:border-box;">
                 <div id="tetris-score" style="color:#fff; font-family:monospace; margin-bottom:6px;">Score: 0</div>
                 <canvas id="tetris-canvas" style="border:1px solid #444;"></canvas>
-                <div style="color:#888; font-size:11px; font-family:monospace; margin-top:6px; text-align:center;">
+                <div class="tetris-desktop-hint" style="color:#888; font-size:11px; font-family:monospace; margin-top:6px; text-align:center;">
                     ← → mover · ↑ girar · ↓ acelerar · espaço soltar
+                </div>
+                <div class="tetris-touch-controls">
+                    <button data-key="ArrowLeft">◀</button>
+                    <button data-key="ArrowUp">⟳</button>
+                    <button data-key="ArrowRight">▶</button>
+                    <button data-key="ArrowDown">▼</button>
+                    <button data-key=" ">SOLTAR</button>
                 </div>
             </div>
         `,
@@ -257,6 +358,17 @@ function abrirTetris() {
             const scoreEl = body.querySelector('#tetris-score');
             const cleanup = initTetris(canvas, scoreEl, null, () => {});
             dosInstances['tetris'] = { stop: () => { cleanup(); return Promise.resolve(); } };
+
+            // Botões de toque simulam as mesmas teclas que o jogo já escuta
+            body.querySelectorAll('.tetris-touch-controls button').forEach((btn) => {
+                btn.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    document.dispatchEvent(new KeyboardEvent('keydown', { key: btn.dataset.key }));
+                });
+                btn.addEventListener('click', () => {
+                    document.dispatchEvent(new KeyboardEvent('keydown', { key: btn.dataset.key }));
+                });
+            });
         },
     });
 }

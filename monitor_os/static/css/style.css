@@ -263,3 +263,59 @@ form.contato-form button {
 form.contato-form button:active {
     box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
 }
+
+/* ---------- Responsivo: celulares e tablets ---------- */
+@media (max-width: 768px) {
+    .window-body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid #808080;
+        padding: 14px 16px;
+    }
+
+    .sidebar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+    }
+
+    .sidebar nav a {
+        margin-bottom: 4px;
+        padding: 4px 0; /* alvo de toque um pouco maior */
+    }
+
+    .content {
+        padding: 18px 16px;
+        min-height: 0;
+    }
+
+    .content h1.big-title {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 15px;
+    }
+
+    .home-hero {
+        padding-top: 30px;
+    }
+
+    .home-hero h1 {
+        font-size: 32px;
+    }
+
+    .home-hero nav {
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .contact-cta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
