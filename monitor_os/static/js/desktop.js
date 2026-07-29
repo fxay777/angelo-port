@@ -24,6 +24,11 @@ function tocarSom(audioEl) {
 // Toca o som de clique em QUALQUER mousedown/mouseup na página
 document.addEventListener('mousedown', () => tocarSom(somMouseDown));
 document.addEventListener('mouseup', () => tocarSom(somMouseUp));
+// Equivalentes de toque: garantem o som mesmo quando o navegador não gera
+// os eventos sintéticos de mouse (ex: durante um arraste, onde chamamos
+// preventDefault no touchmove).
+document.addEventListener('touchstart', () => tocarSom(somMouseDown), { passive: true });
+document.addEventListener('touchend', () => tocarSom(somMouseUp), { passive: true });
 
 // ---------- Cursor falso pra toque (celular/tablet) ----------
 // Dá a mesma sensação de "estar controlando um mouse" pra quem usa
