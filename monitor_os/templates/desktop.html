@@ -20,10 +20,17 @@
 <body>
     <div id="desktop-root">
         <div class="icons-column">
+            <div class="icons-category-label">Portfólio</div>
             <div class="desktop-icon" onclick="abrirShowcase()">
                 <img src="{{ url_for('static', filename='icons/showcaseIcon.png') }}" alt="">
                 <span>My Showcase</span>
             </div>
+            <div class="desktop-icon" onclick="abrirCreditos()">
+                <img src="{{ url_for('static', filename='icons/credits.png') }}" alt="">
+                <span>Credits</span>
+            </div>
+
+            <div class="icons-category-label">Jogos</div>
             <div class="desktop-icon" onclick="abrirDoom()">
                 <img src="{{ url_for('static', filename='icons/doomIcon.png') }}" alt="">
                 <span>Doom</span>
@@ -44,16 +51,15 @@
                 <img src="{{ url_for('static', filename='icons/scrabbleIcon.png') }}" alt="">
                 <span>Scrabble</span>
             </div>
-            <div class="desktop-icon" onclick="abrirCreditos()">
-                <img src="{{ url_for('static', filename='icons/credits.png') }}" alt="">
-                <span>Credits</span>
-            </div>
         </div>
     </div>
 
     <div class="taskbar">
         <div style="position:relative;">
-            <button class="start-btn" id="start-btn" onclick="toggleStartMenu()">☰ Start</button>
+            <button class="start-btn" id="start-btn" onclick="toggleStartMenu()">
+                <img src="{{ url_for('static', filename='icons/windowsStartIcon.png') }}" class="start-btn-icon" alt="">
+                Start
+            </button>
             <div id="start-menu" class="start-menu" style="display:none;">
                 <div class="start-menu-item" onclick="tocarSequenciaDeDesligamento(); toggleStartMenu();">
                     <span>🔌</span> Desligar...
@@ -61,7 +67,10 @@
             </div>
         </div>
         <div class="taskbar-items" id="taskbar-items"></div>
-        <div class="clock" id="clock"></div>
+        <div class="clock" id="clock-wrapper">
+            <img src="{{ url_for('static', filename='icons/volumeOn.png') }}" class="volume-icon" alt="" id="volume-icon">
+            <span id="clock"></span>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/shutdown.js') }}"></script>

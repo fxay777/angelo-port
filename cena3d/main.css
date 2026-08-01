@@ -6,6 +6,14 @@
 html,
 body {
     overflow: hidden;
+    /* Evita que o navegador "brigue" com a interação em telas de toque:
+       sem zoom de pinça, sem duplo-toque pra dar zoom, sem puxar-pra-baixo
+       pra atualizar a página, sem elástico ao arrastar. Deixa a experiência
+       bem mais fluida e parecida com um app nativo. */
+    touch-action: none;
+    overscroll-behavior: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .webgl {
@@ -13,6 +21,7 @@ body {
     top: 0;
     left: 0;
     outline: none;
+    touch-action: none;
 }
 
 .jitter {

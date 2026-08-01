@@ -30,6 +30,8 @@ body {
     overflow: hidden;
     background: #008080;
     font-family: 'MSSerif', Tahoma, sans-serif;
+    touch-action: none;
+    overscroll-behavior: none;
 }
 
 #desktop-root {
@@ -78,6 +80,24 @@ body {
     text-shadow: 1px 1px 1px #000;
 }
 
+.icons-category-label {
+    color: #fff;
+    font-family: 'MSSerif', Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 1px #000;
+    padding: 6px 4px 2px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    margin-bottom: 2px;
+    width: 92px;
+}
+
+.icons-category-label:first-child {
+    padding-top: 0;
+}
+
 /* ---------- Janelas ---------- */
 .win {
     position: absolute;
@@ -97,6 +117,7 @@ body {
     justify-content: space-between;
     align-items: center;
     cursor: move;
+    touch-action: none;
     font-size: 13px;
     flex-shrink: 0;
 }
@@ -124,6 +145,8 @@ body {
     flex: 1;
     background: #fff;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
     position: relative;
 }
 
@@ -164,6 +187,15 @@ body {
     padding: 4px 12px;
     cursor: pointer;
     font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.start-btn-icon {
+    width: 18px;
+    height: 18px;
+    image-rendering: pixelated;
 }
 
 .start-btn:active {
@@ -221,6 +253,16 @@ body {
     padding: 4px 10px;
     font-family: 'MSSerif', Tahoma, sans-serif;
     font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.volume-icon {
+    width: 16px;
+    height: 16px;
+    image-rendering: pixelated;
+    cursor: pointer;
 }
 
 /* ---------- Janela em tela cheia (usada no mobile) ---------- */
@@ -289,6 +331,11 @@ body {
 
     .desktop-icon span {
         font-size: 11px;
+    }
+
+    .icons-category-label {
+        width: 76px;
+        font-size: 10px;
     }
 
     .win-titlebar {

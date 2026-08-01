@@ -11,6 +11,26 @@ somMouseDown.volume = 0.5;
 somMouseUp.volume = 0.5;
 somStartup.volume = 0.6;
 
+let siteMutado = false;
+
+function alternarMudo() {
+    siteMutado = !siteMutado;
+    const icon = document.getElementById('volume-icon');
+    if (icon) {
+        icon.src = siteMutado
+            ? '/static/icons/volumeOff.png'
+            : '/static/icons/volumeOn.png';
+    }
+    somMouseDown.volume = siteMutado ? 0 : 0.5;
+    somMouseUp.volume = siteMutado ? 0 : 0.5;
+    somStartup.volume = siteMutado ? 0 : 0.6;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const icon = document.getElementById('volume-icon');
+    if (icon) icon.addEventListener('click', alternarMudo);
+});
+
 function tocarSom(audioEl) {
     // Clona o áudio pra permitir cliques rápidos em sequência sem cortar o som anterior
     const clone = audioEl.cloneNode();
@@ -311,12 +331,16 @@ document.addEventListener('mousedown', (e) => {
 
 // ---------- Ícones da área de trabalho ----------
 function abrirShowcase() {
+    const margin = 16;
+    const iconsColumnWidth = 112;
+    const taskbarHeight = 40;
+
     openWindow('showcase', {
         title: 'Miguel Angelo - Showcase 2026',
-        top: 24,
-        left: 110,
-        width: 900,
-        height: 600,
+        top: margin,
+        left: iconsColumnWidth,
+        width: window.innerWidth - iconsColumnWidth - margin,
+        height: window.innerHeight - taskbarHeight - margin * 2,
         iframeSrc: '/showcase',
     });
 }
@@ -326,8 +350,8 @@ function abrirDoom() {
         title: 'Doom',
         top: 30,
         left: 130,
-        width: 980,
-        height: 670,
+        width: 1100,
+        height: 760,
         bodyHtml: '<div class="dos-root" id="dos-doom"></div>',
         onMount: (body) => {
             runDosGame(body.querySelector('#dos-doom'), '/static/jsdos/doom.jsdos', 'doom');
@@ -383,8 +407,8 @@ function abrirScrabble() {
         title: 'Scrabble',
         top: 40,
         left: 140,
-        width: 920,
-        height: 750,
+        width: 1000,
+        height: 820,
         bodyHtml: '<div class="dos-root" id="dos-scrabble"></div>',
         onMount: (body) => {
             runDosGame(body.querySelector('#dos-scrabble'), '/static/jsdos/scrabble.jsdos', 'scrabble');
@@ -397,8 +421,8 @@ function abrirWolf3D() {
         title: 'Wolfenstein 3D',
         top: 30,
         left: 150,
-        width: 720,
-        height: 480,
+        width: 860,
+        height: 580,
         bodyHtml: '<div class="dos-root" id="dos-wolf3d"></div>',
         onMount: (body) => {
             runDosGame(body.querySelector('#dos-wolf3d'), '/static/jsdos/wolf3d.jsdos', 'wolf3d');
@@ -411,8 +435,8 @@ function abrirDigger() {
         title: 'Digger',
         top: 50,
         left: 170,
-        width: 660,
-        height: 500,
+        width: 760,
+        height: 580,
         bodyHtml: '<div class="dos-root" id="dos-digger"></div>',
         onMount: (body) => {
             runDosGame(body.querySelector('#dos-digger'), '/static/jsdos/digger.jsdos', 'digger');
@@ -425,8 +449,8 @@ function abrirCreditos() {
         title: 'Credits',
         top: 60,
         left: 200,
-        width: 480,
-        height: 520,
+        width: 560,
+        height: 600,
         iframeSrc: '/creditos',
     });
 }

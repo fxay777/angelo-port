@@ -52,6 +52,8 @@ body {
     font-size: 14px;
     color: #000;
     background: #008080;
+    /* Evita zoom de pinça/duplo-toque sem travar o scroll normal da página */
+    touch-action: pan-y;
 }
 
 .window-body {
@@ -127,6 +129,7 @@ hr.divider {
     flex: 1;
     padding: 24px 32px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column;
     min-height: 480px;
@@ -163,30 +166,34 @@ hr.divider {
 /* ---------- Home / tela de título ---------- */
 .home-hero {
     text-align: center;
-    padding-top: 60px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 .home-hero h1 {
     font-family: 'Playfair Display', 'MillenniumBold', serif;
     font-weight: 700;
-    font-size: 44px;
+    font-size: 64px;
     margin: 0;
 }
 .home-hero h2 {
     font-family: 'Millennium', serif;
-    font-size: 20px;
-    margin: 4px 0 30px;
+    font-size: 26px;
+    margin: 8px 0 36px;
 }
 .home-hero nav {
     display: flex;
     justify-content: center;
-    gap: 24px;
+    gap: 32px;
 }
 .home-hero nav a {
     color: #660099;
     font-family: 'MSSerif', Tahoma, sans-serif;
     font-weight: bold;
     text-decoration: underline;
-    font-size: 13px;
+    font-size: 16px;
     letter-spacing: 0.5px;
 }
 
@@ -302,11 +309,15 @@ form.contato-form button:active {
     }
 
     .home-hero {
-        padding-top: 30px;
+        padding: 20px 0;
     }
 
     .home-hero h1 {
-        font-size: 32px;
+        font-size: 38px;
+    }
+
+    .home-hero h2 {
+        font-size: 18px;
     }
 
     .home-hero nav {
