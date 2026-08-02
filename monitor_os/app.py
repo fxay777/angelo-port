@@ -37,10 +37,11 @@ def desktop():
 @app.route("/showcase")
 def home():
     return render_template(
-        "home.html",
-        home=content.HOME,
+        "sobre.html",
+        sobre=content.SOBRE,
+        hobbies=content.HOBBIES,
         email=content.EMAIL,
-        pagina_ativa="home",
+        pagina_ativa="sobre",
     )
 
 

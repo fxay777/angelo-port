@@ -89,7 +89,6 @@ HOBBIES = {
 
 # --- Menu lateral ---
 MENU = [
-    {"label": "HOME", "rota": "home"},
     {"label": "SOBRE", "rota": "sobre"},
     {"label": "PROJETOS", "rota": "projetos"},
     {"label": "CONTATO", "rota": "contato"},
@@ -98,24 +97,30 @@ MENU = [
 # --- Projetos (edite/adicione quantos quiser) ---
 PROJETOS = [
     {
-        "titulo": "Instagram — Armarinho Casa Machado",
+        "titulo": "Instagram",
+        "subtitulo": "ARMARINHO CASA MACHADO",
         "descricao": "Conteúdo de vídeo e edição produzido para o Instagram do Armarinho Casa Machado.",
+        "icone": "📸",
         "link": "https://www.instagram.com/armarinho_casamachado",
-        "link_texto": "Ver no Instagram",
+        "link_texto": "Ver no Instagram →",
         "tipo": "link",
     },
     {
-        "titulo": "TikTok — Armarinho Casa Machado",
+        "titulo": "TikTok",
+        "subtitulo": "ARMARINHO CASA MACHADO",
         "descricao": "Conteúdo de vídeo curto produzido para o TikTok do Armarinho Casa Machado.",
+        "icone": "🎵",
         "link": "https://www.tiktok.com/@armarinho_casamachado",
-        "link_texto": "Ver no TikTok",
+        "link_texto": "Ver no TikTok →",
         "tipo": "link",
     },
     {
-        "titulo": "Vídeo — Prévia do Projeto",
+        "titulo": "Vídeo",
+        "subtitulo": "PRÉVIA DO PROJETO",
         "descricao": "Prévia de um dos meus trabalhos de edição de vídeo.",
+        "icone": "🎬",
         "link": "https://youtu.be/iF5JU_N1ldc?is=P82uMrfHBotpwZNN",
-        "link_texto": "Assistir no YouTube",
+        "link_texto": "Assistir no YouTube →",
         "tipo": "video",
         "youtube_id": "iF5JU_N1ldc",
     },

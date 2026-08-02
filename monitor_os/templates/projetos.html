@@ -1,29 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="big-title">Projetos</h1>
+<h1 class="big-title">Projetos &amp; Hobbies</h1>
+<p>
+    Clique em uma das áreas abaixo pra ver alguns dos meus projetos favoritos
+    nessa área. Espero que goste!
+</p>
 
 {% for p in projetos %}
-<div class="projeto-card">
-    <h3>{{ p.titulo }}</h3>
-    <p>{{ p.descricao }}</p>
+<a href="{{ p.link }}" target="_blank" rel="noreferrer" class="projeto-card">
+    <div class="projeto-card-header">
+        <span class="projeto-icone">{{ p.icone }}</span>
+        <div>
+            <div class="projeto-titulo">{{ p.titulo }}</div>
+            <div class="projeto-subtitulo">{{ p.subtitulo }}</div>
+        </div>
+    </div>
 
     {% if p.tipo == 'video' and p.youtube_id %}
-    <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; max-width:100%; margin-bottom:10px; border:1px solid #999;">
+    <div class="projeto-video-wrapper" onclick="event.preventDefault(); event.stopPropagation();">
         <iframe
             src="https://www.youtube.com/embed/{{ p.youtube_id }}"
-            style="position:absolute; top:0; left:0; width:100%; height:100%;"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
         </iframe>
     </div>
+    {% else %}
+    <p class="projeto-descricao">{{ p.descricao }}</p>
     {% endif %}
-
-    {% if p.link %}
-    <p><a href="{{ p.link }}" target="_blank" rel="noreferrer">{{ p.link_texto or p.link }}</a></p>
-    {% endif %}
-</div>
+</a>
 {% endfor %}
 {% endblock %}
+
 

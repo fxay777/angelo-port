@@ -118,10 +118,19 @@ hr.divider {
     letter-spacing: 0.5px;
     margin-bottom: 18px;
     font-size: 13px;
+    position: relative;
+    padding-left: 14px;
 }
 
 .sidebar nav a.ativo {
     color: #660099;
+}
+
+.sidebar nav a.ativo::before {
+    content: 'o';
+    position: absolute;
+    left: 0;
+    font-weight: normal;
 }
 
 /* ---------- Conteúdo principal ---------- */
@@ -149,6 +158,22 @@ hr.divider {
 
 .captioned-image {
     margin: 16px 0;
+}
+
+/* ---------- Chamada de currículo (estilo da print original) ---------- */
+.resume-callout {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 0;
+}
+.resume-callout .resume-icon {
+    font-size: 34px;
+    line-height: 1;
+}
+.resume-callout b {
+    font-family: 'MillenniumBold', 'Playfair Display', serif;
+    font-size: 17px;
 }
 .captioned-image img {
     max-width: 100%;
@@ -209,16 +234,63 @@ hr.divider {
 
 /* ---------- Projetos ---------- */
 .projeto-card {
+    display: block;
     box-shadow: var(--border-raised-outer), var(--border-raised-inner);
-    padding: 16px;
-    margin-bottom: 16px;
-    background: var(--surface);
+    padding: 20px 24px;
+    margin-bottom: 20px;
+    background: #fff;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s ease;
 }
-.projeto-card h3 {
-    margin-top: 0;
+.projeto-card:hover {
+    background: #f2f2f2;
 }
-.projeto-card p {
+.projeto-card:active {
+    box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
+}
+.projeto-card-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+.projeto-icone {
+    font-size: 42px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+.projeto-titulo {
+    font-family: 'Playfair Display', 'MillenniumBold', serif;
+    font-weight: 700;
+    font-size: 30px;
+    color: #000;
+}
+.projeto-subtitulo {
+    font-family: 'MSSerif', Tahoma, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    font-size: 13px;
+    color: #333;
+}
+.projeto-descricao {
     text-align: left;
+    margin: 14px 0 0;
+}
+.projeto-video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    margin-top: 14px;
+    border: 1px solid #999;
+    cursor: default;
+}
+.projeto-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 /* ---------- Chamada pra contato (aparece em toda página) ---------- */
@@ -291,8 +363,7 @@ form.contato-form button:active {
     }
 
     .sidebar nav a {
-        margin-bottom: 4px;
-        padding: 4px 0; /* alvo de toque um pouco maior */
+        margin-bottom: 8px;
     }
 
     .content {
@@ -328,5 +399,17 @@ form.contato-form button:active {
     .contact-cta {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .projeto-titulo {
+        font-size: 22px;
+    }
+
+    .projeto-icone {
+        font-size: 32px;
+    }
+
+    .projeto-card {
+        padding: 14px 16px;
     }
 }
