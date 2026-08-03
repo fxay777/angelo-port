@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="big-title">{{ experiencia.titulo }}</h1>
+<p>{{ experiencia.paragrafo }}</p>
+
+<!-- Seção do Vídeo Complementar -->
+<div class="video-section" style="margin: 40px 0;">
+    <h2 style="margin-bottom: 20px;">🎬 Vídeo Complementar</h2>
+    <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; background: #000; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+        <iframe 
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+            src="https://www.youtube.com/embed/iF5JU_N1ldc" 
+            title="Vídeo sobre a experiência" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
+<!-- Seção explicando a importância do Audiovisual -->
+<div class="importance-section" style="margin: 40px 0; padding: 25px; background-color: #f8f9fa; border-left: 6px solid #ff6600; border-radius: 8px;">
+    <h2 style="margin-top: 0;">💡 A Importância do Audiovisual</h2>
+    <p style="font-size: 1.1rem; line-height: 1.7;">
+        O audiovisual vai muito além do simples entretenimento. Ele combina <strong>imagem, som e movimento</strong> para criar uma experiência imersiva que prende a atenção do espectador de forma quase instantânea. 
+    </p>
+    <p style="font-size: 1.1rem; line-height: 1.7;">
+        Estudos neurocientíficos apontam que o cérebro humano processa imagens <strong>60 mil vezes mais rápido</strong> do que textos, e que retemos até <strong>95% de uma mensagem</strong> quando a consumimos em formato de vídeo, contra apenas 10% quando lemos apenas texto. 
+    </p>
+    <p style="font-size: 1.1rem; line-height: 1.7;">
+        Além da eficiência cognitiva, o audiovisual possui uma <strong>linguagem universal</strong> que transcende barreiras culturais e idiomáticas. Através da entonação de voz, expressões faciais e trilha sonora, ele é capaz de evocar emoções profundas — como empatia, urgência, alegria ou nostalgia — tornando a comunicação muito mais persuasiva e memorável. 
+    </p>
+    <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 0;">
+        Em um mundo saturado de informações, o vídeo se consolidou como a ferramenta mais poderosa para contar histórias, explicar conceitos complexos de forma simplificada e criar conexões humanas genuínas. É por isso que o audiovisual é hoje o <strong>pilar central do marketing digital, da educação moderna e da preservação da memória cultural</strong>.
+    </p>
+</div>
+
+{% endblock %}

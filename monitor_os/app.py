@@ -56,6 +56,15 @@ def sobre():
     )
 
 
+@app.route("/showcase/experiencia")
+def experiencia():
+    return render_template(
+        "experiencia.html",
+        experiencia=content.EXPERIENCIA,
+        pagina_ativa="experiencia",
+    )
+
+
 @app.route("/showcase/projetos")
 def projetos():
     return render_template(

@@ -148,6 +148,12 @@ body {
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
     position: relative;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.win-body::-webkit-scrollbar {
+    display: none;
 }
 
 .win-body iframe {

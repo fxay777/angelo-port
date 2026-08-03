@@ -90,9 +90,19 @@ HOBBIES = {
 # --- Menu lateral ---
 MENU = [
     {"label": "SOBRE", "rota": "sobre"},
+    {"label": "EXPERIÊNCIA", "rota": "experiencia"},
     {"label": "PROJETOS", "rota": "projetos"},
     {"label": "CONTATO", "rota": "contato"},
 ]
+
+# --- Experiência (preencha depois) ---
+EXPERIENCIA = {
+    "titulo": "Experiência",
+    "paragrafo": (
+        "Em breve: minha experiência profissional. Me fala o que você quer "
+        "colocar aqui que eu monto certinho."
+    ),
+}
 
 # --- Projetos (edite/adicione quantos quiser) ---
 PROJETOS = [
