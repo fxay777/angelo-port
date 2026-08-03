@@ -3,363 +3,308 @@
 {% block content %}
 <style>
     /* ============================================
-       ESTILO WINDOWS 98 - DESKTOP & JANELAS
-       ============================================ */
-
-    /* Fundo teal clássico do desktop */
-    .win98-desktop {
-        background-color: #008080;
+        ESTILO RETRO / VINTAGE (Baseado na referência)
+        ============================================ */
+    .retro-page-wrapper {
+        background-color: #f4f1ea;
         min-height: 100vh;
-        padding: 24px 20px 40px 20px;
-        margin: -20px -20px 0 -20px; /* Ajuste para encostar no body, se necessário */
-        font-family: 'Segoe UI', Tahoma, 'MS Sans Serif', Geneva, Verdana, sans-serif;
+        padding: 40px 20px 60px 20px;
+        margin: -20px -20px 0 -20px;
+        font-family: 'Times New Roman', Times, Georgia, serif;
+        color: #1a1a1a;
     }
 
-    /* --- JANELA PRINCIPAL --- */
-    .win98-window {
-        background: #c0c0c0;
-        border-width: 3px;
-        border-style: solid;
-        border-color: #ffffff #808080 #808080 #ffffff;
-        box-shadow: 4px 4px 0px 0px #404040;
-        max-width: 1100px;
+    .retro-container {
+        max-width: 800px;
         margin: 0 auto;
-        padding: 0;
-    }
-
-    /* Barra de título */
-    .win98-title-bar {
-        background: linear-gradient(90deg, #000080, #1084d0);
-        color: #ffffff;
-        padding: 4px 6px 4px 8px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: bold;
-        font-size: 14px;
-        letter-spacing: 0.3px;
-        border-bottom: 2px solid #808080;
-    }
-    .win98-title-icon {
-        font-size: 18px;
-        margin-right: 4px;
-    }
-    .win98-title-text {
-        flex: 1;
-        text-shadow: 1px 1px 0px #00000080;
-    }
-    .win98-title-controls {
-        display: flex;
-        gap: 4px;
-        margin-left: auto;
-    }
-    .win98-btn-close {
-        background: #c0c0c0;
-        border-width: 2px;
-        border-style: solid;
-        border-color: #ffffff #808080 #808080 #ffffff;
-        color: #000;
-        font-weight: bold;
-        font-size: 12px;
-        width: 22px;
-        height: 22px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: default;
-        line-height: 1;
-        padding: 0;
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-    }
-    .win98-btn-close:active {
-        border-color: #808080 #ffffff #ffffff #808080;
-    }
-
-    /* Corpo da janela */
-    .win98-body {
-        padding: 20px 24px 24px 24px;
-        background: #c0c0c0;
-        border-top: 2px solid #808080; /* sulco interno */
-    }
-
-    /* Descrição dentro da janela */
-    .win98-desc-text {
         background: #ffffff;
-        border-width: 2px;
-        border-style: solid;
-        border-color: #808080 #ffffff #ffffff #808080;
-        padding: 12px 16px;
-        margin: 0 0 24px 0;
-        font-size: 15px;
-        color: #000000;
-        box-shadow: inset 1px 1px 0px #404040;
+        border: 2px solid #1a1a1a;
+        padding: 40px;
+        box-shadow: 6px 6px 0px #1a1a1a;
     }
-    .win98-desc-text p {
+
+    /* Cabeçalho */
+    .retro-header h1 {
+        font-family: 'Georgia', serif;
+        font-size: 42px;
+        font-weight: bold;
         margin: 0;
+        letter-spacing: -1px;
+        color: #111;
+        line-height: 1.1;
     }
 
-    /* --- GRID DE CARDS (JANELINHAS) --- */
-    .win98-grid {
+    .retro-header .subtitle-top {
+        font-family: 'Georgia', serif;
+        font-size: 28px;
+        font-style: italic;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .retro-header p {
+        font-family: Arial, sans-serif;
+        font-size: 15px;
+        color: #444;
+        line-height: 1.6;
+        margin-bottom: 35px;
+    }
+
+    /* Botões Grandes / Cards Principais */
+    .retro-menu-grid {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 20px;
-        justify-content: center;
+        margin-bottom: 20px;
     }
 
-    /* Cada projeto é uma janelinha */
-    .win98-card {
-        display: block;
+    .retro-big-button {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        border: 2px solid #1a1a1a;
+        padding: 20px 25px;
         text-decoration: none;
-        color: #000;
-        background: #c0c0c0;
-        border-width: 3px;
-        border-style: solid;
-        border-color: #ffffff #808080 #808080 #ffffff;
-        box-shadow: 3px 3px 0px 0px #404040;
-        width: 300px;
-        flex: 0 0 300px;
-        transition: all 0.05s linear;
+        color: #1a1a1a;
+        box-shadow: 4px 4px 0px #1a1a1a;
+        transition: all 0.1s ease;
         cursor: pointer;
     }
-    .win98-card:hover {
-        border-color: #f0f0f0 #707070 #707070 #f0f0f0;
-        box-shadow: 4px 4px 0px 0px #303030;
-        transform: translate(-1px, -1px);
-    }
-    .win98-card:active {
-        border-color: #808080 #ffffff #ffffff #808080;
-        box-shadow: 1px 1px 0px 0px #404040;
-        transform: translate(2px, 2px);
+
+    .retro-big-button:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px #1a1a1a;
+        background: #fdfbf7;
     }
 
-    /* Barra de título do card */
-    .win98-card-title-bar {
-        background: linear-gradient(90deg, #000080, #1084d0);
-        color: #ffffff;
-        padding: 3px 4px 3px 6px;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 13px;
-        font-weight: bold;
-        border-bottom: 2px solid #808080;
-        white-space: nowrap;
-        overflow: hidden;
-        text-shadow: 1px 1px 0px #00000080;
+    .retro-big-button:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0px #1a1a1a;
     }
-    .win98-card-icon {
-        font-size: 16px;
+
+    .retro-btn-icon {
+        font-size: 32px;
+        margin-right: 20px;
+        background: #f0ede6;
+        padding: 12px;
+        border: 1px solid #1a1a1a;
         line-height: 1;
     }
-    .win98-card-title {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 110px;
+
+    .retro-btn-text h2 {
+        font-family: 'Georgia', serif;
+        font-size: 26px;
+        margin: 0;
+        font-weight: bold;
+        color: #111;
     }
-    .win98-card-subtitle {
-        font-weight: normal;
-        font-size: 11px;
-        color: #c0e0ff;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 80px;
-        margin-left: 2px;
-    }
-    .win98-card-controls {
-        display: flex;
-        gap: 3px;
-        margin-left: auto;
+
+    .retro-btn-text span {
+        font-family: Arial, sans-serif;
         font-size: 12px;
-        font-weight: normal;
+        font-weight: bold;
+        letter-spacing: 1.5px;
+        color: #666;
+        text-transform: uppercase;
     }
-    .win98-card-controls span {
-        background: #c0c0c0;
-        color: #000;
-        border-width: 2px;
-        border-style: solid;
-        border-color: #ffffff #808080 #808080 #ffffff;
+
+    /* Seções de Conteúdo (Abas Ocultáveis) */
+    .retro-view {
+        display: none;
+    }
+
+    .retro-view.active {
+        display: block;
+        animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Botão de Voltar */
+    .retro-back-btn {
+        background: #f0ede6;
+        border: 2px solid #1a1a1a;
+        padding: 10px 18px;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        font-size: 13px;
+        cursor: pointer;
+        box-shadow: 3px 3px 0px #1a1a1a;
+        margin-bottom: 25px;
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        width: 18px;
-        height: 18px;
-        font-size: 12px;
-        line-height: 1;
-        padding: 0;
-        cursor: default;
-    }
-    .win98-card-controls span:active {
-        border-color: #808080 #ffffff #ffffff #808080;
+        gap: 8px;
+        transition: all 0.1s ease;
     }
 
-    /* Conteúdo do card (branco/sulcado) */
-    .win98-card-content {
-        background: #ffffff;
-        border-width: 2px;
-        border-style: solid;
-        border-color: #808080 #ffffff #ffffff #808080;
-        padding: 10px;
-        min-height: 120px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .retro-back-btn:hover {
+        background: #e4e0d5;
+        transform: translate(-1px, -1px);
+        box-shadow: 4px 4px 0px #1a1a1a;
     }
 
-    /* Descrição dentro do card */
-    .win98-desc {
-        font-size: 14px;
-        line-height: 1.6;
-        margin: 0;
-        color: #000000;
-        text-align: left;
-        width: 100%;
-        padding: 4px;
-        background: #ffffff;
+    .retro-back-btn:active {
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0px #1a1a1a;
     }
 
-    /* Wrapper do vídeo com moldura inset (sulcada) */
-    .win98-video-wrapper {
-        width: 100%;
-        border-width: 2px;
-        border-style: solid;
-        border-color: #808080 #ffffff #ffffff #808080;
-        background: #000000;
+    .retro-content-box {
+        background: #faf8f5;
+        border: 2px solid #1a1a1a;
+        padding: 24px;
+        margin-bottom: 30px;
+        box-shadow: 4px 4px 0px #1a1a1a;
+    }
+
+    .retro-video-wrapper {
         position: relative;
-        padding-bottom: 56.25%; /* 16:9 */
+        padding-bottom: 56.25%;
         height: 0;
-        overflow: hidden;
+        background: #000;
+        border: 2px solid #1a1a1a;
+        margin-bottom: 20px;
     }
-    .win98-video-wrapper iframe {
+
+    .retro-video-wrapper iframe {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         border: none;
-        background: #000;
     }
 
-    /* Barra de status do card (rodapé) */
-    .win98-card-status-bar {
-        background: #c0c0c0;
-        border-top: 2px solid #808080;
-        padding: 3px 6px;
-        font-size: 11px;
-        color: #404040;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-family: 'Courier New', monospace;
-        letter-spacing: 0.5px;
-        border-bottom: 2px solid #ffffff;
-    }
-    .win98-card-status-bar span {
+    .retro-explanation {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        color: #333;
+        line-height: 1.6;
         background: #ffffff;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #808080 #ffffff #ffffff #808080;
-        padding: 0 6px;
-        flex: 1;
-        color: #000;
-        font-size: 11px;
+        border: 1px solid #ccc;
+        padding: 15px;
     }
 
-    /* Responsividade */
-    @media (max-width: 700px) {
-        .win98-card {
-            width: 100%;
-            flex: 0 0 100%;
-            max-width: 400px;
+    .retro-explanation h3 {
+        margin-top: 0;
+        font-size: 16px;
+        color: #111;
+        font-family: 'Georgia', serif;
+    }
+
+    @media (max-width: 768px) {
+        .retro-container {
+            padding: 20px;
         }
-        .win98-body {
-            padding: 12px;
-        }
-        .win98-title-bar {
-            font-size: 13px;
-            flex-wrap: wrap;
-        }
-        .win98-card-title {
-            max-width: 70px;
-        }
-        .win98-card-subtitle {
-            max-width: 60px;
+        .retro-header h1 {
+            font-size: 32px;
         }
     }
 </style>
 
-<!-- ==========================================
-     DESKTOP WINDOWS 98
-     ========================================== -->
-<div class="win98-desktop">
+<div class="retro-page-wrapper">
+    <div class="retro-container">
 
-    <!-- JANELA PRINCIPAL -->
-    <div class="win98-window">
+        <!-- ==========================================
+            TELA 1: MENU PRINCIPAL
+            ========================================== -->
+        <div id="view-menu" class="retro-view active">
+            <div class="retro-header">
+                <h1>Projects</h1>
+                <div class="subtitle-top">&amp; Portfolio</div>
+                <p>
+                    Click on one of the areas below to check out some of my professional projects. I spent a lot of time to include visuals and interactive media to showcase each project. Enjoy!
+                </p>
+            </div>
 
-        <!-- Barra de título -->
-        <div class="win98-title-bar">
-            <span class="win98-title-icon">📁</span>
-            <span class="win98-title-text">Projetos &amp; Hobbies</span>
-            <div class="win98-title-controls">
-                <span class="win98-btn-close">✕</span>
+            <div class="retro-menu-grid">
+                <!-- Botão Audiovisual -->
+                <button class="retro-big-button" onclick="switchView('view-audiovisual')">
+                    <div class="retro-btn-icon">🎬</div>
+                    <div class="retro-btn-text" style="text-align: left;">
+                        <h2>Audiovisual</h2>
+                        <span>PROJECTS &amp; CREATIONS</span>
+                    </div>
+                </button>
+
+                <!-- Botão Jogos / Trabalhos -->
+                <button class="retro-big-button" onclick="switchView('view-jogos')">
+                    <div class="retro-btn-icon">🎮</div>
+                    <div class="retro-btn-text" style="text-align: left;">
+                        <h2>Projetos de Jogos</h2>
+                        <span>PROFESSIONAL VENTURES</span>
+                    </div>
+                </button>
             </div>
         </div>
 
-        <!-- Corpo -->
-        <div class="win98-body">
-
-            <!-- Caixa de descrição (estilo campo de texto) -->
-            <div class="win98-desc-text">
-                <p>📌 Clique em uma das áreas abaixo pra ver alguns dos meus projetos favoritos nessa área. Espero que goste!</p>
+        <!-- ==========================================
+            TELA 2: AUDIOVISUAL
+            ========================================== -->
+        <div id="view-audiovisual" class="retro-view">
+            <button class="retro-back-btn" onclick="switchView('view-menu')">← Voltar ao Menu</button>
+            
+            <div class="retro-header" style="margin-bottom: 20px;">
+                <h1>Audiovisual</h1>
+                <div class="subtitle-top">Projects</div>
             </div>
 
-            <!-- Grid de cards -->
-            <div class="win98-grid">
+            <div class="retro-content-box">
+                <div class="retro-video-wrapper">
+                    <iframe
+                        src="https://www.youtube.com/embed/iF5JU_N1ldc"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="retro-explanation">
+                    <h3>Sobre este projeto audiovisual</h3>
+                    <p>Este material destaca trabalhos de edição, produção e direção visual. O foco foi explorar transições fluidas, tratamento de cor refinado e uma narrativa dinâmica para prender a atenção do espectador.</p>
+                </div>
+            </div>
+        </div>
 
-                {% for p in projetos %}
-                <!-- Cada projeto é uma janelinha clicável -->
-                <a href="{{ p.link }}" target="_blank" rel="noreferrer" class="win98-card">
+        <!-- ==========================================
+            TELA 3: JOGOS / TRABALHOS
+            ========================================== -->
+        <div id="view-jogos" class="retro-view">
+            <button class="retro-back-btn" onclick="switchView('view-menu')">← Voltar ao Menu</button>
 
-                    <!-- Barra de título do card -->
-                    <div class="win98-card-title-bar">
-                        <span class="win98-card-icon">{{ p.icone }}</span>
-                        <span class="win98-card-title">{{ p.titulo }}</span>
-                        <span class="win98-card-subtitle">– {{ p.subtitulo }}</span>
-                        <div class="win98-card-controls">
-                            <span>_</span>
-                            <span>□</span>
-                            <span>✕</span>
-                        </div>
-                    </div>
+            <div class="retro-header" style="margin-bottom: 20px;">
+                <h1>Projetos de Jogos</h1>
+                <div class="subtitle-top">Professional Ventures</div>
+            </div>
 
-                    <!-- Conteúdo -->
-                    <div class="win98-card-content">
-                        {% if p.tipo == 'video' and p.youtube_id %}
-                            <div class="win98-video-wrapper" onclick="event.preventDefault(); event.stopPropagation();">
-                                <iframe
-                                    src="https://www.youtube.com/embed/{{ p.youtube_id }}"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                        {% else %}
-                            <p class="win98-desc">{{ p.descricao }}</p>
-                        {% endif %}
-                    </div>
+            <div class="retro-content-box">
+                <div class="retro-video-wrapper">
+                    <iframe
+                        src="https://www.youtube.com/embed/CYn1K2xohh8"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="retro-explanation">
+                    <h3>Battle Bits</h3>
+                    <p>Aqui esta o video que fiz da abertura/volta de um dos maiores servidores de minecraft.</p>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Barra de status (rodapé) -->
-                    <div class="win98-card-status-bar">
-                        <span>🔍 Clique para abrir</span>
-                    </div>
+    </div>
+</div>
 
-                </a>
-                {% endfor %}
-
-            </div> <!-- fim grid -->
-
-        </div> <!-- fim corpo -->
-    </div> <!-- fim janela principal -->
-
-</div> <!-- fim desktop -->
+<!-- ==========================================
+    SCRIPT PARA ALTERNAR AS TELAS
+    ========================================== -->
+<script>
+    function switchView(viewId) {
+        const views = document.querySelectorAll('.retro-view');
+        views.forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
 
 {% endblock %}
