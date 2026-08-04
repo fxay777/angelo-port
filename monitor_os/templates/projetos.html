@@ -206,10 +206,6 @@
 
 <div class="retro-page-wrapper">
     <div class="retro-container">
-
-        <!-- ==========================================
-            TELA 1: MENU PRINCIPAL
-            ========================================== -->
         <div id="view-menu" class="retro-view active">
             <div class="retro-header">
                 <h1>Projects</h1>
@@ -218,9 +214,7 @@
                     Click on one of the areas below to check out some of my professional projects. I spent a lot of time to include visuals and interactive media to showcase each project. Enjoy!
                 </p>
             </div>
-
-            <div class="retro-menu-grid">
-                <!-- Botão Audiovisual -->
+            <div class="retro-menu-grid">               
                 <button class="retro-big-button" onclick="switchView('view-audiovisual')">
                     <div class="retro-btn-icon">🎬</div>
                     <div class="retro-btn-text" style="text-align: left;">
@@ -229,7 +223,6 @@
                     </div>
                 </button>
 
-                <!-- Botão Jogos / Trabalhos -->
                 <button class="retro-big-button" onclick="switchView('view-jogos')">
                     <div class="retro-btn-icon">🎮</div>
                     <div class="retro-btn-text" style="text-align: left;">
@@ -240,9 +233,6 @@
             </div>
         </div>
 
-        <!-- ==========================================
-            TELA 2: AUDIOVISUAL
-            ========================================== -->
         <div id="view-audiovisual" class="retro-view">
             <button class="retro-back-btn" onclick="switchView('view-menu')">← Voltar ao Menu</button>
             
@@ -265,10 +255,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- ==========================================
-            TELA 3: JOGOS / TRABALHOS
-            ========================================== -->
         <div id="view-jogos" class="retro-view">
             <button class="retro-back-btn" onclick="switchView('view-menu')">← Voltar ao Menu</button>
 
@@ -294,10 +280,6 @@
 
     </div>
 </div>
-
-<!-- ==========================================
-    SCRIPT PARA ALTERNAR AS TELAS
-    ========================================== -->
 <script>
     function switchView(viewId) {
         const views = document.querySelectorAll('.retro-view');
