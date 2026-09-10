@@ -279,12 +279,12 @@ body {
     height: calc(100% - 40px) !important; /* deixa espaço pra barra de tarefas */
 }
 
-/* ---------- Controles de toque do Tetris (só aparecem no mobile) ---------- */
+/* ---------- Controles de toque do Tetris (só aparecem no mobile ou touch) ---------- */
 .tetris-touch-controls {
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px), (pointer: coarse) {
     .tetris-desktop-hint {
         display: none;
     }
@@ -317,22 +317,49 @@ body {
     }
 }
 
-/* ---------- Responsivo: celulares e tablets ---------- */
-@media (max-width: 768px) {
+.touch-device .tetris-desktop-hint {
+    display: none;
+}
+.touch-device .tetris-touch-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 56px);
+    gap: 8px;
+    margin-top: 12px;
+    justify-content: center;
+}
+.touch-device .tetris-touch-controls button {
+    background: var(--surface);
+    box-shadow: var(--border-raised-outer), var(--border-raised-inner);
+    border: none;
+    font-size: 20px;
+    padding: 12px 0;
+    font-family: 'MSSerif', Tahoma, sans-serif;
+    cursor: pointer;
+}
+.touch-device .tetris-touch-controls button:active {
+    box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
+}
+.touch-device .tetris-touch-controls button:last-child {
+    grid-column: span 3;
+    font-size: 14px;
+}
+
+/* ---------- Responsivo: celulares, tablets e dispositivos touch ---------- */
+@media (max-width: 768px), (pointer: coarse) {
     .icons-column {
         top: 10px;
         left: 4px;
-        gap: 2px;
+        gap: 4px;
     }
 
     .desktop-icon {
-        width: 76px;
-        padding: 8px 2px; /* alvo de toque um pouco maior */
+        width: 80px;
+        padding: 8px 4px; /* alvo de toque maior */
     }
 
     .desktop-icon img {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
     }
 
     .desktop-icon span {
@@ -340,42 +367,76 @@ body {
     }
 
     .icons-category-label {
-        width: 76px;
+        width: 80px;
         font-size: 10px;
     }
 
     .win-titlebar {
-        padding: 8px 6px; /* barra de título mais alta, fácil de tocar */
+        padding: 8px 8px; /* barra de título mais alta, fácil de tocar */
         font-size: 14px;
     }
 
     .win-buttons button {
-        width: 30px;
+        width: 32px;
         height: 28px;
-        font-size: 15px;
+        font-size: 16px;
     }
 
     .taskbar {
-        height: 40px;
+        height: 42px;
     }
 
     .start-btn {
-        padding: 6px 10px;
+        padding: 6px 12px;
         font-size: 14px;
     }
 
     .task-item {
-        max-width: 90px;
-        padding: 6px 8px;
+        max-width: 110px;
+        padding: 6px 10px;
     }
 
     .clock {
-        font-size: 11px;
-        padding: 6px 8px;
+        font-size: 12px;
+        padding: 6px 10px;
     }
 
     .start-menu-item {
-        padding: 12px 16px; /* alvo de toque maior */
+        padding: 12px 18px; /* alvo de toque maior */
         font-size: 15px;
     }
+}
+
+.touch-device .icons-column {
+    top: 10px;
+    left: 4px;
+    gap: 4px;
+}
+.touch-device .desktop-icon {
+    width: 80px;
+    padding: 8px 4px;
+}
+.touch-device .desktop-icon img {
+    width: 44px;
+    height: 44px;
+}
+.touch-device .win-titlebar {
+    padding: 8px 8px;
+    font-size: 14px;
+}
+.touch-device .win-buttons button {
+    width: 32px;
+    height: 28px;
+    font-size: 16px;
+}
+.touch-device .taskbar {
+    height: 42px;
+}
+.touch-device .start-btn {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+.touch-device .start-menu-item {
+    padding: 12px 18px;
+    font-size: 15px;
 }

@@ -10,6 +10,14 @@
            quando essa página é aberta dentro de uma janela (iframe). */
         body { background: #fff; }
     </style>
+    <script>
+        if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.matchMedia && window.matchMedia('(pointer: coarse)').matches)) {
+            document.documentElement.classList.add('touch-device');
+            document.addEventListener('DOMContentLoaded', function() {
+                if (document.body) document.body.classList.add('touch-device');
+            });
+        }
+    </script>
 </head>
 <body>
     <div class="window-body">

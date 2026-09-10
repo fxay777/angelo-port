@@ -12,6 +12,19 @@
     </script>
     <script src="{{ url_for('static', filename='jsdos/js-dos/js-dos.js') }}"></script>
     <script>
+        (function() {
+            var isTouch = ('ontouchstart' in window) || 
+                          (navigator.maxTouchPoints > 0) || 
+                          (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+                          (new URLSearchParams(window.location.search).has('touch'));
+            if (isTouch) {
+                document.documentElement.classList.add('touch-device');
+                if (document.body) document.body.classList.add('touch-device');
+                else document.addEventListener('DOMContentLoaded', function() { document.body.classList.add('touch-device'); });
+            }
+        })();
+    </script>
+    <script>
         if (typeof emulators !== 'undefined') {
             emulators.pathPrefix = emulatorsPathPrefix;
         }

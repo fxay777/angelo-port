@@ -364,8 +364,8 @@ form.contato-form button:active {
     box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
 }
 
-/* ---------- Responsivo: celulares e tablets ---------- */
-@media (max-width: 768px) {
+/* ---------- Responsivo: celulares, tablets e touch-device ---------- */
+@media (max-width: 768px), (pointer: coarse) {
     .window-body {
         flex-direction: column;
     }
@@ -374,7 +374,7 @@ form.contato-form button:active {
         width: 100%;
         border-right: none;
         border-bottom: 2px solid #808080;
-        padding: 14px 16px;
+        padding: 12px 14px;
         flex-shrink: 0;
         overflow-y: visible;
     }
@@ -382,11 +382,12 @@ form.contato-form button:active {
     .sidebar nav {
         display: flex;
         flex-wrap: wrap;
-        gap: 4px 16px;
+        gap: 6px 16px;
     }
 
     .sidebar nav a {
-        margin-bottom: 8px;
+        margin-bottom: 4px;
+        font-size: 15px;
     }
 
     .content {
@@ -394,7 +395,8 @@ form.contato-form button:active {
     }
 
     .content-scroll {
-        padding: 18px 36px 18px 16px;
+        width: 100% !important;
+        padding: 16px 20px !important;
     }
 
     .content h1.big-title {
@@ -438,4 +440,9 @@ form.contato-form button:active {
     .projeto-card {
         padding: 14px 16px;
     }
+}
+
+.touch-device .content-scroll {
+    width: 100% !important;
+    padding: 16px 20px !important;
 }

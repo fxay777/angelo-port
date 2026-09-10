@@ -50,60 +50,34 @@ document.addEventListener('mouseup', () => tocarSom(somMouseUp));
 document.addEventListener('touchstart', () => tocarSom(somMouseDown), { passive: true });
 document.addEventListener('touchend', () => tocarSom(somMouseUp), { passive: true });
 
-// ---------- Cursor falso pra toque (celular/tablet) ----------
-// Dá a mesma sensação de "estar controlando um mouse" pra quem usa
-// touch, já que a maioria das pessoas usa PC e a interface foi pensada
-// em torno de um cursor visível.
-(function setupTouchCursor() {
-    const isTouchDevice =
-        'ontouchstart' in window ||
-        (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
-    if (!isTouchDevice) return;
-
-    const cursor = document.createElement('div');
-    cursor.id = 'fake-touch-cursor';
-    cursor.innerHTML = `
-        <svg width="28" height="28" viewBox="0 0 28 28">
-            <path d="M4 2 L4 22 L9.5 17.5 L13 25 L16.5 23.5 L13 16 L20 16 Z"
-                  fill="#ffffff" stroke="#000000" stroke-width="1.5" stroke-linejoin="round" />
-        </svg>
-    `;
-    cursor.style.cssText = `
-        position: fixed; top: -2px; left: -2px; z-index: 9999999;
-        pointer-events: none; display: none; will-change: transform;
-        filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.5));
-    `;
-    document.body.appendChild(cursor);
-
-    function moveCursor(x, y) {
-        cursor.style.display = 'block';
-        cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    }
-
-    document.addEventListener(
-        'touchstart',
-        (e) => {
-            const t = e.touches[0];
-            if (t) moveCursor(t.clientX, t.clientY);
-        },
-        { passive: true }
-    );
-    document.addEventListener(
-        'touchmove',
-        (e) => {
-            const t = e.touches[0];
-            if (t) moveCursor(t.clientX, t.clientY);
-        },
-        { passive: true }
-    );
-})();
+// Desbloqueia áudio em navegadores mobile (iOS Safari / Android Chrome)
+function desbloquearAudioMobile() {
+    [somMouseDown, somMouseUp, somStartup].forEach((audio) => {
+        audio.play().then(() => {
+            audio.pause();
+            audio.currentTime = 0;
+        }).catch(() => {});
+    });
+    document.removeEventListener('touchstart', desbloquearAudioMobile);
+    document.removeEventListener('touchend', desbloquearAudioMobile);
+    document.removeEventListener('click', desbloquearAudioMobile);
+}
+document.addEventListener('touchstart', desbloquearAudioMobile, { passive: true, once: true });
+document.addEventListener('touchend', desbloquearAudioMobile, { passive: true, once: true });
+document.addEventListener('click', desbloquearAudioMobile, { passive: true, once: true });
 
 let zTop = 10;
 const openWindows = {};
 const dosInstances = {}; // guarda as instâncias do emulador DOS abertas, por id de janela
 
 function isMobile() {
-    return window.innerWidth <= 768;
+    const isTouch = ('ontouchstart' in window) ||
+                    (navigator.maxTouchPoints > 0) ||
+                    (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+                    document.body.classList.contains('touch-device') ||
+                    document.documentElement.classList.contains('touch-device') ||
+                    new URLSearchParams(window.location.search).has('touch');
+    return window.innerWidth <= 768 || isTouch;
 }
 
 function openWindow(id, opts) {
@@ -331,16 +305,16 @@ document.addEventListener('mousedown', (e) => {
 
 // ---------- Ícones da área de trabalho ----------
 function abrirShowcase() {
-    const margin = 16;
-    const iconsColumnWidth = 112;
-    const taskbarHeight = 40;
+    const margin = 12;
+    const iconsColumnWidth = isMobile() ? 0 : 112;
+    const taskbarHeight = 42;
 
     openWindow('showcase', {
         title: 'Miguel Angelo - Showcase 2026',
-        top: margin,
-        left: iconsColumnWidth,
-        width: window.innerWidth - iconsColumnWidth - margin,
-        height: window.innerHeight - taskbarHeight - margin * 2,
+        top: isMobile() ? 0 : margin,
+        left: isMobile() ? 0 : iconsColumnWidth,
+        width: isMobile() ? window.innerWidth : (window.innerWidth - iconsColumnWidth - margin),
+        height: isMobile() ? (window.innerHeight - taskbarHeight) : (window.innerHeight - taskbarHeight - margin * 2),
         iframeSrc: '/showcase',
     });
 }
