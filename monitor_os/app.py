@@ -34,6 +34,11 @@ def desktop():
     return render_template("desktop.html")
 
 
+@app.route("/android")
+def android():
+    return render_template("android.html")
+
+
 @app.route("/showcase")
 def home():
     return render_template(

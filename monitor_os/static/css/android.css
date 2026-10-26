@@ -1,0 +1,73 @@
+/* Interface "Android" — usada só no celular. O PC continua com desktop.css. */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #000;
+    font-family: Roboto, "Segoe UI", system-ui, sans-serif; color: #fff;
+    overscroll-behavior: none; }
+button, a { font: inherit; color: inherit; border: 0; background: none; text-decoration: none; cursor: pointer; }
+
+#phone { position: fixed; inset: 0; display: flex; flex-direction: column;
+    background: radial-gradient(120% 80% at 20% 0%, #3b2f8f 0%, #17235c 45%, #0b1220 100%); overflow: hidden; }
+
+/* status bar */
+#statusbar { height: calc(26px + env(safe-area-inset-top, 0px)); padding: env(safe-area-inset-top, 0px) 16px 0;
+    display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 500; z-index: 30; flex-shrink: 0; }
+.sb-right { display: flex; align-items: center; gap: 5px; }
+
+/* home */
+#home { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 8px 14px 6px; overflow-y: auto; }
+.widget { padding: 14px 6px 18px; }
+.w-time { font-size: 56px; font-weight: 300; line-height: 1; letter-spacing: -1px; }
+.w-date { font-size: 14px; opacity: .8; margin-top: 4px; text-transform: capitalize; }
+.w-name { font-size: 18px; font-weight: 600; margin-top: 14px; }
+.w-role { font-size: 13px; opacity: .75; }
+
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px 4px; align-content: start; flex: 1; }
+.app { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 2px; min-width: 0; }
+.app span { font-size: 11px; text-align: center; line-height: 1.15; text-shadow: 0 1px 2px rgba(0,0,0,.6);
+    max-width: 100%; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.app:active .ic { transform: scale(.9); }
+.ic { width: 54px; height: 54px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-style: normal; box-shadow: 0 3px 8px rgba(0,0,0,.35); transition: transform .12s; }
+.ic img { width: 34px; height: 34px; image-rendering: pixelated; }
+.c-blue { background: linear-gradient(135deg,#4f8cff,#2456d6); } .c-teal { background: linear-gradient(135deg,#2ec4b6,#138a7e); }
+.c-purple { background: linear-gradient(135deg,#a06bff,#6a3fd1); } .c-red { background: linear-gradient(135deg,#ff6b6b,#d63a3a); }
+.c-orange { background: linear-gradient(135deg,#ffb04a,#e8761c); } .c-gray { background: linear-gradient(135deg,#8a94a6,#566074); }
+.c-dark { background: linear-gradient(135deg,#2b2f3a,#12141a); }
+
+.dock { margin: 10px 0 4px; padding: 10px 12px; display: flex; justify-content: space-around;
+    background: rgba(255,255,255,.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 28px; flex-shrink: 0; }
+
+/* app aberto */
+#appview { position: absolute; left: 0; right: 0; top: calc(26px + env(safe-area-inset-top, 0px)); bottom: calc(46px + env(safe-area-inset-bottom, 0px));
+    background: #fff; color: #111; z-index: 20; display: flex; flex-direction: column;
+    transform: translateY(100%) scale(.96); opacity: 0; pointer-events: none; transition: transform .25s ease, opacity .2s ease;
+    border-radius: 18px 18px 0 0; overflow: hidden; }
+#appview.open { transform: none; opacity: 1; pointer-events: auto; }
+.appbar { height: 48px; display: flex; align-items: center; gap: 6px; padding: 0 8px; background: #11182b; color: #fff; flex-shrink: 0; }
+#app-back { font-size: 30px; width: 40px; height: 40px; line-height: 1; }
+#app-title { font-size: 16px; font-weight: 500; }
+#app-body { flex: 1; min-height: 0; position: relative; background: #fff; }
+#app-body iframe { width: 100%; height: 100%; border: 0; display: block; }
+#app-body .dos-root { width: 100%; height: 100%; background: #000; }
+.tetris-wrap { height: 100%; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 8px; color: #fff; font-family: monospace; }
+.tetris-wrap canvas { border: 1px solid #444; height: calc(100% - 190px); max-height: 480px; min-height: 160px; aspect-ratio: 1 / 2; }
+.tetris-wrap .pad { display: grid; grid-template-columns: repeat(4, 64px); gap: 8px; }
+.tetris-wrap .pad button { background: #2b2f3a; border-radius: 14px; height: 52px; font-size: 22px; color: #fff; }
+.tetris-wrap .pad button:active { background: #4f8cff; }
+.tetris-wrap .pad .wide { grid-column: span 4; font-size: 14px; }
+
+/* nav bar */
+#navbar { height: calc(46px + env(safe-area-inset-bottom, 0px)); padding-bottom: env(safe-area-inset-bottom, 0px);
+    display: flex; justify-content: space-evenly; align-items: center; background: #000; z-index: 40; flex-shrink: 0; }
+#navbar button { font-size: 20px; width: 80px; height: 40px; opacity: .9; }
+#navbar button:active { opacity: .5; }
+
+#toast { position: absolute; left: 50%; bottom: 70px; transform: translateX(-50%) translateY(20px); background: rgba(30,30,30,.95);
+    padding: 9px 16px; border-radius: 20px; font-size: 13px; opacity: 0; transition: .25s; z-index: 50; pointer-events: none; text-align: center; max-width: 86%; }
+#toast.show { opacity: 1; transform: translateX(-50%); }
+
+/* Dentro do celular 3D: furo da câmera frontal */
+.in3d #statusbar { position: relative; }
+.in3d #statusbar::before { content: ""; position: absolute; left: 50%; top: 9px; width: 11px; height: 11px; border-radius: 50%;
+    transform: translateX(-50%); background: radial-gradient(circle at 35% 35%, #2b3a6b 0, #080a12 60%);
+    box-shadow: 0 0 0 2px #0a0c13, 0 0 0 3px rgba(255,255,255,.06); }
