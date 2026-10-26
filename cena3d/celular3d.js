@@ -27,6 +27,10 @@
 
     var app = null, built = false, phoneCss = null, computerFrame = null;
     var mode = null, autoDone = false, state = 'none'; // state: 'phone' | 'room' | 'none'
+
+    // Já marca como celular logo de cara: esconde "Entrar no Computador" e o aviso de girar a tela
+    // durante a tela de carregamento (antes eles apareciam até a cena terminar de montar).
+    document.body.classList.toggle('mode-phone', isMobileMode());
     var ui = null, btn = null, boxEl = null;
 
     // ---------- Detecção de celular ----------
@@ -89,7 +93,7 @@
     function setLabel() {
         btn.innerHTML = state === 'phone'
             ? '<span class="ic">' + ICON_CUBE + '</span><span class="tx">Ver cenário 3D</span>'
-            : '<span class="ic">' + ICON_PHONE + '</span><span class="tx">Voltar ao celular</span>';
+            : '<span class="ic">' + ICON_PHONE + '</span><span class="tx">' + (state === 'room' ? 'Voltar ao celular' : 'Abrir o celular') + '</span>';
     }
 
     // marcador que "gruda" no celular quando a câmera está na visão da sala
@@ -383,8 +387,14 @@
             if (build()) {
                 clearInterval(boot);
                 mode = null; applyMode();
-                document.body.classList.add('p3d-ready');
                 setLabel();
+                // O botão só aparece depois que a pessoa passou da tela de carregamento (INICIAR)
+                var rdy = setInterval(function () {
+                    if (app.camera.currentKeyframe !== 'loading') {
+                        document.body.classList.add('p3d-ready');
+                        clearInterval(rdy);
+                    }
+                }, 150);
                 var iv = setInterval(function () {
                     if (autoDone || !mode) return;
                     // Chegou na sala depois da tela de loading → entra no celular sozinho
