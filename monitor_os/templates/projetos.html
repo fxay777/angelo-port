@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <style>
     /* ============================================
-        ESTILO RETRO / VINTAGE (Baseado na referência)
-        ============================================ */
+       ESTILO RETRO / VINTAGE
+       ============================================ */
+
     .retro-page-wrapper {
         background-color: #f4f1ea;
         min-height: 100vh;
@@ -24,6 +26,7 @@
     }
 
     /* Cabeçalho */
+
     .retro-header h1 {
         font-family: 'Georgia', serif;
         font-size: 42px;
@@ -50,7 +53,8 @@
         margin-bottom: 35px;
     }
 
-    /* Botões Grandes / Cards Principais */
+    /* Botões do menu */
+
     .retro-menu-grid {
         display: flex;
         flex-direction: column;
@@ -108,7 +112,8 @@
         text-transform: uppercase;
     }
 
-    /* Seções de Conteúdo (Abas Ocultáveis) */
+    /* Seções de conteúdo */
+
     .retro-view {
         display: none;
     }
@@ -119,11 +124,19 @@
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(4px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(4px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    /* Botão de Voltar */
+    /* Botão de voltar */
+
     .retro-back-btn {
         background: #f0ede6;
         border: 2px solid #1a1a1a;
@@ -150,6 +163,8 @@
         transform: translate(1px, 1px);
         box-shadow: 1px 1px 0px #1a1a1a;
     }
+
+    /* Caixa de conteúdo */
 
     .retro-content-box {
         background: #faf8f5;
@@ -194,77 +209,229 @@
         font-family: 'Georgia', serif;
     }
 
-    /* Tudo com box-sizing certo (antes o padding estourava a largura no celular) */
-    .retro-page-wrapper, .retro-page-wrapper * { box-sizing: border-box; }
-    .retro-page-wrapper { overflow-x: hidden; }
-    .retro-big-button { width: 100%; text-align: left; font: inherit; }
-    .retro-btn-icon { flex: none; }
-    .retro-btn-text { min-width: 0; flex: 1; }
+    /* Ajustes de largura */
 
-    /* Vídeo: só carrega o YouTube quando a pessoa toca (nada toca/abre sozinho) */
+    .retro-page-wrapper,
+    .retro-page-wrapper * {
+        box-sizing: border-box;
+    }
+
+    .retro-page-wrapper {
+        overflow-x: hidden;
+    }
+
+    .retro-big-button {
+        width: 100%;
+        text-align: left;
+        font: inherit;
+    }
+
+    .retro-btn-icon {
+        flex: none;
+    }
+
+    .retro-btn-text {
+        min-width: 0;
+        flex: 1;
+    }
+
+    /* Vídeo: carrega somente quando clicar */
+
     .yt-start {
-        position: absolute; inset: 0; width: 100%; height: 100%;
-        border: 0; padding: 0; margin: 0; background: #000; cursor: pointer;
-        display: flex; align-items: center; justify-content: center;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        background: #000;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+
     .yt-start img {
-        position: absolute; inset: 0; width: 100%; height: 100%;
-        object-fit: cover; opacity: .85;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: .85;
     }
+
     .yt-play {
-        position: relative; z-index: 1;
-        width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;
-        background: #f4f1ea; border: 2px solid #1a1a1a; box-shadow: 4px 4px 0 #1a1a1a;
-        font-size: 24px; color: #1a1a1a; padding-left: 4px;
+        position: relative;
+        z-index: 1;
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f4f1ea;
+        border: 2px solid #1a1a1a;
+        box-shadow: 4px 4px 0 #1a1a1a;
+        font-size: 24px;
+        color: #1a1a1a;
+        padding-left: 4px;
     }
-    .yt-start:active .yt-play { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #1a1a1a; }
+
+    .yt-start:active .yt-play {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 #1a1a1a;
+    }
+
+    /* Responsividade */
 
     @media (max-width: 768px) {
-        .retro-page-wrapper { padding: 16px 14px 36px 14px; margin: -16px -20px 0 -20px; min-height: calc(100vh - 120px); }
-        .retro-container { padding: 20px 16px; box-shadow: 4px 4px 0 #1a1a1a; }
-        .retro-header h1 { font-size: 30px; }
-        .retro-header .subtitle-top { font-size: 22px; margin-bottom: 14px; }
-        .retro-header p { font-size: 14px; text-align: left; margin-bottom: 24px; }
-        .retro-menu-grid { gap: 16px; }
-        .retro-big-button { padding: 14px; gap: 14px; box-shadow: 3px 3px 0 #1a1a1a; }
-        .retro-btn-icon { font-size: 24px; margin-right: 0; padding: 10px; }
-        .retro-btn-text h2 { font-size: 20px; line-height: 1.15; }
-        .retro-btn-text span { display: block; font-size: 10.5px; letter-spacing: 1px; margin-top: 4px; }
-        .retro-content-box { padding: 14px; margin-bottom: 20px; box-shadow: 3px 3px 0 #1a1a1a; }
-        .retro-explanation { padding: 12px; font-size: 14px; }
-        .retro-explanation p { text-align: left; }
-        .retro-back-btn { margin-bottom: 18px; }
-        .yt-play { width: 56px; height: 56px; font-size: 22px; }
+        .retro-page-wrapper {
+            padding: 16px 14px 36px 14px;
+            margin: -16px -20px 0 -20px;
+            min-height: calc(100vh - 120px);
+        }
+
+        .retro-container {
+            padding: 20px 16px;
+            box-shadow: 4px 4px 0 #1a1a1a;
+        }
+
+        .retro-header h1 {
+            font-size: 30px;
+        }
+
+        .retro-header .subtitle-top {
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+
+        .retro-header p {
+            font-size: 14px;
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .retro-menu-grid {
+            gap: 16px;
+        }
+
+        .retro-big-button {
+            padding: 14px;
+            gap: 14px;
+            box-shadow: 3px 3px 0 #1a1a1a;
+        }
+
+        .retro-btn-icon {
+            font-size: 24px;
+            margin-right: 0;
+            padding: 10px;
+        }
+
+        .retro-btn-text h2 {
+            font-size: 20px;
+            line-height: 1.15;
+        }
+
+        .retro-btn-text span {
+            display: block;
+            font-size: 10.5px;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        .retro-content-box {
+            padding: 14px;
+            margin-bottom: 20px;
+            box-shadow: 3px 3px 0 #1a1a1a;
+        }
+
+        .retro-explanation {
+            padding: 12px;
+            font-size: 14px;
+        }
+
+        .retro-explanation p {
+            text-align: left;
+        }
+
+        .retro-back-btn {
+            margin-bottom: 18px;
+        }
+
+        .yt-play {
+            width: 56px;
+            height: 56px;
+            font-size: 22px;
+        }
     }
 </style>
 
-{# Pra adicionar outro vídeo, é só copiar um bloco dessa lista #}
+{# Lista de categorias e vídeos #}
+
 {% set videos = [
-    {"id": "view-audiovisual", "icone": "🎬", "nome": "Audiovisual", "legenda": "PROJECTS & CREATIONS",
-     "sub": "Projects", "yt": "iF5JU_N1ldc", "titulo": "Sobre este projeto audiovisual",
-     "texto": "Este material destaca trabalhos de edição, produção e direção visual. O foco foi explorar transições fluidas, tratamento de cor refinado e uma narrativa dinâmica para prender a atenção do espectador."},
-    {"id": "view-jogos", "icone": "🎮", "nome": "Projetos de Jogos", "legenda": "PROFESSIONAL VENTURES",
-     "sub": "Professional Ventures", "yt": "CYn1K2xohh8", "titulo": "Battle Bits",
-     "texto": "Aqui esta o video que fiz da abertura/volta de um dos maiores servidores de minecraft."},
-    {"id": "view-amarelinha", "icone": "🎞️", "nome": "Amarelinha", "legenda": "VÍDEO DO PROJETO",
-     "sub": "Project", "yt": "m7TOXgqO92s", "titulo": "Amarelinha",
-     "texto": "Vídeo do projeto Amarelinha."}
+    {
+        "id": "view-audiovisual",
+        "icone": "🎬",
+        "nome": "Audiovisual",
+        "legenda": "PROJECTS *&* CREATIONS",
+        "sub": "Projects",
+        "videos": [
+            {
+                "yt": "iF5JU_N1ldc",
+                "titulo": "Sobre este projeto audiovisual",
+                "texto": "Este material destaca trabalhos de edição, produção e direção visual. O foco foi explorar transições fluidas, tratamento de cor refinado e uma narrativa dinâmica para prender a atenção do espectador."
+            },
+            {
+                "yt": "m7TOXgqO92s",
+                "titulo": "Amarelinha",
+                "texto": "O Peso da Amarelinha foi um projeto realizado em 2026, foi um Documentário feito em grupo que buscou explorar o período da Copa do Mundo e mostrar um pouco do porque ela não possui mais o mesmo brilho de antes. Fui responsável pela Introdução do Documentário."
+            }
+        ]
+    },
+    
+        {
+    "id": "view-projetos-videos",
+    "icone": "🎬",
+    "nome": "Projetos e Vídeos",
+    "legenda": "PROJECTS & VIDEOS",
+    "sub": "Projetos e Vídeos",
+    "videos": [
+        {
+            "yt": "tFOAZsP0evQ",
+            "titulo": "A Volta do BattleBits",
+            "texto": "Vídeo sobre a volta do servidor BattleBits."
+        }
+    ]
+}
 ] %}
 
 <div class="retro-page-wrapper">
     <div class="retro-container">
+
+        <!-- Menu principal -->
+
         <div id="view-menu" class="retro-view active">
             <div class="retro-header">
                 <h1>Projects</h1>
                 <div class="subtitle-top">&amp; Portfolio</div>
+
                 <p>
-                    Click on one of the areas below to check out some of my professional projects. I spent a lot of time to include visuals and interactive media to showcase each project. Enjoy!
+                    Click on one of the areas below to check out some of my
+                    professional projects. I spent a lot of time to include
+                    visuals and interactive media to showcase each project.
+                    Enjoy!
                 </p>
             </div>
+
             <div class="retro-menu-grid">
                 {% for v in videos %}
-                <button type="button" class="retro-big-button" onclick="switchView('{{ v.id }}')">
+                <button
+                    type="button"
+                    class="retro-big-button"
+                    onclick="switchView('{{ v.id }}')"
+                >
                     <div class="retro-btn-icon">{{ v.icone }}</div>
+
                     <div class="retro-btn-text">
                         <h2>{{ v.nome }}</h2>
                         <span>{{ v.legenda }}</span>
@@ -274,61 +441,117 @@
             </div>
         </div>
 
+        <!-- Categorias e seus vídeos -->
+
         {% for v in videos %}
         <div id="{{ v.id }}" class="retro-view">
-            <button type="button" class="retro-back-btn" onclick="switchView('view-menu')">← Voltar ao Menu</button>
+
+            <button
+                type="button"
+                class="retro-back-btn"
+                onclick="switchView('view-menu')"
+            >
+                ← Voltar ao Menu
+            </button>
 
             <div class="retro-header" style="margin-bottom: 20px;">
                 <h1>{{ v.nome }}</h1>
                 <div class="subtitle-top">{{ v.sub }}</div>
             </div>
 
+            {% for video in v.videos %}
             <div class="retro-content-box">
-                <div class="retro-video-wrapper" data-yt="{{ v.yt }}" data-title="{{ v.titulo }}">
-                    <button type="button" class="yt-start" aria-label="Reproduzir vídeo: {{ v.titulo }}">
-                        <img src="https://i.ytimg.com/vi/{{ v.yt }}/hqdefault.jpg" alt="" loading="lazy" onerror="this.style.display='none'">
+
+                <div
+                    class="retro-video-wrapper"
+                    data-yt="{{ video.yt }}"
+                    data-title="{{ video.titulo }}"
+                >
+                    <button
+                        type="button"
+                        class="yt-start"
+                        aria-label="Reproduzir vídeo: {{ video.titulo }}"
+                    >
+                        <img
+                            src="https://i.ytimg.com/vi/{{ video.yt }}/hqdefault.jpg"
+                            alt=""
+                            loading="lazy"
+                            onerror="this.style.display='none'"
+                        >
+
                         <span class="yt-play">▶</span>
                     </button>
                 </div>
+
                 <div class="retro-explanation">
-                    <h3>{{ v.titulo }}</h3>
-                    <p>{{ v.texto }}</p>
+                    <h3>{{ video.titulo }}</h3>
+                    <p>{{ video.texto }}</p>
                 </div>
+
             </div>
+            {% endfor %}
+
         </div>
         {% endfor %}
 
     </div>
 </div>
+
 <script>
-    // Guarda o "capinha" (miniatura + botão play) de cada vídeo
+    // Guarda a miniatura e o botão de reprodução de cada vídeo.
+
     const videoBoxes = document.querySelectorAll('.retro-video-wrapper');
+
     videoBoxes.forEach(box => {
         box._capinha = box.innerHTML;
+
         box.addEventListener('click', function (e) {
             if (!e.target.closest('.yt-start')) return;
+
             const ifr = document.createElement('iframe');
-            ifr.src = 'https://www.youtube.com/embed/' + box.dataset.yt + '?autoplay=1&playsinline=1&rel=0';
+
+            ifr.src =
+                'https://www.youtube.com/embed/' +
+                box.dataset.yt +
+                '?autoplay=1&playsinline=1&rel=0';
+
             ifr.title = box.dataset.title;
-            ifr.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+
+            ifr.allow =
+                'autoplay; encrypted-media; picture-in-picture; fullscreen';
+
             ifr.allowFullscreen = true;
+
             box.innerHTML = '';
             box.appendChild(ifr);
         });
     });
 
-    // Ao sair de um vídeo, ele é descarregado (para o som e não fica nada rodando escondido)
+    // Descarrega os vídeos quando a pessoa troca de categoria.
+
     function resetVideos() {
         videoBoxes.forEach(box => {
-            if (box.querySelector('iframe')) box.innerHTML = box._capinha;
+            if (box.querySelector('iframe')) {
+                box.innerHTML = box._capinha;
+            }
         });
     }
 
+    // Alterna entre o menu e as categorias.
+
     function switchView(viewId) {
         resetVideos();
-        document.querySelectorAll('.retro-view').forEach(v => v.classList.remove('active'));
+
+        document.querySelectorAll('.retro-view').forEach(v => {
+            v.classList.remove('active');
+        });
+
         document.getElementById(viewId).classList.add('active');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     }
 </script>
 
