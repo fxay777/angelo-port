@@ -26,8 +26,17 @@ pro dia a dia. Lá dentro tem:
 - `SOBRE` — texto "Sobre Mim" + foto
 - `HOBBIES` — texto de hobbies + foto
 - `MENU` — os links da barra lateral
-- `PROJETOS` — lista de projetos (adicione quantos quiser, copiando o formato)
+- `EXPERIENCIA` — resumo, trabalhos/clientes e habilidades
+- `PROJETOS` — categorias e vídeos do YouTube (adicione quantos quiser, copiando o formato)
 - `CONTATO` — texto da página de contato
+
+## Formulário de contato
+
+O formulário envia as mensagens pro `EMAIL` do `content.py` usando o
+FormSubmit (grátis, sem cadastro). **Na primeira vez que alguém enviar uma
+mensagem, chega um e-mail do FormSubmit pedindo pra ativar o formulário —
+é só clicar no link de ativação.** Até lá (ou se o envio falhar), o
+formulário abre o app de e-mail da pessoa com a mensagem já preenchida.
 
 ## Como trocar as fotos
 

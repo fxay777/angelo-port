@@ -1,7 +1,8 @@
 # ==============================================================================
 #  CONTEÚDO DO SITE
-#  Edite os textos abaixo à vontade. Depois de salvar, só atualizar a página
-#  no navegador (não precisa rodar build nem instalar nada de novo).
+#  Edite os textos abaixo à vontade. Esse é o ÚNICO arquivo que você precisa
+#  mexer no dia a dia — todas as páginas (Sobre, Experiência, Projetos e
+#  Contato) puxam o conteúdo daqui.
 # ==============================================================================
 
 NOME = "Miguel Angelo"
@@ -10,81 +11,91 @@ ANO_SHOWCASE = "2026"
 
 EMAIL = "miguelacbergmann@gmail.com"
 
-# --- Página inicial (Home) ---
+# Arquivo do currículo (fica em static/files/)
+CURRICULO = "curriculo-miguel-angelo.pdf"
+
+# --- Página Sobre (é a primeira página que abre) ---
 HOME = {
     "titulo_janela": f"{NOME} - Showcase {ANO_SHOWCASE}",
     "saudacao": "Olá",
     "subtitulo": f"Eu sou o {NOME}",
     "paragrafo_1": (
-        "Eu sou um Produtor Audiovisual que trabalho principalmente com edição "
-        "de vídeo, sou formado em Produção Audiovisual pela Universidade Estácio "
-        "de Sá na qual em Julho de 2026 eu conclui minha graduação."
+        "Sou Produtor Audiovisual e trabalho principalmente com edição de "
+        "vídeo. Me formei em Produção Audiovisual pela Universidade Estácio "
+        "de Sá em julho de 2026."
     ),
     "paragrafo_2_intro": (
-        "Obrigado por visitar meu portfólio. Espero que você goste de explorar "
-        "o mesmo tanto quanto eu gostei de construí-lo. Se tiver dúvidas ou "
-        "quiser bater um papo, sinta-se à vontade para entrar em contato usando"
+        "Obrigado por visitar meu portfólio! Espero que você goste de "
+        "explorá-lo tanto quanto eu gostei de construí-lo. Se tiver dúvidas "
+        "ou quiser bater um papo, fale comigo pelo"
     ),
-    "link_formulario_texto": "esse formulário",
-    "paragrafo_2_fim": "ou mandando um email via",
+    "link_formulario_texto": "formulário de contato",
+    "paragrafo_2_fim": "ou mande um e-mail para",
 }
 
-# --- Página Sobre Mim ---
 SOBRE = {
     "titulo": "Sobre Mim",
-    "paragrafo": (
-        "Desde jovem, sempre tive uma forte curiosidade sobre como os filmes "
-        "funcionam e como histórias são contadas. Essa paixão naturalmente me "
-        "levou ao cinema e à produção audiovisual. Durante minha trajetória "
-        "acadêmica na Estácio, foquei em desenvolver habilidades técnicas e "
-        "criativas em softwares de edição como Adobe Premiere, DaVinci Resolve "
-        "e Vegas Pro, além de ferramentas de design Photoshop, Canva etc. Um "
-        "marco importante na minha trajetória ocorreu ainda na infância. "
-        "Fascinado pela série britânica Doctor Who, decidi aprender inglês "
-        "rapidamente para acompanhar a obra e conhecer seus atores. Esse "
-        "esforço resultou na conquista do certificado de proficiência em "
-        "inglês da Cambridge aos 12 anos, em 2014, reconhecimento que "
-        "inclusive foi destacado pela imprensa na época. Hoje, aplico esse "
-        "domínio do idioma no mercado profissional, realizando serviços de "
-        "edição de vídeo como freelancer para clientes internacionais, com "
-        "foco em entregas de qualidade e monetização em dólar."
-    ),
+    # Cada item da lista vira um parágrafo separado
+    "paragrafos": [
+        (
+            "Desde pequeno sempre tive curiosidade sobre como os filmes "
+            "funcionam e como as histórias são contadas. Essa paixão me levou "
+            "naturalmente ao cinema e à produção audiovisual."
+        ),
+        (
+            "Durante a graduação na Estácio, desenvolvi habilidades técnicas e "
+            "criativas em softwares de edição como Adobe Premiere, DaVinci "
+            "Resolve e Vegas Pro, além de ferramentas de design como Photoshop "
+            "e Canva."
+        ),
+        (
+            "Um marco importante aconteceu ainda na infância: fascinado pela "
+            "série britânica Doctor Who, decidi aprender inglês rápido para "
+            "acompanhar a série e conhecer os atores. Esse esforço resultou no "
+            "certificado de proficiência em inglês de Cambridge aos 12 anos, "
+            "em 2014 — conquista que chegou a ser destacada pela imprensa na "
+            "época."
+        ),
+        (
+            "Hoje uso esse domínio do idioma no mercado profissional, fazendo "
+            "edição de vídeo como freelancer para clientes internacionais, com "
+            "foco em entregas de qualidade."
+        ),
+    ],
     "foto": "foto-infancia.jpg",
-    "legenda_foto": "Figure 1: Uma foto real de mim quando criança",
+    "alt_foto": "Miguel Angelo quando criança",
+    "legenda_foto": "Figura 1: Eu, quando criança",
 }
 
-# --- Página Hobbies ---
+# --- Hobbies (aparece no final da página Sobre) ---
 HOBBIES = {
-    "titulo": "Meus Hobbies e Interesses",
+    "titulo": "Hobbies e Interesses",
     "paragrafo_1": (
-        "Além do trabalho com edição de vídeo, tenho diversos hobbies que "
-        "gosto de praticar no meu tempo livre. Meus projetos mais tangíveis "
-        "atualmente são a Produção de filmes independentes e a criação de "
-        "projetos em Marketing Digital — você pode ler mais sobre cada um "
-        "deles nas respectivas páginas da aba \"Projetos\". Outros interesses "
-        "que ocupam meu dia a dia são a musculação, culinária e, claro, "
-        "jogar videogame."
+        "Além do trabalho com edição, tenho vários hobbies que gosto de "
+        "praticar no tempo livre. Meus projetos pessoais mais concretos hoje "
+        "são a produção de filmes independentes e projetos de Marketing "
+        "Digital — você encontra alguns deles na aba \"Projetos\". Fora isso, "
+        "curto musculação, cozinhar e, claro, jogar videogame."
     ),
     "paragrafo_2": (
-        "Durante minha graduação, participei ativamente da vida acadêmica na "
-        "Estácio. Conheci muitas pessoas incríveis durante essa jornada e "
-        "valorizo muito o senso de comunidade que construí ao longo dos anos "
-        "de faculdade."
+        "Durante a graduação participei ativamente da vida acadêmica na "
+        "Estácio. Conheci muitas pessoas incríveis nessa jornada e valorizo "
+        "muito a comunidade que construí ao longo da faculdade."
     ),
     "foto": "foto-atual.jpg",
-    "legenda_foto": f"Figure 2: Eu, {ANO_SHOWCASE}",
+    "alt_foto": f"Miguel Angelo em {ANO_SHOWCASE}",
+    "legenda_foto": f"Figura 2: Eu, {ANO_SHOWCASE}",
     "paragrafo_3": (
-        "Obrigado por ler um pouco sobre mim! Espero que você aproveite para "
-        "explorar o restante do meu portfólio. Se encontrar algum \"easter "
-        "egg\" escondido por aqui, não deixe de me avisar! Boa sorte e "
-        "divirta-se!"
+        "Obrigado por ler um pouco sobre mim! Aproveite para explorar o resto "
+        "do portfólio — e se encontrar algum \"easter egg\" escondido por "
+        "aqui, me avisa!"
     ),
     "paragrafo_4_intro": (
-        "Se tiver alguma dúvida ou comentário, adoraria ouvir você. Você "
-        "pode entrar em contato através da minha"
+        "Se tiver alguma dúvida ou comentário, vou adorar ouvir você. É só "
+        "usar a"
     ),
     "link_contato_texto": "página de contato",
-    "paragrafo_4_fim": "ou me enviar um e-mail diretamente para",
+    "paragrafo_4_fim": "ou mandar um e-mail direto para",
 }
 
 # --- Menu lateral ---
@@ -95,52 +106,138 @@ MENU = [
     {"label": "CONTATO", "rota": "contato"},
 ]
 
-# --- Experiência (preencha depois) ---
+# --- Experiência ---
 EXPERIENCIA = {
     "titulo": "Experiência",
-    "paragrafo": (
-        "Em breve: minha experiência profissional. Me fala o que você quer "
-        "colocar aqui que eu monto certinho."
+    "area": "Produção Audiovisual, Edição e Marketing Digital",
+    "resumo": (
+        "Trabalho com criação de narrativas visuais, edição de vídeo, direção "
+        "de conteúdo e gestão de redes sociais para marcas do varejo e "
+        "comunidades online. Uno a formação em Produção Audiovisual pela "
+        "Universidade Estácio de Sá com técnicas de ritmo, storytelling e "
+        "engajamento de público."
     ),
+    # Adicione um bloco novo por trabalho/cliente (copie o formato abaixo)
+    "trabalhos": [
+        {
+            "nome": "Armarinho Casa Machado",
+            "funcao": "Social media e produção de vídeo",
+            "periodo": "",  # ex: "2024 — atual"
+            "descricao": (
+                "Gestão das redes sociais, produção de conteúdo institucional "
+                "e identidade visual para o varejo, com vídeos curtos para "
+                "Instagram e TikTok."
+            ),
+            "links": [
+                {"texto": "Instagram", "url": "https://www.instagram.com/armarinho_casamachado"},
+                {"texto": "TikTok", "url": "https://www.tiktok.com/@armarinho_casamachado"},
+            ],
+        },
+        {
+            "nome": "Freelancer",
+            "funcao": "Editor de vídeo para clientes internacionais",
+            "periodo": "",
+            "descricao": (
+                "Edição de vídeos para clientes de fora do Brasil, com "
+                "comunicação e entregas em inglês."
+            ),
+            "links": [],
+        },
+    ],
+    "habilidades": [
+        ("Edição e pós-produção",
+         "Adobe Premiere, DaVinci Resolve, Vegas Pro, CapCut e Filmora — "
+         "cortes dinâmicos e tratamento de cor."),
+        ("Roteiro e storyboard",
+         "Estruturação de narrativas pensadas para prender o espectador "
+         "desde os primeiros segundos."),
+        ("Acessibilidade",
+         "Práticas inclusivas (Libras, legendagem e audiodescrição) alinhadas "
+         "aos projetos do Instituto Benjamin Constant (IBC)."),
+        ("Gestão de comunidades",
+         "Conteúdo para engajamento em comunidades de games e Discord e "
+         "crescimento de presença digital de marcas."),
+        ("Design",
+         "Photoshop e Canva para thumbnails, posts e identidade visual."),
+        ("Idiomas",
+         "Inglês fluente — certificado de proficiência de Cambridge."),
+    ],
 }
 
-# --- Projetos (edite/adicione quantos quiser) ---
+# --- Projetos ---
+# Cada categoria vira um botão na página de Projetos. Para adicionar um vídeo,
+# copie um bloco {"yt": ..., "titulo": ..., "texto": ...} e troque o "yt" pelo
+# código do vídeo no YouTube (a parte depois de "youtu.be/" ou "v=").
 PROJETOS = [
     {
-        "titulo": "Instagram",
-        "subtitulo": "ARMARINHO CASA MACHADO",
-        "descricao": "Conteúdo de vídeo e edição produzido para o Instagram do Armarinho Casa Machado.",
-        "icone": "📸",
-        "link": "https://www.instagram.com/armarinho_casamachado",
-        "link_texto": "Ver no Instagram →",
-        "tipo": "link",
-    },
-    {
-        "titulo": "TikTok",
-        "subtitulo": "ARMARINHO CASA MACHADO",
-        "descricao": "Conteúdo de vídeo curto produzido para o TikTok do Armarinho Casa Machado.",
-        "icone": "🎵",
-        "link": "https://www.tiktok.com/@armarinho_casamachado",
-        "link_texto": "Ver no TikTok →",
-        "tipo": "link",
-    },
-    {
-        "titulo": "Vídeo",
-        "subtitulo": "PRÉVIA DO PROJETO",
-        "descricao": "Prévia de um dos meus trabalhos de edição de vídeo.",
+        "id": "audiovisual",
         "icone": "🎬",
-        "link": "https://youtu.be/iF5JU_N1ldc?is=P82uMrfHBotpwZNN",
-        "link_texto": "Assistir no YouTube →",
-        "tipo": "video",
-        "youtube_id": "iF5JU_N1ldc",
+        "nome": "Audiovisual",
+        "legenda": "FILMES, DOCUMENTÁRIOS E EDIÇÃO",
+        "videos": [
+            {
+                "yt": "m7TOXgqO92s",
+                "titulo": "O Peso da Amarelinha",
+                "texto": (
+                    "Documentário feito em grupo em 2026 que explora o "
+                    "período da Copa do Mundo e por que ela não tem mais o "
+                    "mesmo brilho de antes. Fui responsável pela introdução "
+                    "do documentário."
+                ),
+            },
+            {
+                "yt": "iF5JU_N1ldc",
+                "titulo": "Showreel de edição",
+                "texto": (
+                    "Uma amostra dos meus trabalhos de edição, produção e "
+                    "direção visual — com foco em transições fluidas, "
+                    "tratamento de cor e uma narrativa dinâmica que prende "
+                    "a atenção."
+                ),
+            },
+        ],
+    },
+    {
+        "id": "games",
+        "icone": "🎮",
+        "nome": "Games e Comunidades",
+        "legenda": "VÍDEOS PARA COMUNIDADES ONLINE",
+        "videos": [
+            {
+                "yt": "tFOAZsP0evQ",
+                "titulo": "A Volta do BattleBits",
+                "texto": "Vídeo sobre a volta do servidor BattleBits.",
+            },
+        ],
+    },
+    {
+        "id": "social",
+        "icone": "📱",
+        "nome": "Redes Sociais",
+        "legenda": "INSTAGRAM E TIKTOK",
+        "links": [
+            {
+                "titulo": "Armarinho Casa Machado — Instagram",
+                "texto": "Conteúdo em vídeo e posts produzidos para o Instagram da loja.",
+                "url": "https://www.instagram.com/armarinho_casamachado",
+            },
+            {
+                "titulo": "Armarinho Casa Machado — TikTok",
+                "texto": "Vídeos curtos produzidos para o TikTok da loja.",
+                "url": "https://www.tiktok.com/@armarinho_casamachado",
+            },
+        ],
     },
 ]
 
 # --- Contato ---
 CONTATO = {
     "titulo": "Contato",
-    "texto": "Preencha o formulário abaixo ou me chame direto no e-mail:",
+    "texto": (
+        "Quer conversar sobre um projeto, uma vaga ou só dar um oi? Preencha "
+        "o formulário abaixo ou me chame direto no e-mail:"
+    ),
 }
 
 # --- Rodapé ---
-COPYRIGHT = f"© Copyright {ANO_SHOWCASE} {NOME}"
+COPYRIGHT = f"© {ANO_SHOWCASE} {NOME}"

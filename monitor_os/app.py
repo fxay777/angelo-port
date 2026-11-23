@@ -26,6 +26,8 @@ def inject_globals():
         "menu": content.MENU,
         "copyright": content.COPYRIGHT,
         "titulo_janela": content.HOME["titulo_janela"],
+        "email": content.EMAIL,
+        "curriculo": content.CURRICULO,
     }
 
 
@@ -40,23 +42,13 @@ def android():
 
 
 @app.route("/showcase")
-def home():
-    return render_template(
-        "sobre.html",
-        sobre=content.SOBRE,
-        hobbies=content.HOBBIES,
-        email=content.EMAIL,
-        pagina_ativa="sobre",
-    )
-
-
 @app.route("/showcase/sobre")
 def sobre():
     return render_template(
         "sobre.html",
+        home=content.HOME,
         sobre=content.SOBRE,
         hobbies=content.HOBBIES,
-        email=content.EMAIL,
         pagina_ativa="sobre",
     )
 
@@ -84,7 +76,6 @@ def contato():
     return render_template(
         "contato.html",
         contato=content.CONTATO,
-        email=content.EMAIL,
         pagina_ativa="contato",
     )
 

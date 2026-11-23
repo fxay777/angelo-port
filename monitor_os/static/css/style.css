@@ -405,6 +405,7 @@ form.contato-form button:active {
 
     p {
         font-size: 15px;
+        text-align: left;
     }
 
     .home-hero {
@@ -445,4 +446,158 @@ form.contato-form button:active {
 .touch-device .content-scroll {
     width: 100% !important;
     padding: 16px 20px !important;
+}
+
+/* ============================================================================
+   Componentes compartilhados (Experiência, Projetos, Contato)
+   ============================================================================ */
+
+/* Botão no estilo Windows 95 (usado como link) */
+.win-btn {
+    display: inline-block;
+    background: var(--surface);
+    box-shadow: var(--border-raised-outer), var(--border-raised-inner);
+    border: none;
+    padding: 6px 16px;
+    font-family: 'MSSerif', Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.win-btn:hover { background: var(--surface-hover); }
+.win-btn:active { box-shadow: var(--border-sunken-outer), var(--border-sunken-inner); }
+.win-btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+
+.content h3.subtitulo-area {
+    font-family: 'MSSerif', Tahoma, sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+/* ---------- Experiência ---------- */
+.exp-item { margin-bottom: 26px; }
+.exp-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.content h3.exp-nome { margin: 0; font-size: 20px; }
+.exp-funcao {
+    font-family: 'Millennium', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: #444;
+}
+.exp-periodo {
+    font-family: 'MSSerif', Tahoma, sans-serif;
+    font-size: 12px;
+    padding: 3px 8px;
+    box-shadow: var(--border-sunken-outer);
+    white-space: nowrap;
+}
+.skill-list {
+    margin: 0 0 18px;
+    padding-left: 20px;
+}
+.skill-list li {
+    font-family: 'Millennium', 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+.skill-list li b { font-family: 'MillenniumBold', 'Times New Roman', serif; }
+
+/* ---------- Projetos ---------- */
+.proj-view { display: none; }
+.proj-view.ativa { display: block; }
+
+button.projeto-card {
+    width: 100%;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+}
+.projeto-card-header > span:last-child { display: flex; flex-direction: column; gap: 4px; }
+
+.voltar-btn { margin-bottom: 18px; }
+
+.proj-item { margin-bottom: 8px; }
+.content h3.proj-item-titulo { margin: 14px 0 6px; font-size: 20px; }
+.link-pequeno {
+    font-family: 'MSSerif', Tahoma, sans-serif;
+    font-size: 12px;
+}
+
+.video-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    box-shadow: var(--border-sunken-outer), var(--border-sunken-inner);
+    padding: 3px;
+}
+.video-frame iframe,
+.video-frame .yt-start {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+.video-frame .yt-start {
+    position: relative;
+    padding: 0;
+    background: #111;
+    cursor: pointer;
+    overflow: hidden;
+}
+.video-frame .yt-start img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: filter 0.15s ease;
+}
+.video-frame .yt-start:hover img { filter: brightness(0.8); }
+.video-frame .yt-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #000;
+    background: var(--surface);
+    box-shadow: var(--border-raised-outer), var(--border-raised-inner);
+}
+
+/* ---------- Formulário de contato ---------- */
+form.contato-form label {
+    display: block;
+    font-family: 'MSSerif', Tahoma, sans-serif;
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+form.contato-form button:disabled { color: #808080; cursor: wait; }
+.honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.form-rodape { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+.form-status { font-family: 'MSSerif', Tahoma, sans-serif; font-size: 13px; }
+.form-status.ok { color: #006400; }
+.form-status.erro { color: #a00000; }
+
+@media (max-width: 768px), (pointer: coarse) {
+    .exp-item-header { flex-direction: column; }
+    .video-frame .yt-play { width: 52px; height: 38px; }
 }

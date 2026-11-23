@@ -1,19 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="big-title">Olá</h1>
-<h3>Eu sou o {{ nome }}</h3>
+<h1 class="big-title">{{ home.saudacao }}</h1>
+<h3>{{ home.subtitulo }}</h3>
 
+<p>{{ home.paragrafo_1 }}</p>
 <p>
-    Eu sou um Produtor Audiovisual que trabalho principalmente com edição de
-    vídeo, sou formado em Produção Audiovisual pela Universidade Estácio de Sá
-    na qual em Julho de 2026 eu conclui minha graduação.
-</p>
-<p>
-    Obrigado por visitar meu portfólio. Espero que você goste de explorar o
-    mesmo tanto quanto eu gostei de construí-lo. Se tiver dúvidas ou quiser
-    bater um papo, sinta-se à vontade para entrar em contato usando
-    <a href="/showcase/contato">esse formulário</a> ou mandando um email via
+    {{ home.paragrafo_2_intro }}
+    <a href="/showcase/contato">{{ home.link_formulario_texto }}</a>
+    {{ home.paragrafo_2_fim }}
     <a href="mailto:{{ email }}">{{ email }}</a>.
 </p>
 
@@ -23,19 +18,21 @@
     <span class="resume-icon">📄</span>
     <div>
         <b>Procurando meu currículo?</b><br>
-        <a href="{{ url_for('static', filename='files/curriculo-miguel-angelo.pdf') }}" target="_blank">
-            Clique aqui pra visualizar!
-        </a>
+        <a href="{{ url_for('static', filename='files/' + curriculo) }}" target="_blank" rel="noopener">Visualizar</a>
+        &nbsp;·&nbsp;
+        <a href="{{ url_for('static', filename='files/' + curriculo) }}" download>baixar PDF</a>
     </div>
 </div>
 
 <hr class="divider">
 
 <h3>{{ sobre.titulo }}</h3>
-<p>{{ sobre.paragrafo }}</p>
+{% for par in sobre.paragrafos %}
+<p>{{ par }}</p>
+{% endfor %}
 
 <div class="captioned-image">
-    <img src="{{ url_for('static', filename='images/' + sobre.foto) }}" alt="">
+    <img src="{{ url_for('static', filename='images/' + sobre.foto) }}" alt="{{ sobre.alt_foto }}" loading="lazy">
     <p><b>{{ sobre.legenda_foto }}</b></p>
 </div>
 
@@ -46,7 +43,7 @@
 <p>{{ hobbies.paragrafo_2 }}</p>
 
 <div class="captioned-image">
-    <img src="{{ url_for('static', filename='images/' + hobbies.foto) }}" alt="">
+    <img src="{{ url_for('static', filename='images/' + hobbies.foto) }}" alt="{{ hobbies.alt_foto }}" loading="lazy">
     <p><b>{{ hobbies.legenda_foto }}</b></p>
 </div>
 

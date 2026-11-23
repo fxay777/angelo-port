@@ -420,7 +420,7 @@ function abrirDigger() {
 
 function abrirCreditos() {
     openWindow('creditos', {
-        title: 'Credits',
+        title: 'Créditos',
         top: 60,
         left: 200,
         width: 560,

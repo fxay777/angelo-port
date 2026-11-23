@@ -1,266 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-    /* ============================================
-        ESTILO RETRO / PÁGINA DE EXPERIÊNCIA INDIVIDUAL
-        ============================================ */
-    .experience-detail-wrapper {
-        background-color: #f4f1ea;
-        min-height: 100vh;
-        padding: 40px 20px 60px 20px;
-        margin: -20px -20px 0 -20px;
-        font-family: 'Times New Roman', Times, Georgia, serif;
-        color: #1a1a1a;
-    }
+<h1 class="big-title">{{ experiencia.titulo }}</h1>
+<h3 class="subtitulo-area">{{ experiencia.area }}</h3>
 
-    .experience-detail-container {
-        max-width: 850px;
-        margin: 0 auto;
-        background: #ffffff;
-        border: 2px solid #1a1a1a;
-        padding: 40px;
-        box-shadow: 6px 6px 0px #1a1a1a;
-    }
+<p>{{ experiencia.resumo }}</p>
 
-    /* Cabeçalho da Experiência / Cargo */
-    .exp-detail-header {
-        border-bottom: 2px solid #1a1a1a;
-        padding-bottom: 20px;
-        margin-bottom: 25px;
-    }
+<hr class="divider">
 
-    .exp-detail-header h1 {
-        font-family: 'Georgia', serif;
-        font-size: 36px;
-        font-weight: bold;
-        margin: 0 0 8px 0;
-        color: #111;
-        letter-spacing: -0.5px;
-    }
-
-    .exp-detail-header .company-name {
-        font-family: Arial, sans-serif;
-        font-size: 16px;
-        font-weight: bold;
-        color: #555;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 15px;
-    }
-
-    /* Informações de Contato / Localização */
-    .exp-contact-bar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        font-family: Arial, sans-serif;
-        font-size: 13px;
-        background: #faf8f5;
-        border: 1px solid #1a1a1a;
-        padding: 12px 15px;
-        box-shadow: 3px 3px 0px #1a1a1a;
-    }
-
-    .exp-contact-bar span {
-        color: #333;
-    }
-
-    .exp-contact-bar span strong {
-        color: #111;
-    }
-
-    /* Descrição das Atividades */
-    .exp-detail-section {
-        margin-bottom: 30px;
-    }
-
-    .exp-detail-section h2 {
-        font-family: 'Georgia', serif;
-        font-size: 20px;
-        font-weight: bold;
-        color: #111;
-        border-bottom: 1px dashed #999;
-        padding-bottom: 6px;
-        margin-bottom: 12px;
-    }
-
-    .exp-detail-text {
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-        color: #333;
-        line-height: 1.7;
-        margin-bottom: 15px;
-        text-align: justify;
-    }
-
-    /* Listagem de Links / Projetos Relacionados */
-    .exp-links-grid {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 25px 0;
-    }
-
-    .exp-link-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 12px 0;
-        border-bottom: 1px solid #e0ddd5;
-        font-family: Arial, sans-serif;
-        font-size: 14px;
-    }
-
-    .exp-link-row:last-child {
-        border-bottom: none;
-    }
-
-    .exp-link-info {
-        font-weight: bold;
-        color: #222;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-    }
-
-    .exp-link-info span.desc {
-        font-weight: normal;
-        font-size: 12px;
-        color: #666;
-    }
-
-    .exp-action-buttons {
-        display: flex;
-        gap: 10px;
-    }
-
-    .exp-btn-link {
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-        font-weight: bold;
-        color: #0000cc;
-        background: #f0ede6;
-        border: 1px solid #1a1a1a;
-        padding: 5px 12px;
-        text-decoration: none;
-        box-shadow: 2px 2px 0px #1a1a1a;
-        transition: all 0.1s ease;
-    }
-
-    .exp-btn-link:hover {
-        background: #e4e0d5;
-        transform: translate(-1px, -1px);
-        box-shadow: 3px 3px 0px #1a1a1a;
-    }
-
-    .exp-btn-link:active {
-        transform: translate(1px, 1px);
-        box-shadow: 1px 1px 0px #1a1a1a;
-    }
-
-    /* Caixa de Destaque Técnico */
-    .exp-tech-box {
-        background: #faf8f5;
-        border: 2px solid #1a1a1a;
-        padding: 20px;
-        box-shadow: 4px 4px 0px #1a1a1a;
-        margin-top: 25px;
-    }
-
-    .exp-tech-box h3 {
-        font-family: 'Georgia', serif;
-        font-size: 17px;
-        margin-top: 0;
-        color: #111;
-        margin-bottom: 10px;
-    }
-
-    .exp-tech-box ul {
-        margin: 0;
-        padding-left: 20px;
-        font-family: Arial, sans-serif;
-        font-size: 13px;
-        color: #333;
-        line-height: 1.6;
-    }
-
-    @media (max-width: 768px) {
-        .experience-detail-container {
-            padding: 20px;
-        }
-        .exp-contact-bar {
-            flex-direction: column;
-            gap: 6px;
-        }
-        .exp-link-row {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-        }
-    }
-</style>
-
-<div class="experience-detail-wrapper">
-    <div class="experience-detail-container">
-
-        <!-- ==========================================
-            CABEÇALHO DA EXPERIÊNCIA E DADOS DE CONTATO
-            ========================================== -->
-        <div class="exp-detail-header">
-            <h1>{{ experiencia.titulo }}</h1>
-            <div class="company-name">Produção Audiovisual, Edição &amp; Marketing Digital</div>
+{% for t in experiencia.trabalhos %}
+<div class="exp-item">
+    <div class="exp-item-header">
+        <div>
+            <h3 class="exp-nome">{{ t.nome }}</h3>
+            <div class="exp-funcao">{{ t.funcao }}</div>
         </div>
+        {% if t.periodo %}<div class="exp-periodo">{{ t.periodo }}</div>{% endif %}
+    </div>
+    <p>{{ t.descricao }}</p>
+    {% if t.links %}
+    <div class="win-btn-row">
+        {% for l in t.links %}
+        <a class="win-btn" href="{{ l.url }}" target="_blank" rel="noopener">{{ l.texto }} ↗</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endfor %}
 
-        <!-- ==========================================
-            RESUMO DA ATUAÇÃO PROFISSIONAL
-            ========================================== -->
-        <div class="exp-detail-section">
-            <h2>🎯 Visão Geral da Experiência</h2>
-            <p class="exp-detail-text">
-                Atuação intensiva focada na criação de narrativas visuais de alto impacto, edição avançada de vídeo, direção de conteúdo e gestão de mídias sociais para marcas de varejo e ecossistemas de grande porte na internet. Unindo sólida formação acadêmica em Produção Audiovisual (Universidade Estácio de Sá) com técnicas refinadas de ritmo, storytelling e engajamento de comunidades.
-            </p>
-        </div>
+<hr class="divider">
 
-        <!-- ==========================================
-            PORTFÓLIO DE PROJETOS E LINKS REAIS
-            ========================================== -->
-        <div class="exp-detail-section">
-            <h2>📁 Campanhas &amp; Projetos Práticos</h2>
-            <p class="exp-detail-text">
-                Registro das principais frentes de trabalho desenvolvidas na área de audiovisual, marketing e mídias digitais:
-            </p>
+<h3>Habilidades</h3>
+<ul class="skill-list">
+    {% for nome_hab, desc in experiencia.habilidades %}
+    <li><b>{{ nome_hab }}:</b> {{ desc }}</li>
+    {% endfor %}
+</ul>
 
-            <ul class="exp-links-grid">
-                <!-- Casa Machado -->
-                <li class="exp-link-row">
-                    <div class="exp-link-info">
-                        <span>📦 Armarinho Casa Machado</span>
-                        <span class="desc">Gestão de redes sociais, produção de conteúdo institucional e identidade visual para o varejo.</span>
-                    </div>
-                    <div class="exp-action-buttons">
-                        <a href="https://www.instagram.com/armarinho_casamachado" target="_blank" rel="noreferrer" class="exp-btn-link">[ INSTAGRAM ]</a>
-                        <a href="https://www.tiktok.com/@armarinho_casamachado" target="_blank" rel="noreferrer" class="exp-btn-link">[ TIKTOK ]</a>
-                    </div>
-                </li>
-
-              
-            </ul>
-        </div>
-
-        <!-- ==========================================
-            COMPETÊNCIAS APLICADAS NESTA EXPERIÊNCIA
-            ========================================== -->
-        <div class="exp-tech-box">
-            <h3>🛠️ Habilidades Técnicas Aplicadas</h3>
-            <ul>
-                <li><strong>Edição e Pós-Produção:</strong> Domínio de ferramentas avançadas como Adobe Premiere, DaVinci Resolve, CapCut e Filmora para cortes dinâmicos e tratamento de cor.</li>
-                <li><strong>Roteirização e Storyboard:</strong> Estruturação de narrativas focadas na retenção imediata do espectador.</li>
-                <li><strong>Comunicação e Acessibilidade:</strong> Práticas inclusivas (Libras, legendagem e audiodescrição) alinhadas aos projetos do Instituto Benjamin Constant (IBC) e formação acadêmica.</li>
-                <li><strong>Gestão de Comunidades:</strong> Produção de conteúdos direcionados ao engajamento em massa (como o ecossistemas em servidores de games & discord) e expansão de presença digital (Casa Machado).</li>
-            </ul>
-        </div>
-
+<div class="resume-callout" style="margin: 10px 0 24px;">
+    <span class="resume-icon">📄</span>
+    <div>
+        <b>Quer a versão completa?</b><br>
+        <a href="{{ url_for('static', filename='files/' + curriculo) }}" target="_blank" rel="noopener">Ver currículo em PDF</a>
     </div>
 </div>
-
 {% endblock %}

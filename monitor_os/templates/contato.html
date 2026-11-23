@@ -7,27 +7,96 @@
 
 <hr class="divider">
 
-<div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
-    <span style="font-size:28px;">📄</span>
+<div class="resume-callout">
+    <span class="resume-icon">📄</span>
     <div>
         <b>Procurando meu currículo?</b><br>
-        <a href="{{ url_for('static', filename='files/curriculo-miguel-angelo.pdf') }}" target="_blank">
-            Clique aqui pra visualizar
-        </a>
+        <a href="{{ url_for('static', filename='files/' + curriculo) }}" target="_blank" rel="noopener">Visualizar</a>
         &nbsp;·&nbsp;
-        <a href="{{ url_for('static', filename='files/curriculo-miguel-angelo.pdf') }}" download>
-            baixar PDF
-        </a>
+        <a href="{{ url_for('static', filename='files/' + curriculo) }}" download>baixar PDF</a>
     </div>
 </div>
 
 <hr class="divider">
 
-<form class="contato-form" onsubmit="event.preventDefault(); alert('Formulário de exemplo — ligue isso a um envio de e-mail real depois.');">
-    <input type="text" placeholder="Seu nome" required>
-    <input type="email" placeholder="Seu e-mail" required>
-    <textarea rows="5" placeholder="Sua mensagem" required></textarea>
-    <button type="submit">Enviar</button>
-</form>
-{% endblock %}
+<form class="contato-form" id="form-contato" novalidate>
+    <label for="f-nome">Nome</label>
+    <input id="f-nome" name="nome" type="text" autocomplete="name" required>
 
+    <label for="f-email">E-mail</label>
+    <input id="f-email" name="email" type="email" autocomplete="email" required>
+
+    <label for="f-msg">Mensagem</label>
+    <textarea id="f-msg" name="mensagem" rows="5" required></textarea>
+
+    <!-- campo invisível anti-spam: robôs preenchem, pessoas não -->
+    <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="honeypot" aria-hidden="true">
+
+    <div class="form-rodape">
+        <button type="submit" id="f-enviar">Enviar</button>
+        <span id="f-status" class="form-status" role="status"></span>
+    </div>
+</form>
+
+<script>
+(function () {
+    var EMAIL = {{ email|tojson }};
+    var form = document.getElementById('form-contato');
+    var status = document.getElementById('f-status');
+    var botao = document.getElementById('f-enviar');
+
+    function mostrar(msg, tipo) {
+        status.textContent = msg;
+        status.className = 'form-status ' + (tipo || '');
+    }
+
+    function abrirEmail(nome, email, msg) {
+        var assunto = encodeURIComponent('Contato pelo portfólio — ' + nome);
+        var corpo = encodeURIComponent(msg + '\n\n— ' + nome + ' (' + email + ')');
+        window.top.location.href = 'mailto:' + EMAIL + '?subject=' + assunto + '&body=' + corpo;
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var nome = form.nome.value.trim();
+        var email = form.email.value.trim();
+        var msg = form.mensagem.value.trim();
+
+        if (!nome || !msg || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            mostrar('Preencha nome, um e-mail válido e a mensagem.', 'erro');
+            return;
+        }
+        if (form._honey.value) return;
+
+        botao.disabled = true;
+        mostrar('Enviando...');
+
+        fetch('https://formsubmit.co/ajax/' + EMAIL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                nome: nome,
+                email: email,
+                mensagem: msg,
+                _subject: 'Nova mensagem do portfólio — ' + nome,
+                _template: 'table'
+            })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+            if (data && String(data.success) === 'true') {
+                form.reset();
+                mostrar('Mensagem enviada! Respondo assim que puder. 🙂', 'ok');
+            } else {
+                throw new Error('falhou');
+            }
+        })
+        .catch(function () {
+            mostrar('Não consegui enviar por aqui — abrindo seu app de e-mail...', 'erro');
+            abrirEmail(nome, email, msg);
+        })
+        .finally(function () { botao.disabled = false; });
+    });
+})();
+</script>
+{% endblock %}
