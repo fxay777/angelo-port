@@ -208,6 +208,11 @@ PROJETOS = [
                 "titulo": "A Volta do BattleBits",
                 "texto": "Vídeo sobre a volta do servidor BattleBits.",
             },
+            {
+                "yt": "kDKAKCkIiIk",
+                "titulo": "Vídeo para a comunidade",
+                "texto": "Vídeo produzido e editado para uma comunidade de games.",
+            },
         ],
     },
     {
