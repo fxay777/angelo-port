@@ -210,6 +210,8 @@ function tocarSequenciaDeDesligamento() {
                     setTimeout(() => overlay.remove(), 6000);
                 } else {
                     overlay.remove();
+                    // "Reinicia" o computador mostrando o boot de novo
+                    if (window.mostrarBoot) window.mostrarBoot();
                 }
             }, 1500);
             return;

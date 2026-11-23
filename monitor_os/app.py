@@ -31,9 +31,18 @@ def inject_globals():
     }
 
 
+def lista_videos():
+    """Junta todos os vídeos de PROJETOS numa lista só (usada no Reprodutor de Mídia)."""
+    videos = []
+    for cat in content.PROJETOS:
+        for v in cat.get("videos", []):
+            videos.append({**v, "categoria": cat["nome"]})
+    return videos
+
+
 @app.route("/")
 def desktop():
-    return render_template("desktop.html")
+    return render_template("desktop.html", videos=lista_videos())
 
 
 @app.route("/android")

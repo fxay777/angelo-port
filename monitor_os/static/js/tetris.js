@@ -88,7 +88,7 @@ function initTetris(canvas, scoreEl, nextCanvas, onGameOver) {
         }
         if (cleared > 0) {
             score += [0, 100, 300, 500, 800][cleared] || cleared * 200;
-            if (scoreEl) scoreEl.innerText = 'Score: ' + score;
+            if (scoreEl) scoreEl.innerText = 'Pontos: ' + score;
         }
     }
 
@@ -211,6 +211,9 @@ function initTetris(canvas, scoreEl, nextCanvas, onGameOver) {
 
     function handleKey(e) {
         if (gameOver) return;
+        // Não rouba as teclas de quem está digitando (ex: Prompt do MS-DOS)
+        var alvo = document.activeElement;
+        if (e.isTrusted && alvo && (alvo.tagName === 'INPUT' || alvo.tagName === 'TEXTAREA')) return;
         switch (e.key) {
             case 'ArrowLeft':
                 move(-1);

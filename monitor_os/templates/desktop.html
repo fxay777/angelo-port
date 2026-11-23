@@ -3,93 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Miguel Angelo - OS</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}">
+    <title>MiguelOS 95</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/startLogo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}?v=2">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/apps.css') }}?v=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='jsdos/js-dos/js-dos.css') }}">
     <script>
-        // pathPrefix precisa ser configurado ANTES de carregar o js-dos.js
         var emulatorsPathPrefix = "{{ url_for('static', filename='jsdos/js-dos/') }}";
     </script>
     <script src="{{ url_for('static', filename='jsdos/js-dos/js-dos.js') }}"></script>
     <script>
-        (function() {
-            var isTouch = ('ontouchstart' in window) || 
-                          (navigator.maxTouchPoints > 0) || 
-                          (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
-                          (new URLSearchParams(window.location.search).has('touch'));
-            if (isTouch) {
-                document.documentElement.classList.add('touch-device');
-                if (document.body) document.body.classList.add('touch-device');
-                else document.addEventListener('DOMContentLoaded', function() { document.body.classList.add('touch-device'); });
-            }
+        (function () {
+            var isTouch = ('ontouchstart' in window) ||
+                (navigator.maxTouchPoints > 0) ||
+                (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+                (new URLSearchParams(window.location.search).has('touch'));
+            if (isTouch) document.documentElement.classList.add('touch-device');
         })();
-    </script>
-    <script>
-        if (typeof emulators !== 'undefined') {
-            emulators.pathPrefix = emulatorsPathPrefix;
-        }
+        if (typeof emulators !== 'undefined') emulators.pathPrefix = emulatorsPathPrefix;
+
+        // Dados do portfólio (vêm do content.py)
+        window.MIGUEL = {
+            nome: {{ nome|tojson }},
+            cargo: {{ cargo|tojson }},
+            email: {{ email|tojson }},
+            curriculo: {{ url_for('static', filename='files/' + curriculo)|tojson }},
+            videos: {{ videos|tojson }}
+        };
     </script>
 </head>
 <body>
-    <div id="desktop-root">
-        <div class="icons-column">
-            <div class="icons-category-label">Portfólio</div>
-            <div class="desktop-icon" onclick="abrirShowcase()">
-                <img src="{{ url_for('static', filename='icons/showcaseIcon.png') }}" alt="">
-                <span>Sobre Mim</span>
-            </div>
-            <div class="desktop-icon" onclick="abrirCreditos()">
-                <img src="{{ url_for('static', filename='icons/credits.png') }}" alt="">
-                <span>Créditos</span>
-            </div>
+    <div id="desktop-root" class="wallpaper">
+        <div class="wallpaper-logo" aria-hidden="true">Miguel<b>OS</b><sup>95</sup></div>
 
+        <div class="icons-column" id="icons-column">
+          <div class="icons-col">
+            <div class="icons-category-label">Portfólio</div>
+            <button type="button" class="desktop-icon" data-acao="showcase">
+                <img src="{{ url_for('static', filename='icons/showcaseIcon.png') }}" alt=""><span>Sobre Mim</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="videos">
+                <img src="{{ url_for('static', filename='icons/videos.png') }}" alt=""><span>Meus Vídeos</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="curriculo">
+                <img src="{{ url_for('static', filename='icons/credits.png') }}" alt=""><span>Currículo.pdf</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="contato">
+                <img src="{{ url_for('static', filename='icons/floppy.png') }}" alt=""><span>Contato</span>
+            </button>
+
+            <div class="icons-category-label">Sistema</div>
+            <button type="button" class="desktop-icon" data-acao="meucomputador">
+                <img src="{{ url_for('static', filename='icons/myComputer.png') }}" alt=""><span>Meu Computador</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="msdos">
+                <img src="{{ url_for('static', filename='icons/msdos.png') }}" alt=""><span>Prompt do MS-DOS</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="notepad">
+                <img src="{{ url_for('static', filename='icons/notepad.png') }}" alt=""><span>LEIA-ME.txt</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="paint">
+                <img src="{{ url_for('static', filename='icons/paint.png') }}" alt=""><span>Paint</span>
+            </button>
+
+          </div>
+          <div class="icons-col">
             <div class="icons-category-label">Jogos</div>
-            <div class="desktop-icon" onclick="abrirDoom()">
-                <img src="{{ url_for('static', filename='icons/doomIcon.png') }}" alt="">
-                <span>Doom</span>
-            </div>
-            <div class="desktop-icon" onclick="abrirWolf3D()">
-                <img src="{{ url_for('static', filename='icons/wolf3dIcon.png') }}" alt="">
-                <span>Wolfenstein 3D</span>
-            </div>
-            <div class="desktop-icon" onclick="abrirDigger()">
-                <img src="{{ url_for('static', filename='icons/diggerIcon.png') }}" alt="">
-                <span>Digger</span>
-            </div>
-            <div class="desktop-icon" onclick="abrirTetris()">
-                <img src="{{ url_for('static', filename='icons/tetrisIcon.png') }}" alt="">
-                <span>Tetris</span>
-            </div>
-            <div class="desktop-icon" onclick="abrirScrabble()">
-                <img src="{{ url_for('static', filename='icons/scrabbleIcon.png') }}" alt="">
-                <span>Scrabble</span>
-            </div>
+            <button type="button" class="desktop-icon" data-acao="minas">
+                <img src="{{ url_for('static', filename='icons/minesweeper.png') }}" alt=""><span>Campo Minado</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="tetris">
+                <img src="{{ url_for('static', filename='icons/tetrisIcon.png') }}" alt=""><span>Tetris</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="doom">
+                <img src="{{ url_for('static', filename='icons/doomIcon.png') }}" alt=""><span>Doom</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="wolf3d">
+                <img src="{{ url_for('static', filename='icons/wolf3dIcon.png') }}" alt=""><span>Wolfenstein 3D</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="digger">
+                <img src="{{ url_for('static', filename='icons/diggerIcon.png') }}" alt=""><span>Digger</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="scrabble">
+                <img src="{{ url_for('static', filename='icons/scrabbleIcon.png') }}" alt=""><span>Scrabble</span>
+            </button>
+          </div>
         </div>
+
+        <button type="button" class="desktop-icon icone-lixeira" data-acao="lixeira">
+            <img src="{{ url_for('static', filename='icons/lixeira.png') }}" alt=""><span>Lixeira</span>
+        </button>
+
+        <div id="selecao-retangulo" hidden></div>
+    </div>
+
+    <!-- Menu de contexto (botão direito na área de trabalho) -->
+    <div id="context-menu" class="menu-popup" hidden>
+        <div class="menu-item" data-acao="organizar">Organizar ícones</div>
+        <div class="menu-item" data-acao="atualizar">Atualizar</div>
+        <div class="menu-sep"></div>
+        <div class="menu-item" data-acao="notepad-novo">Novo documento de texto</div>
+        <div class="menu-item" data-acao="msdos">Abrir Prompt aqui</div>
+        <div class="menu-sep"></div>
+        <div class="menu-item" data-acao="propriedades"><b>Propriedades</b></div>
     </div>
 
     <div class="taskbar">
-        <div style="position:relative;">
-            <button class="start-btn" id="start-btn" onclick="toggleStartMenu()">
-                <img src="{{ url_for('static', filename='icons/windowsStartIcon.png') }}" class="start-btn-icon" alt="">
-                Start
+        <div class="start-wrap">
+            <button class="start-btn" id="start-btn" type="button" onclick="toggleStartMenu()">
+                <img src="{{ url_for('static', filename='icons/startLogo.png') }}" class="start-btn-icon" alt="">
+                Iniciar
             </button>
-            <div id="start-menu" class="start-menu" style="display:none;">
-                <div class="start-menu-item" onclick="tocarSequenciaDeDesligamento(); toggleStartMenu();">
-                    <span>🔌</span> Desligar...
+            <div id="start-menu" class="start-menu menu-popup" hidden>
+                <div class="start-banner"><span>Miguel<b>OS</b> 95</span></div>
+                <div class="start-itens">
+                    <div class="menu-item tem-submenu grande">
+                        <img src="{{ url_for('static', filename='icons/showcaseIcon.png') }}" alt=""><span>Portfólio</span>
+                        <div class="submenu menu-popup">
+                            <div class="menu-item" data-acao="showcase:sobre"><img src="{{ url_for('static', filename='icons/showcaseIcon.png') }}" alt="">Sobre Mim</div>
+                            <div class="menu-item" data-acao="showcase:experiencia"><img src="{{ url_for('static', filename='icons/folder.png') }}" alt="">Experiência</div>
+                            <div class="menu-item" data-acao="showcase:projetos"><img src="{{ url_for('static', filename='icons/folder.png') }}" alt="">Projetos</div>
+                            <div class="menu-item" data-acao="contato"><img src="{{ url_for('static', filename='icons/floppy.png') }}" alt="">Contato</div>
+                            <div class="menu-item" data-acao="curriculo"><img src="{{ url_for('static', filename='icons/credits.png') }}" alt="">Currículo.pdf</div>
+                        </div>
+                    </div>
+                    <div class="menu-item tem-submenu grande">
+                        <img src="{{ url_for('static', filename='icons/folder.png') }}" alt=""><span>Programas</span>
+                        <div class="submenu menu-popup">
+                            <div class="menu-item tem-submenu"><img src="{{ url_for('static', filename='icons/folder.png') }}" alt="">Acessórios
+                                <div class="submenu menu-popup">
+                                    <div class="menu-item" data-acao="notepad"><img src="{{ url_for('static', filename='icons/notepad.png') }}" alt="">Bloco de Notas</div>
+                                    <div class="menu-item" data-acao="paint"><img src="{{ url_for('static', filename='icons/paint.png') }}" alt="">Paint</div>
+                                    <div class="menu-item" data-acao="videos"><img src="{{ url_for('static', filename='icons/videos.png') }}" alt="">Reprodutor de Mídia</div>
+                                </div>
+                            </div>
+                            <div class="menu-item tem-submenu"><img src="{{ url_for('static', filename='icons/folder.png') }}" alt="">Jogos
+                                <div class="submenu menu-popup">
+                                    <div class="menu-item" data-acao="minas"><img src="{{ url_for('static', filename='icons/minesweeper.png') }}" alt="">Campo Minado</div>
+                                    <div class="menu-item" data-acao="tetris"><img src="{{ url_for('static', filename='icons/tetrisIcon.png') }}" alt="">Tetris</div>
+                                    <div class="menu-item" data-acao="doom"><img src="{{ url_for('static', filename='icons/doomIcon.png') }}" alt="">Doom</div>
+                                    <div class="menu-item" data-acao="wolf3d"><img src="{{ url_for('static', filename='icons/wolf3dIcon.png') }}" alt="">Wolfenstein 3D</div>
+                                    <div class="menu-item" data-acao="digger"><img src="{{ url_for('static', filename='icons/diggerIcon.png') }}" alt="">Digger</div>
+                                    <div class="menu-item" data-acao="scrabble"><img src="{{ url_for('static', filename='icons/scrabbleIcon.png') }}" alt="">Scrabble</div>
+                                </div>
+                            </div>
+                            <div class="menu-item" data-acao="msdos"><img src="{{ url_for('static', filename='icons/msdos.png') }}" alt="">Prompt do MS-DOS</div>
+                            <div class="menu-item" data-acao="meucomputador"><img src="{{ url_for('static', filename='icons/myComputer.png') }}" alt="">Meu Computador</div>
+                        </div>
+                    </div>
+                    <div class="menu-item tem-submenu grande">
+                        <img src="{{ url_for('static', filename='icons/notepad.png') }}" alt=""><span>Documentos</span>
+                        <div class="submenu menu-popup">
+                            <div class="menu-item" data-acao="notepad"><img src="{{ url_for('static', filename='icons/notepad.png') }}" alt="">LEIA-ME.txt</div>
+                            <div class="menu-item" data-acao="curriculo"><img src="{{ url_for('static', filename='icons/credits.png') }}" alt="">Currículo.pdf</div>
+                        </div>
+                    </div>
+                    <div class="menu-item tem-submenu grande">
+                        <img src="{{ url_for('static', filename='icons/display.png') }}" alt=""><span>Configurações</span>
+                        <div class="submenu menu-popup">
+                            <div class="menu-item" data-acao="propriedades"><img src="{{ url_for('static', filename='icons/display.png') }}" alt="">Papel de parede</div>
+                            <div class="menu-item" data-acao="protecao"><img src="{{ url_for('static', filename='icons/computerBig.png') }}" alt="">Proteção de tela</div>
+                            <div class="menu-item" data-acao="som"><img src="{{ url_for('static', filename='icons/volumeOn.png') }}" alt="">Ligar/desligar som</div>
+                        </div>
+                    </div>
+                    <div class="menu-item grande" data-acao="ajuda">
+                        <img src="{{ url_for('static', filename='icons/help.png') }}" alt=""><span>Ajuda</span>
+                    </div>
+                    <div class="menu-item grande" data-acao="executar">
+                        <img src="{{ url_for('static', filename='icons/run.png') }}" alt=""><span>Executar...</span>
+                    </div>
+                    <div class="menu-sep"></div>
+                    <div class="menu-item grande" data-acao="desligar">
+                        <img src="{{ url_for('static', filename='icons/shutdown.png') }}" alt=""><span>Desligar...</span>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="taskbar-sep"></div>
         <div class="taskbar-items" id="taskbar-items"></div>
         <div class="clock" id="clock-wrapper">
-            <img src="{{ url_for('static', filename='icons/volumeOn.png') }}" class="volume-icon" alt="" id="volume-icon">
+            <img src="{{ url_for('static', filename='icons/volumeOn.png') }}" class="volume-icon" alt="Volume" id="volume-icon" title="Volume">
             <span id="clock"></span>
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/shutdown.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/shutdown.js') }}?v=2"></script>
     <script src="{{ url_for('static', filename='js/report-position.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/tetris.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/desktop.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tetris.js') }}?v=2"></script>
+    <script src="{{ url_for('static', filename='js/desktop.js') }}?v=2"></script>
+    <script src="{{ url_for('static', filename='js/apps.js') }}?v=1"></script>
 </body>
 </html>
