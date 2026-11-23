@@ -12,7 +12,7 @@ somMouseDown.volume = 0.5;
 somMouseUp.volume = 0.5;
 somStartup.volume = 0.6;
 
-let siteMutado = false;
+var siteMutado = false; // var: fica visível em window.siteMutado (usado pelo som 8-bit)
 
 function alternarMudo() {
     siteMutado = !siteMutado;

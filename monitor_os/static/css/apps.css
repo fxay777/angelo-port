@@ -423,7 +423,7 @@ legend { padding: 0 4px; }
     border: 1px solid #000;
     border-radius: 8px;
     padding: 10px 26px 8px 12px;
-    z-index: 99998;
+    z-index: 99997;
     font-size: 12px;
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
     animation: balaoEntra 0.3s ease-out;
@@ -526,3 +526,178 @@ body.modo-festa .desktop-icon img { animation: pular 0.5s ease-in-out infinite a
 .touch-device .ajuda-wrap { flex-direction: column; }
 .touch-device .ajuda-topicos { width: auto; }
 .touch-device .paint-dica { display: none; }
+
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('/static/fonts/PressStart2P.woff2') format('woff2');
+    font-display: swap;
+}
+
+/* ============================================================================
+   Fliperama
+   ============================================================================ */
+.arcade-wrap { background: #1a0b2e; }
+.arcade {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background:
+        linear-gradient(90deg, #2a0f4a 0 10px, transparent 10px calc(100% - 10px), #2a0f4a calc(100% - 10px)),
+        linear-gradient(180deg, #5b1d8f, #3a1166);
+    padding: 0 14px 10px;
+    font-family: 'Press Start 2P', 'Courier New', monospace;
+}
+.arcade-letreiro {
+    margin: 0 -14px 10px;
+    padding: 10px 0 9px;
+    text-align: center;
+    background: linear-gradient(180deg, #ffe066, #ff9d00);
+    border-bottom: 4px solid #000;
+    box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.25), 0 0 18px rgba(255, 200, 0, 0.6);
+}
+.arcade-letreiro span {
+    font-size: 14px;
+    color: #c8102e;
+    text-shadow: 2px 2px 0 #fff, 4px 4px 0 rgba(0, 0, 0, 0.35);
+    letter-spacing: 1px;
+    animation: letreiroPisca 3s steps(1) infinite;
+}
+@keyframes letreiroPisca { 92% { opacity: 1; } 94% { opacity: 0.4; } 96% { opacity: 1; } }
+.arcade-moldura {
+    flex: 1;
+    min-height: 0;
+    background: #111;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: inset 0 0 0 3px #000, inset 0 0 0 6px #2b2b2b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.arcade-tela {
+    position: relative;
+    height: 100%;
+    max-width: 100%;
+    aspect-ratio: 320 / 344;
+    border-radius: 14px / 12px;
+    overflow: hidden;
+    box-shadow: 0 0 22px rgba(80, 120, 255, 0.35);
+}
+.arcade-tela canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    image-rendering: pixelated;
+    touch-action: none;
+}
+.crt-linhas {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px),
+        radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.55) 100%);
+}
+.arcade-painel {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: linear-gradient(180deg, #222, #0c0c0c);
+    border-radius: 6px;
+    border-top: 3px solid #444;
+}
+.dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 30px);
+    grid-template-rows: repeat(3, 30px);
+    gap: 0;
+}
+.dpad button {
+    background: #2d2d2d;
+    border: 2px solid #000;
+    color: #aaa;
+    font-size: 11px;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: inset 0 -3px 0 #111, inset 0 2px 0 #555;
+}
+.dpad button[data-k="cima"] { grid-column: 2; grid-row: 1; border-radius: 4px 4px 0 0; }
+.dpad button[data-k="esq"] { grid-column: 1; grid-row: 2; border-radius: 4px 0 0 4px; }
+.dpad button[data-k="dir"] { grid-column: 3; grid-row: 2; border-radius: 0 4px 4px 0; }
+.dpad button[data-k="baixo"] { grid-column: 2; grid-row: 3; border-radius: 0 0 4px 4px; }
+.dpad::after { content: ''; grid-column: 2; grid-row: 2; background: #2d2d2d; border-top: 2px solid #000; border-bottom: 2px solid #000; }
+.dpad button.apertado, .dpad button:active { box-shadow: inset 0 2px 0 #111; color: #fff; }
+.arcade-botoes { display: flex; gap: 10px; }
+.bt-arcade {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 3px solid #000;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #fff;
+    text-shadow: 1px 1px 0 #000;
+    cursor: pointer;
+    padding: 0;
+}
+.bt-vermelho { background: radial-gradient(circle at 35% 30%, #ff8a8a, #d01010 60%, #800); box-shadow: 0 5px 0 #500; }
+.bt-amarelo { background: radial-gradient(circle at 35% 30%, #fff3a0, #f0b400 60%, #a06a00); box-shadow: 0 5px 0 #604000; }
+.bt-arcade.apertado, .bt-arcade:active { transform: translateY(4px); box-shadow: 0 1px 0 #000; }
+.arcade-moedeiro {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #000;
+    border: 2px solid #444;
+    padding: 8px;
+    color: #ffd200;
+    font-size: 10px;
+}
+.arcade-moedeiro img { width: 16px; height: 16px; image-rendering: pixelated; }
+
+/* ---------- Fichas na bandeja do relógio ---------- */
+#bandeja-fichas { display: flex; align-items: center; gap: 3px; cursor: pointer; font-weight: bold; }
+#bandeja-fichas img { width: 14px; height: 14px; image-rendering: pixelated; }
+
+/* ---------- Mascote Rolinho ---------- */
+#mascote {
+    position: fixed;
+    bottom: 32px;
+    left: -60px;
+    z-index: 99998;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.35));
+}
+#mascote img { display: block; width: 48px; height: 48px; image-rendering: pixelated; }
+.texto-8bit {
+    position: fixed;
+    z-index: 100002;
+    transform: translateX(-50%);
+    font: 10px 'Press Start 2P', monospace;
+    color: #ffd200;
+    text-shadow: 2px 2px 0 #000;
+    pointer-events: none;
+    animation: subirSumir 1.1s steps(11) forwards;
+    white-space: nowrap;
+}
+@keyframes subirSumir { to { transform: translate(-50%, -40px); opacity: 0; } }
+
+/* ---------- Papel de parede de pixels ---------- */
+.wp-arcade {
+    background:
+        linear-gradient(transparent 0 calc(100% - 1px), rgba(90, 60, 255, 0.25) calc(100% - 1px)) 0 0 / 32px 32px,
+        linear-gradient(90deg, transparent 0 calc(100% - 1px), rgba(90, 60, 255, 0.25) calc(100% - 1px)) 0 0 / 32px 32px,
+        radial-gradient(2px 2px at 20% 30%, #fff 50%, transparent 51%) 0 0 / 160px 160px,
+        radial-gradient(2px 2px at 70% 80%, #aaf 50%, transparent 51%) 0 0 / 220px 220px,
+        radial-gradient(ellipse at 50% 120%, #4b1d8f, transparent 60%),
+        #07071f !important;
+}
+.touch-device .dpad { grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(3, 40px); }
+.touch-device .bt-arcade { width: 64px; height: 64px; }

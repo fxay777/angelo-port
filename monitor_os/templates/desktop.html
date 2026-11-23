@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MiguelOS 95</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/startLogo.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}?v=2">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/apps.css') }}?v=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/apps.css') }}?v=2">
     <link rel="stylesheet" href="{{ url_for('static', filename='jsdos/js-dos/js-dos.css') }}">
     <script>
         var emulatorsPathPrefix = "{{ url_for('static', filename='jsdos/js-dos/') }}";
@@ -69,6 +69,9 @@
           </div>
           <div class="icons-col">
             <div class="icons-category-label">Jogos</div>
+            <button type="button" class="desktop-icon" data-acao="fliperama">
+                <img src="{{ url_for('static', filename='icons/arcade.png') }}" alt=""><span>Fliperama</span>
+            </button>
             <button type="button" class="desktop-icon" data-acao="minas">
                 <img src="{{ url_for('static', filename='icons/minesweeper.png') }}" alt=""><span>Campo Minado</span>
             </button>
@@ -139,6 +142,7 @@
                             </div>
                             <div class="menu-item tem-submenu"><img src="{{ url_for('static', filename='icons/folder.png') }}" alt="">Jogos
                                 <div class="submenu menu-popup">
+                                    <div class="menu-item" data-acao="fliperama"><img src="{{ url_for('static', filename='icons/arcade.png') }}" alt="">Fliperama: Cabo de Vídeo</div>
                                     <div class="menu-item" data-acao="minas"><img src="{{ url_for('static', filename='icons/minesweeper.png') }}" alt="">Campo Minado</div>
                                     <div class="menu-item" data-acao="tetris"><img src="{{ url_for('static', filename='icons/tetrisIcon.png') }}" alt="">Tetris</div>
                                     <div class="menu-item" data-acao="doom"><img src="{{ url_for('static', filename='icons/doomIcon.png') }}" alt="">Doom</div>
@@ -190,7 +194,8 @@
     <script src="{{ url_for('static', filename='js/shutdown.js') }}?v=2"></script>
     <script src="{{ url_for('static', filename='js/report-position.js') }}"></script>
     <script src="{{ url_for('static', filename='js/tetris.js') }}?v=2"></script>
-    <script src="{{ url_for('static', filename='js/desktop.js') }}?v=2"></script>
-    <script src="{{ url_for('static', filename='js/apps.js') }}?v=1"></script>
+    <script src="{{ url_for('static', filename='js/desktop.js') }}?v=3"></script>
+    <script src="{{ url_for('static', filename='js/arcade.js') }}?v=1"></script>
+    <script src="{{ url_for('static', filename='js/apps.js') }}?v=2"></script>
 </body>
 </html>

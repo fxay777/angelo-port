@@ -75,6 +75,8 @@
         'notepad-novo': () => abrirNotepad('Novo documento de texto.txt', ''),
         paint: abrirPaint,
         minas: abrirMinas,
+        fliperama: () => window.Arcade.abrirFliperama(),
+        rolinho: () => window.Arcade.passeioDoRolinho(true),
         tetris: abrirTetris,
         doom: abrirDoom,
         wolf3d: abrirWolf3D,
@@ -211,10 +213,13 @@
             'Detectando IDE Primária Mestre ... MIGUEL_HD 1.2GB',
             'Detectando IDE Primária Escrava ... CD-ROM SHOWREEL 4x',
             'Detectando Disquete A: ........... 1.44MB',
+            'Detectando controle de fliperama . 1 JOGADOR OK',
             '',
             'Carregando drivers: CRIATIVIDADE.SYS ... OK',
             '                    CAFE.SYS ........... OK',
             '                    PREMIERE.VXD ....... OK',
+            '',
+            'Fichas no moedeiro: OK',
             '',
             'Iniciando MiguelOS 95...',
         ];
@@ -502,6 +507,8 @@
             '  - Abra o Prompt do MS-DOS e digite AJUDA',
             '  - Clique com o botão direito na área de trabalho',
             '  - Troque o papel de parede em Iniciar > Configurações',
+            '  - Jogue o Fliperama e bata o recorde do MIG',
+            '  - Fique de olho no Rolinho: clique nele para ganhar fichas!',
             '  - Desenhe algo no Paint e salve',
             '  - Tente desligar o computador (boa sorte)',
             '  - Existe um código secreto dos videogames antigos...',
@@ -656,7 +663,7 @@
             campominado: 'minas', doom: 'doom', tetris: 'tetris', wolf3d: 'wolf3d', wolfenstein: 'wolf3d', digger: 'digger',
             scrabble: 'scrabble', explorer: 'meucomputador', mplayer: 'videos', videos: 'videos', sobre: 'sobre',
             experiencia: 'experiencia', projetos: 'projetos', contato: 'contato', curriculo: 'curriculo', creditos: 'creditos',
-            lixeira: 'lixeira', control: 'propriedades',
+            lixeira: 'lixeira', control: 'propriedades', fliperama: 'fliperama', arcade: 'fliperama', cabo: 'fliperama',
         };
 
         async function rodar(linha) {
@@ -825,6 +832,13 @@
                 escrever('  |      |]   Café pronto. Combustível oficial das madrugadas de edição.');
                 escrever('  \\      /');
                 escrever('   `----\'');
+                break;
+            case 'insertcoin': case 'coin': case 'ficha':
+                if (Math.random() < 0.5) { escrever('*plim* Ficha aceita! +1 FICHA 🪙'); window.Arcade.mudarFichas(1); window.Arcade.SONS.ficha(); } else escrever('*clanc* A ficha caiu no chão... tente de novo.');
+                break;
+            case 'rolinho':
+                escrever('Chamando o Rolinho... ele já está a caminho! 🎞');
+                window.Arcade.passeioDoRolinho(true);
                 break;
             case 'shutdown':
                 executarAcao('desligar');
@@ -1462,6 +1476,7 @@
     // ======================================================================
     const PAPEIS = [
         ['classico', 'Azul-petróleo (clássico)'],
+        ['arcade', 'Fliperama (pixels)'],
         ['nuvens', 'Nuvens'],
         ['noite', 'Noite estrelada'],
         ['vaporwave', 'Pôr do sol retrô'],
@@ -1470,7 +1485,7 @@
         ['tijolos', 'Tijolos'],
         ['preto', 'Nenhum (preto)'],
     ];
-    const PROTECOES = [['nenhuma', '(Nenhuma)'], ['estrelas', 'Campo de estrelas'], ['texto', 'Texto voador'], ['matrix', 'Chuva de código']];
+    const PROTECOES = [['nenhuma', '(Nenhuma)'], ['arcade', 'Fliperama (demonstração)'], ['estrelas', 'Campo de estrelas'], ['texto', 'Texto voador'], ['matrix', 'Chuva de código']];
 
     function aplicarPapel(id) {
         const root = $('#desktop-root');
@@ -1479,7 +1494,7 @@
     }
 
     function abrirPropriedades(abaInicial) {
-        const cfgProt = guardar.ler('protecao', { tipo: 'estrelas', minutos: 2 });
+        const cfgProt = guardar.ler('protecao', { tipo: 'arcade', minutos: 2 });
         openWindow('propriedades', {
             title: 'Propriedades de Vídeo', icon: ICON('display'),
             center: true, width: 420, height: 470, resizable: false, dialogo: true,
@@ -1568,6 +1583,7 @@
         canvas.width = canvas.clientWidth || 300;
         canvas.height = canvas.clientHeight || 200;
         if (tipo === 'matrix') return chuvaMatrix(canvas, '#0f0');
+        if (tipo === 'arcade') return window.Arcade.attract(canvas, mini);
         let vivo = true;
         const W = canvas.width;
         const H = canvas.height;
@@ -1625,7 +1641,7 @@
     let protecaoAtiva = null;
     function iniciarProtecao(tipoForcado) {
         if (protecaoAtiva) return;
-        const tipo = tipoForcado || guardar.ler('protecao', { tipo: 'estrelas' }).tipo;
+        const tipo = tipoForcado || guardar.ler('protecao', { tipo: 'arcade' }).tipo;
         if (tipo === 'nenhuma') return;
         const el = document.createElement('canvas');
         el.id = 'protecao-tela';
@@ -1669,7 +1685,7 @@
         }))).observe(document.body, { childList: true, subtree: true });
 
         setInterval(() => {
-            const cfg = guardar.ler('protecao', { tipo: 'estrelas', minutos: 2 });
+            const cfg = guardar.ler('protecao', { tipo: 'arcade', minutos: 2 });
             if (cfg.tipo === 'nenhuma' || protecaoAtiva || $('#boot') || $('#shutdown-overlay') || $('#bsod')) return;
             // Não atrapalha quem está vendo vídeo ou jogando
             const assistindo = $$('.win').some((w) => w.style.display !== 'none' && (w.querySelector('iframe[src*="youtube"], .dos-root, #player-yt, iframe#player-yt')));
@@ -1737,8 +1753,9 @@
                 • <a href="#" data-a="videos">Meus Vídeos</a> — meus trabalhos<br>
                 • <a href="#" data-a="curriculo">Currículo.pdf</a><br>
                 • <a href="#" data-a="contato">Contato</a> — fale comigo!</p>`],
-            ['Segredos 🤫', `<p>• No <a href="#" data-a="msdos">Prompt do MS-DOS</a>, experimente: <code>render</code>, <code>matrix</code>, <code>hack</code>, <code>ping</code>, <code>cafe</code>, <code>tardis</code>, <code>color 0a</code>.<br>
+            ['Segredos 🤫', `<p>• No <a href="#" data-a="msdos">Prompt do MS-DOS</a>, experimente: <code>render</code>, <code>matrix</code>, <code>hack</code>, <code>ping</code>, <code>cafe</code>, <code>tardis</code>, <code>insertcoin</code>, <code>rolinho</code>, <code>color 0a</code>.<br>
                 • Clique com o botão direito na área de trabalho.<br>
+                • Um rolinho de filme passeia pela tela às vezes. Clique nele para ganhar fichas para o <a href="#" data-a="fliperama">Fliperama</a>!<br>
                 • Deixe o computador parado por uns minutos...<br>
                 • ↑ ↑ ↓ ↓ ← → ← → B A<br>
                 • Tente desligar o computador. Várias vezes.</p>`],
