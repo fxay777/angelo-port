@@ -92,6 +92,9 @@
         atualizar: atualizarDesktop,
         organizar: atualizarDesktop,
         bsod: telaAzul,
+        orcamento: () => window.Extras && window.Extras.abrirOrcamento(),
+        naoabra: () => window.Extras && window.Extras.naoAbra(),
+        maiorpordentro: () => abrirExplorer(['MEU COMPUTADOR', 'Disco local (C:)', 'MIGUEL', 'MAIOR POR DENTRO']),
     };
 
     function executarAcao(acao) {
@@ -101,6 +104,8 @@
         if (ACOES[acao]) ACOES[acao]();
     }
     window.executarAcao = executarAcao;
+    window.abrirExplorerEm = (caminho) => abrirExplorer(caminho);
+    window.abrirVideosEm = (yt) => abrirVideos(yt);
 
     // ======================================================================
     // Área de trabalho: seleção, duplo clique, retângulo e menu de contexto
@@ -297,6 +302,8 @@
                             tipo: 'pasta', filhos: {
                                 'LEIA-ME.TXT': { tipo: 'texto', acao: 'notepad', tamanho: '2 KB' },
                                 'CURRICULO.PDF': { tipo: 'doc', acao: 'curriculo', tamanho: '120 KB' },
+                                'ORCAMENTO.EXE': { tipo: 'exe', icone: 'orcamento', acao: 'orcamento', tamanho: '42 KB' },
+                                'MAIOR POR DENTRO': { tipo: 'pasta', infinito: 1 },
                                 PROJETOS: { tipo: 'pasta', filhos: projetos },
                                 JOGOS: {
                                     tipo: 'pasta', filhos: {
@@ -348,17 +355,40 @@
         }[item.tipo] || 'credits');
     }
 
+    // A pasta "MAIOR POR DENTRO" não tem fim: cada nível gera o próximo
+    const NOTAS_INFINITAS = {
+        1: ['LEIA.TXT', 'Esta pasta é maior por dentro. Pode entrar, tem espaço de sobra.'],
+        3: ['NAO_PISQUE.TXT', 'Não pisque. Nem por um segundo.'],
+        5: ['ALLONS-Y.TXT', 'Allons-y! Continue descendo...'],
+        8: ['GERONIMO.TXT', 'GERONIMOOOO! 🪂'],
+        12: ['VOCE_AINDA_AQUI.TXT', 'Você ainda está aqui? Respeito. Toma uma ficha de presente! 🪙', 'ficha'],
+        20: ['FIM.TXT', 'Parabéns, você chegou ao fundo!\n\n...brincadeira. Não tem fundo. 🌀'],
+    };
+    function gerarInfinito(n) {
+        const filhos = { 'AINDA MAIS DENTRO': { tipo: 'pasta', infinito: n + 1 } };
+        if (NOTAS_INFINITAS[n]) {
+            const [nome, texto, premio] = NOTAS_INFINITAS[n];
+            filhos[nome] = { tipo: 'texto', nota: texto, premio, tamanho: '1 KB' };
+        }
+        return filhos;
+    }
     function noPorCaminho(caminho) {
         let no = FS;
         for (let i = 1; i < caminho.length; i++) {
+            if (no.infinito && !no.filhos) no.filhos = gerarInfinito(no.infinito);
             if (!no.filhos || !no.filhos[caminho[i]]) return null;
             no = no.filhos[caminho[i]];
         }
+        if (no.infinito && !no.filhos) no.filhos = gerarInfinito(no.infinito);
         return no;
     }
 
     function abrirItem(nome, item, aoNavegar) {
-        if (item.filhos && aoNavegar) return aoNavegar(nome);
+        if ((item.filhos || item.infinito) && aoNavegar) return aoNavegar(nome);
+        if (item.nota) {
+            if (item.premio === 'ficha' && !item.jaDeu && window.Arcade) { item.jaDeu = true; window.Arcade.mudarFichas(1); window.Arcade.SONS.ficha(); }
+            return msgBox({ titulo: nome + ' - Bloco de Notas', icone: 'info', texto: item.nota, largura: 400 });
+        }
         if (item.acao) return executarAcao(item.acao);
         if (item.tipo === 'sistema') {
             return msgBox({ titulo: nome, icone: 'aviso', texto: 'Este é um arquivo de sistema. Melhor não mexer aqui... o MiguelOS é sensível. 😅' });
@@ -394,6 +424,8 @@
 
                 function nomeCaminho() {
                     if (caminho.length === 1) return 'Meu Computador';
+                    const iInf = caminho.indexOf('MAIOR POR DENTRO');
+                    if (iInf > 0 && caminho.length - iInf > 3) return 'C:\\MIGUEL\\MAIOR POR DENTRO\\...\\AINDA MAIS DENTRO (nível ' + (caminho.length - iInf) + ')';
                     return caminho.slice(1).join('\\').replace('Disco local (C:)', 'C:').replace('Disquete (A:)', 'A:').replace('SHOWREEL (D:)', 'D:');
                 }
                 function render() {
@@ -439,6 +471,8 @@
         ['take_47_do_mesmo_plano.mov', 'Os takes 1 a 46 também estão aqui. Não pergunte.'],
         ['transicao_estrela_girando.mov', 'Uma transição de estrela girando. Foi apagada por bom senso.'],
         ['ideia_ruim.txt', 'Conteúdo: "e se a gente colocasse Comic Sans no título?"'],
+        ['planos_viagem_no_tempo.txt', 'Data da viagem: ontem. Ou amanhã. Tempo é meio... complicado.'],
+        ['logo_maior_v3.png', 'O cliente pediu o logo maior. De novo. Esta é a versão 3 de 11.'],
     ];
 
     function abrirLixeira() {
@@ -511,6 +545,9 @@
             '  - Fique de olho no Rolinho: clique nele para ganhar fichas!',
             '  - Desenhe algo no Paint e salve',
             '  - Tente desligar o computador (boa sorte)',
+            '  - Calcule o preço de um vídeo no ORCAMENTO.EXE',
+            '  - NÃO abra o NAO_ABRA.EXE',
+            '  - Saia do computador e clique nas coisas da sala!',
             '  - Existe um código secreto dos videogames antigos...',
             '    ↑ ↑ ↓ ↓ ← → ← → B A',
             '',
@@ -696,7 +733,7 @@
                     '  NOTEPAD, PAINT, WINMINE, DOOM, TETRIS ...',
                     '  EXIT           fecha esta janela',
                     '',
-                    'Comandos secretos: tem vários. Tente RENDER, MATRIX, HACK...',
+                    'Comandos secretos: tem vários. Tente RENDER, MATRIX, HACK, CLIENTE, DESCULPA...',
                 ].forEach((l) => escrever(l));
                 break;
             case 'cls': case 'clear':
@@ -727,7 +764,7 @@
                 nomes.forEach((nome) => {
                     const it = no.filhos[nome];
                     const dataStr = '07/07/2026  23:59';
-                    escrever(dataStr + '    ' + (it.filhos ? '<DIR>         ' : (it.tamanho || '1 KB').padStart(10) + '    ') + nome);
+                    escrever(dataStr + '    ' + (it.filhos || it.infinito ? '<DIR>         ' : (it.tamanho || '1 KB').padStart(10) + '    ') + nome);
                     n++;
                 });
                 escrever('       ' + n + ' arquivo(s)        0 bytes livres (cheio de vídeo)');
@@ -744,7 +781,7 @@
                 }
                 const no = noPorCaminho(cwd);
                 const alvo = Object.keys(no.filhos || {}).find((k) => k.toLowerCase() === arg.toLowerCase());
-                if (alvo && no.filhos[alvo].filhos) cwd.push(alvo);
+                if (alvo && (no.filhos[alvo].filhos || no.filhos[alvo].infinito)) cwd.push(alvo);
                 else escrever('Caminho inválido');
                 break;
             }
@@ -839,6 +876,31 @@
             case 'rolinho':
                 escrever('Chamando o Rolinho... ele já está a caminho! 🎞');
                 window.Arcade.passeioDoRolinho(true);
+                break;
+            case 'allons-y': case 'allonsy':
+                escrever('Allons-y! 🏃 ...para onde mesmo?');
+                break;
+            case 'geronimo':
+                escrever('GERONIMOOOOOO! 🪂');
+                break;
+            case 'blink': case 'naopisque': case 'piscar':
+                if (window.Extras) window.Extras.piscar();
+                await esperar(300);
+                escrever('Você piscou. 👀');
+                break;
+            case 'desculpa': case 'excuse':
+                escrever('📢 ' + (window.Extras ? window.Extras.desculpa() : 'O render travou.'));
+                break;
+            case 'cliente': case 'feedback':
+                escrever('💬 Cliente: "' + (window.Extras ? window.Extras.cliente() : 'Dá pra deixar mais uau?') + '"');
+                break;
+            case 'orcamento':
+                escrever('Abrindo ORCAMENTO.EXE...');
+                executarAcao('orcamento');
+                break;
+            case 'naoabra': case 'nao_abra':
+                escrever('Você foi avisado...');
+                executarAcao('naoabra');
                 break;
             case 'shutdown':
                 executarAcao('desligar');
@@ -1758,7 +1820,10 @@
                 • Um rolinho de filme passeia pela tela às vezes. Clique nele para ganhar fichas para o <a href="#" data-a="fliperama">Fliperama</a>!<br>
                 • Deixe o computador parado por uns minutos...<br>
                 • ↑ ↑ ↓ ↓ ← → ← → B A<br>
-                • Tente desligar o computador. Várias vezes.</p>`],
+                • Tente desligar o computador. Várias vezes.<br>
+                • Tem uma pasta em C:\\MIGUEL que é... maior por dentro.<br>
+                • Não abra o NAO_ABRA.EXE. Sério.<br>
+                • Lá fora, na sala 3D, quase tudo é clicável: claquete, câmera, luzes, fitas, o fez...</p>`],
             ['Sobre o MiguelOS', `<p><b>MiguelOS 95</b> — Versão 4.00.2026<br>Edição Produtor Audiovisual</p>
                 <p>Inspirado no Windows 95. Nenhum computador foi desligado durante a produção deste site.</p>
                 <p><a href="#" data-a="creditos">Ver créditos</a></p>`],

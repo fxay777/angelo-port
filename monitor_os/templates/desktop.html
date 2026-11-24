@@ -6,7 +6,7 @@
     <title>MiguelOS 95</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/startLogo.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/desktop.css') }}?v=3">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/apps.css') }}?v=2">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/apps.css') }}?v=3">
     <link rel="stylesheet" href="{{ url_for('static', filename='jsdos/js-dos/js-dos.css') }}">
     <script>
         var emulatorsPathPrefix = "{{ url_for('static', filename='jsdos/js-dos/') }}";
@@ -64,6 +64,12 @@
             </button>
             <button type="button" class="desktop-icon" data-acao="paint">
                 <img src="{{ url_for('static', filename='icons/paint.png') }}" alt=""><span>Paint</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="orcamento">
+                <img src="{{ url_for('static', filename='icons/orcamento.png') }}" alt=""><span>Orçamento.exe</span>
+            </button>
+            <button type="button" class="desktop-icon" data-acao="naoabra">
+                <img src="{{ url_for('static', filename='icons/naoabra.png') }}" alt=""><span>NAO_ABRA.EXE</span>
             </button>
 
           </div>
@@ -196,6 +202,7 @@
     <script src="{{ url_for('static', filename='js/tetris.js') }}?v=2"></script>
     <script src="{{ url_for('static', filename='js/desktop.js') }}?v=3"></script>
     <script src="{{ url_for('static', filename='js/arcade.js') }}?v=1"></script>
-    <script src="{{ url_for('static', filename='js/apps.js') }}?v=2"></script>
+    <script src="{{ url_for('static', filename='js/apps.js') }}?v=3"></script>
+    <script src="{{ url_for('static', filename='js/extras.js') }}?v=1"></script>
 </body>
 </html>

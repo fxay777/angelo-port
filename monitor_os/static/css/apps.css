@@ -701,3 +701,51 @@ body.modo-festa .desktop-icon img { animation: pular 0.5s ease-in-out infinite a
 }
 .touch-device .dpad { grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(3, 40px); }
 .touch-device .bt-arcade { width: 64px; height: 64px; }
+
+/* ============================================================================
+   Easter eggs
+   ============================================================================ */
+.msgbox-texto { white-space: pre-line; }
+.piscada-tela { position: fixed; inset: 0; background: #000; z-index: 1000002; pointer-events: none; }
+
+.aviso-bandeja {
+    position: fixed; right: 8px; bottom: 44px; width: 260px; z-index: 99997;
+    background: #ffffe1; border: 1px solid #000; padding: 8px 10px; font-size: 12px;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3); animation: balaoEntra 0.3s ease-out;
+}
+.aviso-bandeja p { margin: 4px 0 0; }
+.aviso-bandeja.saindo { opacity: 0; transition: opacity 0.4s; }
+
+body.tremendo #desktop-root { animation: tremer 0.09s linear infinite; }
+@keyframes tremer {
+    0% { transform: translate(0, 0); } 25% { transform: translate(4px, -3px); }
+    50% { transform: translate(-3px, 4px); } 75% { transform: translate(3px, 3px); } 100% { transform: translate(0, 0); }
+}
+
+.orcamento { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; height: 100%; }
+.orcamento label { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12px; }
+.orcamento select, .orcamento input[type="number"] { width: 170px; }
+.orcamento input[type="range"] { width: 150px; }
+.orc-intro { margin: 0 0 4px; line-height: 1.4; }
+.orc-resultado { flex: 1; min-height: 100px; padding: 8px; text-align: center; font-size: 12px; overflow: auto; }
+.orc-resultado p { margin: 4px 0; line-height: 1.4; }
+.orc-depende {
+    font: 30px 'Press Start 2P', monospace; color: #c3121e; margin: 6px 0 8px;
+    text-shadow: 2px 2px 0 #ffd200; animation: carimbo 0.35s ease-out;
+}
+@keyframes carimbo { from { transform: scale(2.4) rotate(-8deg); opacity: 0; } }
+
+#assistente {
+    position: fixed; right: 18px; bottom: 44px; z-index: 99996; display: flex; align-items: flex-end; gap: 6px;
+    animation: balaoEntra 0.4s ease-out;
+}
+#assistente img { width: 64px; height: 64px; image-rendering: pixelated; animation: pular 0.6s ease-in-out infinite alternate; }
+#assistente.saindo { opacity: 0; transform: translateY(20px); transition: all 0.4s; }
+.assist-balao {
+    width: 250px; background: #ffffe1; border: 1px solid #000; border-radius: 8px; padding: 10px;
+    display: flex; flex-direction: column; gap: 5px; position: relative; font-size: 12px; margin-bottom: 30px;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+}
+.assist-balao p { margin: 0 0 4px; line-height: 1.4; }
+.assist-balao::after { content: ''; position: absolute; right: -10px; bottom: 14px; border: 8px solid transparent; border-left-color: #000; }
+.assist-balao .btn95 { text-align: left; }
