@@ -1,0 +1,14 @@
+{
+  "name": "sala-extra",
+  "private": true,
+  "description": "Objetos extras da sala 3D do portfólio (claquete, câmera, cartaz...). Gera ../angelo-port/sala-extra.js",
+  "scripts": {
+    "build": "esbuild src/sala.js --bundle --minify --format=iife --target=es2017 --outfile=../sala-extra.js"
+  },
+  "dependencies": {
+    "three": "0.137.5"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}
