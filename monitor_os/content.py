@@ -215,24 +215,6 @@ PROJETOS = [
             },
         ],
     },
-    {
-        "id": "social",
-        "icone": "📱",
-        "nome": "Redes Sociais",
-        "legenda": "INSTAGRAM E TIKTOK",
-        "links": [
-            {
-                "titulo": "Armarinho Casa Machado — Instagram",
-                "texto": "Conteúdo em vídeo e posts produzidos para o Instagram da loja.",
-                "url": "https://www.instagram.com/armarinho_casamachado",
-            },
-            {
-                "titulo": "Armarinho Casa Machado — TikTok",
-                "texto": "Vídeos curtos produzidos para o TikTok da loja.",
-                "url": "https://www.tiktok.com/@armarinho_casamachado",
-            },
-        ],
-    },
 ]
 
 # --- Contato ---

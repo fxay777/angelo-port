@@ -33,7 +33,8 @@ function acertar(app, x, y) {
     ponto.set((x / window.innerWidth) * 2 - 1, -(y / window.innerHeight) * 2 + 1);
     ray.setFromCamera(ponto, app.camera.instance);
     const alvos = itens.map((i) => i.raiz).concat(oclusores);
-    const hits = ray.intersectObjects(alvos, true).filter((h) => h.object.visible && !h.object.userData.sombra && !h.object.userData.semClique);
+    const visivelDeVerdade = (o) => { for (let p = o; p; p = p.parent) if (!p.visible) return false; return true; };
+    const hits = ray.intersectObjects(alvos, true).filter((h) => visivelDeVerdade(h.object) && !h.object.userData.sombra && !h.object.userData.semClique);
     if (!hits.length) return null;
     const id = hits[0].object.userData.idInterativo;
     return id === undefined ? null : itens[id];

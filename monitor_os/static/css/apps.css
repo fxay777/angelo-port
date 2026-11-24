@@ -749,3 +749,20 @@ body.tremendo #desktop-root { animation: tremer 0.09s linear infinite; }
 .assist-balao p { margin: 0 0 4px; line-height: 1.4; }
 .assist-balao::after { content: ''; position: absolute; right: -10px; bottom: 14px; border: 8px solid transparent; border-left-color: #000; }
 .assist-balao .btn95 { text-align: left; }
+
+/* ---------- Interferência sônica ---------- */
+#glitch { position: fixed; inset: 0; z-index: 1000003; pointer-events: none; overflow: hidden; mix-blend-mode: screen; }
+#glitch canvas { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; }
+#glitch i { position: absolute; left: -60px; right: -60px; display: block; background: linear-gradient(90deg, #ff00e1, #00ffe1 40%, #7dff6a 60%, #ff00e1); opacity: 0.8; }
+body.glitchando .win { filter: drop-shadow(6px 0 0 rgba(255, 0, 80, 0.7)) drop-shadow(-6px 0 0 rgba(0, 255, 230, 0.7)); }
+#oopsie {
+    position: fixed; inset: 0; z-index: 1000004; background: #1a0b2e; color: #e8e0ff;
+    display: flex; align-items: center; justify-content: center; font-family: 'Terminal', 'Lucida Console', monospace; font-size: 18px;
+}
+.oopsie-caixa { max-width: 680px; padding: 24px; }
+.oopsie-titulo { font: 44px 'Press Start 2P', monospace; color: #7dff9a; margin-bottom: 26px; text-shadow: 4px 4px 0 #ff00e1; }
+.oopsie-caixa p { margin: 0 0 16px; line-height: 1.45; }
+.oopsie-dim { color: #9a8fc0; font-size: 14px; }
+.oopsie-barra { height: 20px; border: 3px solid #e8e0ff; padding: 3px; margin-top: 10px; }
+.oopsie-barra b { display: block; height: 100%; background: repeating-linear-gradient(90deg, #7dff9a 0 14px, transparent 14px 18px); animation: oopsieBarra 3.4s steps(20) forwards; width: 0; }
+@keyframes oopsieBarra { to { width: 100%; } }

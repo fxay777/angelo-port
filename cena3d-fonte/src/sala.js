@@ -23,6 +23,8 @@ import {
     fez, gravataBorboleta, bilheteNaoPisque,
 } from './set';
 import { interativo, iniciarInteracao } from './interacao';
+import { criarGavetas, multiferramenta, maoLuva } from './gaveta';
+import { cenaSonica } from './cinema';
 
 const ESTILO = `
 #sala-toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%) translateY(10px);background:#000;color:#fff;
@@ -361,6 +363,46 @@ function montar(app) {
             setTimeout(() => bilhete.trocar(false), 5000);
         }, 140);
     });
+
+    // ================================ gavetas + Multiferramenta Sônica MA-26
+    const gavetas = criarGavetas(app, raiz);
+    const ferramenta = multiferramenta();
+    const mao = maoLuva();
+    if (gavetas.length) {
+        const g0 = gavetas[0];
+        // deitada dentro da gaveta de cima, perto da frente
+        ferramenta.grupo.position.set(-60, g0.def.y0 + 112, -640);   // no fundo: a câmera vê por cima da frente
+        ferramenta.grupo.rotation.set(0, 0.35, 0);
+        ferramenta.brilho.rotation.x = -Math.PI / 2;   // brilho virado para cima dentro da gaveta
+        g0.bandeja.add(ferramenta.grupo);
+        gavetas.forEach((gv) => {
+            interativo(gv.alvo, '🗄️ Gaveta ' + gv.def.nome, () => {
+                const abriu = gv.alternar();
+                ruido(0.25, 0.25, 500);
+                if (abriu && gv === g0) falar('Hm... tem algo brilhando lá dentro. 👀');
+                else if (abriu) falar('Gaveta de baixo: o cemitério de coisas "que um dia vou usar".');
+            });
+            gv.tralhas.traverse((o) => {
+                if (o.isMesh && o.userData.piada && o.userData.idInterativo === undefined) {
+                    interativo(o, '🔎 ' + o.userData.piada.split(/[:.]/)[0], () => falar(o.userData.piada, 4200));
+                }
+            });
+        });
+        animacoes.push((t, dt) => gavetas.forEach((gv) => gv.atualizar(dt)));
+        let usando = false;
+        interativo(ferramenta.grupo, '✨ Multiferramenta Sônica MA-26 — pegar', () => {
+            if (usando || !g0.estaAberta()) return;
+            usando = true;
+            if (gravando) alternarGravacao(true);
+            cenaSonica(app, ferramenta, mao, raiz, () => {
+                usando = false;
+                setTimeout(() => g0.fechar(), 2500);
+            });
+        });
+        animacoes.push((t) => {
+            if (!usando) ferramenta.brilho.material.opacity = 0.25 + Math.sin(t * 3) * 0.12;
+        });
+    }
 
     iniciarInteracao(app);
 

@@ -77,10 +77,97 @@
         case 'maiorpordentro':
             window.executarAcao && window.executarAcao('maiorpordentro');
             break;
+        case 'sonico':
+            pifar();
+            break;
         default:
             break;
         }
     });
+
+    // =================================== interferência sônica: glitch + Oopsie
+    let pifando = false;
+    function chiado(duracao) {
+        try {
+            const C = window.AudioContext || window.webkitAudioContext;
+            const a = window.__mosAudio || (window.__mosAudio = new C());
+            const n = Math.floor(a.sampleRate * duracao);
+            const buf = a.createBuffer(1, n, a.sampleRate);
+            const d = buf.getChannelData(0);
+            for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (Math.random() < 0.02 ? 1 : 0.25);
+            const src = a.createBufferSource();
+            src.buffer = buf;
+            const g = a.createGain();
+            g.gain.value = window.siteMutado ? 0 : 0.12;
+            src.connect(g).connect(a.destination);
+            src.start();
+        } catch (e) { /* sem som */ }
+    }
+    function pifar() {
+        if (pifando) return;
+        pifando = true;
+        const camada = document.createElement('div');
+        camada.id = 'glitch';
+        let faixas = '';
+        for (let i = 0; i < 9; i++) faixas += '<i></i>';
+        camada.innerHTML = faixas + '<canvas></canvas>';
+        document.body.appendChild(camada);
+        document.body.classList.add('glitchando');
+        chiado(1.9);
+        const c = camada.querySelector('canvas');
+        c.width = 320;
+        c.height = 256;
+        const ctx = c.getContext('2d');
+        const barras = Array.from(camada.querySelectorAll('i'));
+        const t0 = performance.now();
+        (function quadro() {
+            const t = performance.now() - t0;
+            const img = ctx.createImageData(c.width, c.height);
+            for (let i = 0; i < img.data.length; i += 4) {
+                const v = Math.random() * 255;
+                img.data[i] = v; img.data[i + 1] = v; img.data[i + 2] = v; img.data[i + 3] = Math.random() < 0.3 ? 90 : 0;
+            }
+            ctx.putImageData(img, 0, 0);
+            barras.forEach((b) => {
+                b.style.top = (Math.random() * 100) + '%';
+                b.style.height = (2 + Math.random() * 9) + '%';
+                b.style.transform = `translateX(${(Math.random() - 0.5) * 120}px)`;
+                b.style.opacity = Math.random() < 0.7 ? 1 : 0;
+            });
+            const raiz = document.getElementById('desktop-root');
+            raiz.style.transform = `translate(${(Math.random() - 0.5) * 18}px, ${(Math.random() - 0.5) * 10}px) skewX(${(Math.random() - 0.5) * 6}deg)`;
+            raiz.style.filter = `hue-rotate(${Math.random() * 360}deg) contrast(${1 + Math.random()}) saturate(${1 + Math.random() * 3})`;
+            if (t < 1900) requestAnimationFrame(quadro);
+            else oopsie(camada, raiz);
+        })();
+    }
+    function oopsie(camada, raiz) {
+        camada.remove();
+        document.body.classList.remove('glitchando');
+        raiz.style.transform = '';
+        raiz.style.filter = '';
+        const tela = document.createElement('div');
+        tela.id = 'oopsie';
+        tela.innerHTML = `
+            <div class="oopsie-caixa">
+                <div class="oopsie-titulo">OOPSIE! :(</div>
+                <p>Uma interferência sônica desconhecida bagunçou os circuitos do MiguelOS.</p>
+                <p class="oopsie-dim">Código do erro: 0x50N1C0 · FREQUENCIA_ALTA_DEMAIS</p>
+                <p>Acho que temos que resetar<span class="oopsie-pontos"></span></p>
+                <div class="oopsie-barra"><b></b></div>
+            </div>`;
+        document.body.appendChild(tela);
+        const pontos = tela.querySelector('.oopsie-pontos');
+        let n = 0;
+        const timer = setInterval(() => { pontos.textContent = '.'.repeat(1 + (n++ % 3)); }, 380);
+        if (window.Arcade) window.Arcade.SONS.morrer();
+        setTimeout(() => {
+            clearInterval(timer);
+            tela.remove();
+            pifando = false;
+            if (window.mostrarBoot) window.mostrarBoot();
+        }, 3600);
+    }
 
     // =================================================== NAO_ABRA.EXE
     let pegadinhaRodando = false;
@@ -241,7 +328,7 @@
     else iniciar();
 
     window.Extras = {
-        naoAbra, abrirOrcamento, piscar, assistente,
+        naoAbra, abrirOrcamento, piscar, assistente, pifar,
         desculpa: () => sorteia(DESCULPAS),
         cliente: () => sorteia(CLIENTES),
     };
