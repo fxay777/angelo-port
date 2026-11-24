@@ -569,7 +569,6 @@ body.holo-local-on #holo-local { display: block; }
     content: ''; position: absolute; inset: 0; z-index: 99; pointer-events: none;
     background: radial-gradient(ellipse 120% 95% at 50% 50%, transparent 70%, rgba(0, 0, 0, 0.55) 100%);
     box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
-    animation: crtPisca 0.12s steps(2) infinite;
 }
 @keyframes crtPisca { 50% { opacity: 0.93; } }
 body.lanterna #phone::after { animation: none; }
@@ -745,3 +744,39 @@ body.lanterna #phone::after { animation: none; }
 .notif, .bl-notif .notif { flex-wrap: nowrap; align-items: center; gap: 8px; }
 .notif > span:nth-child(2) { flex: 1; min-width: 0; }
 .notif .n-ic { width: 28px; height: 28px; font-size: 20px; }
+
+/* ---------- barra de rolagem do Windows 95 ---------- */
+#app-corpo { scrollbar-width: none; }
+#app-corpo::-webkit-scrollbar { display: none; }
+.rolagem95 { position: absolute; right: 3px; top: 36px; bottom: 28px; width: 20px; display: none; flex-direction: column; z-index: 3;
+    background: repeating-conic-gradient(#c0c0c0 0% 25%, #fff 0% 50%) 0 0 / 2px 2px; touch-action: none; }
+#appview.com-rolagem .rolagem95 { display: flex; }
+#appview.com-rolagem #app-corpo { margin-right: 20px; }
+.rolagem95 button { height: 22px; flex-shrink: 0; background: var(--cinza); box-shadow: var(--elevado); color: #000; font-size: 9px; }
+.rolagem95 button:active { box-shadow: var(--afundado); }
+.r-trilho { flex: 1; position: relative; }
+.r-alca { position: absolute; left: 0; right: 0; top: 0; display: block; background: var(--cinza); box-shadow: var(--elevado); border-radius: 2px; }
+
+/* ---------- toques modernos (retrofuturismo) ---------- */
+#statusbar, #navbar, .rolagem95 button, #central { background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.06)); }
+#appview.aberto { animation: abrirJanela 0.26s cubic-bezier(.2, .9, .3, 1.15); }
+@keyframes abrirJanela { from { transform: scale(0.9) translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+.appbar { border-radius: 6px 6px 0 0; background: linear-gradient(90deg, #000080, #1084d0 70%, #46a6e8); }
+#app-corpo { border-radius: 2px; }
+.notif, .bl-notif .notif, #central, #holo-hud { border-radius: 8px !important; overflow: hidden; }
+.notif, .bl-notif .notif { box-shadow: var(--elevado), 0 10px 28px rgba(0, 0, 0, 0.45) !important; transition: transform 0.25s, opacity 0.25s; }
+.notif b { border-radius: 5px 5px 0 0; }
+#toast { border-radius: 10px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important; transition: transform 0.3s cubic-bezier(.2, 1.3, .4, 1), opacity 0.2s; }
+.btn-holo, .chip, .pad button, #holo-hud button, .cc-btn, #navbar button, #app-voltar, #app-holo { border-radius: 4px !important; transition: transform 0.08s; }
+.btn-holo:active, .chip:active, .pad button:active, .cc-btn:active, #navbar button:active { transform: translateY(1px) !important; }
+.dock { border-radius: 14px !important; box-shadow: var(--elevado), 0 10px 26px rgba(0, 0, 0, 0.45) !important; left: 14px; right: 14px; }
+.dock .app-icone { border-radius: 10px; transition: transform 0.12s; }
+.app-icone .hex img { transition: transform 0.15s cubic-bezier(.2, 1.4, .4, 1); }
+.app-icone:active .hex img { transform: scale(0.88); }
+.cartao-maia { border-radius: 12px !important; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35) !important; }
+#trilha canvas { border-radius: 8px; }
+.painel, .video-card, .jogo { border-radius: 6px; }
+.foto-holo { border-radius: 4px; }
+#digital { transition: transform 0.15s; }
+#digital.segurando { transform: scale(0.94); }
+body.rolando #app-corpo { scroll-behavior: auto; }

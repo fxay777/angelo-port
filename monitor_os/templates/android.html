@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#03060c">
     <title>{{ dados.nome }} — HoloFone</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/startLogo.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/android.css') }}?v=4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/android.css') }}?v=5">
     <link rel="stylesheet" href="{{ url_for('static', filename='jsdos/js-dos/js-dos.css') }}">
     <script>var emulatorsPathPrefix = "{{ url_for('static', filename='jsdos/js-dos/') }}";</script>
     <script src="{{ url_for('static', filename='jsdos/js-dos/js-dos.js') }}"></script>
@@ -101,6 +101,11 @@
             <span class="app-status" id="app-status">● ONLINE</span>
         </div>
         <div id="app-corpo"></div>
+        <div class="rolagem95" id="rolagem95" aria-hidden="true">
+            <button type="button" data-r="-1" tabindex="-1">▲</button>
+            <div class="r-trilho"><i class="r-alca"></i></div>
+            <button type="button" data-r="1" tabindex="-1">▼</button>
+        </div>
     </section>
 
     <!-- Notificações, central de controle, overlays -->
@@ -141,8 +146,8 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/tetris.js') }}?v=2"></script>
-<script src="{{ url_for('static', filename='js/android.js') }}?v=4"></script>
+<script src="{{ url_for('static', filename='js/android.js') }}?v=5"></script>
 <script src="{{ url_for('static', filename='js/holo-apps.js') }}?v=2"></script>
-<script src="{{ url_for('static', filename='js/touchscroll.js') }}?v=1"></script>
+<script src="{{ url_for('static', filename='js/touchscroll.js') }}?v=2"></script>
 </body>
 </html>

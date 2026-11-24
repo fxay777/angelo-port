@@ -104,7 +104,8 @@
         var t = 0;
         (function quadro() {
             requestAnimationFrame(quadro);
-            if (document.hidden || document.body.classList.contains('sem-holo')) return;
+            // com um app aberto o fundo fica escondido: não gasta bateria (nem trava o toque)
+            if (document.hidden || atual || document.body.classList.contains('sem-holo')) return;
             t++;
             ctx.clearRect(0, 0, c.width, c.height);
             // grade em perspectiva no rodapé
@@ -931,6 +932,77 @@
             anim((performance.now() - t0) / 1000);
         })();
     }
+
+
+    // =========================================================== barra de rolagem 95
+    // setas ▲▼ e alça arrastável: funciona mesmo quando o arrasto falha
+    (function rolagem95() {
+        var corpo = $('app-corpo');
+        var barra = $('rolagem95');
+        var trilho = barra.querySelector('.r-trilho');
+        var alca = barra.querySelector('.r-alca');
+        var repetir = null;
+        function alvo() {
+            // o próprio corpo ou o primeiro filho rolável (ex.: o chat da M.A.I.A.)
+            if (corpo.scrollHeight > corpo.clientHeight + 2) return corpo;
+            var filhos = corpo.querySelectorAll('*');
+            for (var i = 0; i < filhos.length && i < 400; i++) {
+                var f = filhos[i];
+                if (f.scrollHeight > f.clientHeight + 2 && /auto|scroll/.test(getComputedStyle(f).overflowY)) return f;
+            }
+            return null;
+        }
+        function atualizar() {
+            var el = atual ? alvo() : null;
+            var mostrar = !!el;
+            $('appview').classList.toggle('com-rolagem', mostrar);
+            if (!mostrar) return;
+            var h = trilho.clientHeight;
+            var tam = Math.max(28, h * el.clientHeight / el.scrollHeight);
+            var pos = (h - tam) * (el.scrollTop / Math.max(1, el.scrollHeight - el.clientHeight));
+            alca.style.height = tam + 'px';
+            alca.style.transform = 'translateY(' + pos + 'px)';
+        }
+        setInterval(atualizar, 250);
+        corpo.addEventListener('scroll', atualizar, true);
+        function passo(dir, grande) {
+            var el = alvo();
+            if (!el) return;
+            el.scrollBy({ top: dir * (grande ? el.clientHeight * 0.85 : 70), behavior: 'smooth' });
+        }
+        barra.querySelectorAll('[data-r]').forEach(function (b) {
+            var dir = +b.dataset.r;
+            b.addEventListener('pointerdown', function (e) {
+                e.preventDefault();
+                passo(dir);
+                clearInterval(repetir);
+                var t0 = Date.now();
+                repetir = setInterval(function () { if (Date.now() - t0 > 350) passo(dir); }, 90);
+            });
+        });
+        ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (ev) {
+            barra.addEventListener(ev, function () { clearInterval(repetir); });
+        });
+        trilho.addEventListener('pointerdown', function (e) {
+            if (e.target === alca) return;
+            var r = alca.getBoundingClientRect();
+            passo(e.clientY < r.top ? -1 : 1, true);
+        });
+        var arr = null;
+        alca.addEventListener('pointerdown', function (e) {
+            e.preventDefault();
+            var el = alvo();
+            if (!el) return;
+            arr = { y: e.clientY, top: el.scrollTop, el: el };
+            alca.setPointerCapture(e.pointerId);
+        });
+        alca.addEventListener('pointermove', function (e) {
+            if (!arr) return;
+            var h = trilho.clientHeight - alca.clientHeight;
+            arr.el.scrollTop = arr.top + (e.clientY - arr.y) / Math.max(1, h) * (arr.el.scrollHeight - arr.el.clientHeight);
+        });
+        alca.addEventListener('pointerup', function () { arr = null; });
+    })();
 
     // =============================================================== API
     window.Holo = {
