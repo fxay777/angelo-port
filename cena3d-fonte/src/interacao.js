@@ -94,9 +94,14 @@ export function iniciarInteracao(app) {
 
     const aoApertar = (x, y, e) => {
         if (!podeInteragir(app)) return;
+        if (e.target && e.target.id === 'prevent-click') return;   // nosso próprio clique "de mentira"
         if (e.target && (e.target.id === 'computer-screen' || e.target.closest && e.target.closest('button, a, #ui-interactive'))) return;
         const item = acertar(app, x, y);
-        if (!item) return;
+        if (!item) {
+            // olhando dentro da gaveta: clique no vazio não pode mexer a câmera original
+            if (window.__salaModoGaveta) { e.stopImmediatePropagation(); avisarCenaSemMexerNaCamera(); }
+            return;
+        }
         // o clique foi num objeto: não deixa a câmera aproximar/afastar
         e.stopImmediatePropagation();
         if (e.cancelable) e.preventDefault();

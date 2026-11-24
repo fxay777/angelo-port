@@ -503,10 +503,3 @@ function abrirDigger() {
     });
 }
 
-function abrirCreditos() {
-    openWindow('creditos', {
-        title: 'Créditos', icon: '/static/icons/credits.png',
-        center: true, width: 520, height: 420,
-        iframeSrc: '/creditos',
-    });
-}

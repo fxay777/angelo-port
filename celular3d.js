@@ -320,6 +320,7 @@
         computerFrame = document.getElementById('computer-screen');
         var base = (computerFrame && computerFrame.src) ? computerFrame.src : 'https://angelo-port-vx46.vercel.app/';
         base = base.split('?')[0].replace(/[^/]*$/, '');
+        if (/[?&]dev\b/.test(location.search)) base = 'http://localhost:3000/';
 
         var box = document.createElement('div');
         box.style.cssText = 'width:' + P.cssW + 'px;height:' + P.cssH + 'px;background:#000;border-radius:34px;overflow:hidden;';
@@ -350,12 +351,15 @@
                 var tanH = Math.tan((cam.fov * Math.PI / 180) / 2);
                 var dV = (P.bodyH * P.padV / 2) / tanH;
                 var dH = (P.bodyW * P.padH / 2) / (tanH * aspect);
-                var d = Math.max(dV, dH) + P.depth / 2;
+                // window.__p3dZoom > 1 afasta a câmera (os hologramas do HoloFone precisam de espaço)
+                var z = window.__p3dZoom || 1;
+                var d = Math.max(dV, dH) * z + P.depth / 2;
                 this.position.set(center.x + n.x * d, center.y + n.y * d, center.z + n.z * d);
             }
         };
         app.camera.keyframes.phone = kf;
         markerPos = new Vec3(center.x, center.y + P.bodyH * 0.5, center.z);
+        window.__p3dCelular = { css: phoneCss, centro: center, normal: n, P: P };
 
         built = true;
         return true;

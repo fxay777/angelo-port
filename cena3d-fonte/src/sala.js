@@ -24,7 +24,9 @@ import {
 } from './set';
 import { interativo, iniciarInteracao } from './interacao';
 import { criarGavetas, multiferramenta, maoLuva } from './gaveta';
+import { criarCloseup } from './closeup';
 import { cenaSonica } from './cinema';
+import { iniciarHolofone } from './holofone';
 
 const ESTILO = `
 #sala-toast{position:fixed;left:50%;bottom:110px;transform:translateX(-50%) translateY(10px);background:#000;color:#fff;
@@ -368,6 +370,8 @@ function montar(app) {
     const gavetas = criarGavetas(app, raiz);
     const ferramenta = multiferramenta();
     const mao = maoLuva();
+    const closeup = criarCloseup(app);
+    window.__salaCloseup = closeup;
     if (gavetas.length) {
         const g0 = gavetas[0];
         // deitada dentro da gaveta de cima, perto da frente
@@ -379,8 +383,13 @@ function montar(app) {
             interativo(gv.alvo, '🗄️ Gaveta ' + gv.def.nome, () => {
                 const abriu = gv.alternar();
                 ruido(0.25, 0.25, 500);
-                if (abriu && gv === g0) falar('Hm... tem algo brilhando lá dentro. 👀');
-                else if (abriu) falar('Gaveta de baixo: o cemitério de coisas "que um dia vou usar".');
+                if (!abriu) { closeup.sair(true); return; }
+                gavetas.forEach((o) => { if (o !== gv) o.fechar(); });
+                closeup.entrar(gv, gv === g0
+                    ? 'Tem algo brilhando ali no fundo... clique para pegar. Os outros objetos também respondem.'
+                    : 'O cemitério de coisas "que um dia vou usar". Clique nos objetos.');
+                if (gv === g0) falar('Hm... tem algo brilhando lá dentro. 👀');
+                else falar('Gaveta de baixo: o cemitério de coisas "que um dia vou usar".');
             });
             gv.tralhas.traverse((o) => {
                 if (o.isMesh && o.userData.piada && o.userData.idInterativo === undefined) {
@@ -394,6 +403,7 @@ function montar(app) {
             if (usando || !g0.estaAberta()) return;
             usando = true;
             if (gravando) alternarGravacao(true);
+            closeup.sair(false);   // a cena de cinema parte de onde a câmera está agora
             cenaSonica(app, ferramenta, mao, raiz, () => {
                 usando = false;
                 setTimeout(() => g0.fechar(), 2500);
@@ -405,6 +415,7 @@ function montar(app) {
     }
 
     iniciarInteracao(app);
+    iniciarHolofone(app);
 
     // ============================================ código secreto: modo festa
     const seq = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];

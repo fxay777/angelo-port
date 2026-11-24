@@ -82,7 +82,6 @@
         wolf3d: abrirWolf3D,
         digger: abrirDigger,
         scrabble: abrirScrabble,
-        creditos: abrirCreditos,
         propriedades: () => abrirPropriedades(0),
         protecao: () => abrirPropriedades(1),
         som: alternarMudo,
@@ -699,7 +698,7 @@
             notepad: 'notepad-novo', edit: 'notepad-novo', paint: 'paint', mspaint: 'paint', winmine: 'minas', minas: 'minas',
             campominado: 'minas', doom: 'doom', tetris: 'tetris', wolf3d: 'wolf3d', wolfenstein: 'wolf3d', digger: 'digger',
             scrabble: 'scrabble', explorer: 'meucomputador', mplayer: 'videos', videos: 'videos', sobre: 'sobre',
-            experiencia: 'experiencia', projetos: 'projetos', contato: 'contato', curriculo: 'curriculo', creditos: 'creditos',
+            experiencia: 'experiencia', projetos: 'projetos', contato: 'contato', curriculo: 'curriculo',
             lixeira: 'lixeira', control: 'propriedades', fliperama: 'fliperama', arcade: 'fliperama', cabo: 'fliperama',
         };
 
@@ -1825,8 +1824,7 @@
                 • Não abra o NAO_ABRA.EXE. Sério.<br>
                 • Lá fora, na sala 3D, quase tudo é clicável: claquete, câmera, luzes, fitas, o fez...</p>`],
             ['Sobre o MiguelOS', `<p><b>MiguelOS 95</b> — Versão 4.00.2026<br>Edição Produtor Audiovisual</p>
-                <p>Inspirado no Windows 95. Nenhum computador foi desligado durante a produção deste site.</p>
-                <p><a href="#" data-a="creditos">Ver créditos</a></p>`],
+                <p>Inspirado no Windows 95. Nenhum computador foi desligado durante a produção deste site.</p>`],
         ];
         openWindow('ajuda', {
             title: 'Ajuda do MiguelOS', icon: ICON('help'),

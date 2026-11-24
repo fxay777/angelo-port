@@ -26,6 +26,8 @@
         roteiro: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9.3 4v16M14.7 4v16"/><path d="M6 12h1.5M11.3 10.5v3M16.5 11h2"/>',
         claquete: '<path d="M3 10h18v10H3z"/><path d="M3 10l1.5-5.5 16 0L19 10M8.5 4.5L7 10M13.5 4.5L12 10"/>',
         info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+        labirinto: '<path d="M3 3h18v18H3z"/><path d="M7 3v6h4M17 7v6h-6v4M7 13v8M13 17h4"/>',
+        trofeu: '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M10 17h4"/>',
     };
     function icone(nome) {
         return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (ICONES[nome] || '') + '</svg>';
@@ -55,6 +57,9 @@
             u.lang = 'pt-BR';
             u.rate = 1.05;
             u.pitch = 1.1;
+            u.onstart = function () { pulsoFala(0.8); };
+            u.onboundary = function () { pulsoFala(1); };
+            u.onend = function () { pulsoFala(0); };
             speechSynthesis.speak(u);
         } catch (e) { /* sem voz */ }
     }
@@ -103,7 +108,7 @@
             t++;
             ctx.clearRect(0, 0, c.width, c.height);
             // grade em perspectiva no rodapé
-            ctx.strokeStyle = 'rgba(62,232,255,0.07)';
+            ctx.strokeStyle = 'rgba(61,85,255,0.16)';
             ctx.lineWidth = 1;
             var hz = c.height * 0.62;
             for (var i = -8; i <= 8; i++) {
@@ -117,8 +122,9 @@
             pts.forEach(function (p) {
                 p.y -= p.v;
                 if (p.y < -5) { p.y = c.height + 5; p.x = Math.random() * c.width; }
-                ctx.fillStyle = 'rgba(159,244,255,' + (0.25 + p.r / 4) + ')';
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = p.r > 1.6 ? 'rgba(255,210,63,0.7)' : p.r > 1.1 ? 'rgba(255,79,163,0.55)' : 'rgba(184,243,255,0.45)';
+                var lado = Math.round(p.r * 2);
+                ctx.fillRect(Math.round(p.x), Math.round(p.y), lado, lado);
             });
         })();
     })();
@@ -250,6 +256,8 @@
             setTimeout(function () { home.classList.remove('entrando'); }, 700);
             montarHome();
             digitarIdentidade();
+            somarPontos(100);
+            setTimeout(function () { conquistar('start'); }, 900);
             agendarNotificacao();
             setTimeout(function () { if (!atual) notificar({ icone: '◉', titulo: 'M.A.I.A.', texto: 'Oi! Eu sou a assistente do Miguel. Toque aqui pra conversar.', app: 'maia' }); }, 3500);
         }, 650);
@@ -286,7 +294,7 @@
     }
 
     // ----------------------------------------------------------- tela inicial
-    var DOCK = ['maia', 'projetos', 'contato', 'jogos'];
+    var DOCK = ['maia', 'projetos', 'labirinto', 'jogos'];
     function botaoApp(id, atraso) {
         var app = APPS[id];
         var b = document.createElement('button');
@@ -327,10 +335,22 @@
         corpo.scrollTop = 0;
         bip([[520, 0.04], [780, 0.06]], 'sine', 0.03);
         aoFechar = app.montar(corpo) || null;
+        var bh = $('app-holo');
+        bh.hidden = !app.holo;
+        bh.classList.toggle('ativo', !!(holoEstado && holoEstado.app === id));
+        if (!abertos[id]) {
+            abertos[id] = true;
+            somarPontos(50, window.innerWidth / 2, 120);
+            var n = Object.keys(abertos).length;
+            if (n >= 5) conquistar('turista');
+            var todos = Object.keys(APPS).filter(function (k) { return !APPS[k].link; });
+            if (todos.every(function (k) { return abertos[k]; })) conquistar('completista');
+        }
         if (!deHistorico) { try { history.pushState({ app: id }, ''); } catch (e) { /* ok */ } }
     }
     function fechar(silencioso) {
         if (!atual) return;
+        if (holoEstado && holoEstado.app === atual) desprojetar();
         if (typeof aoFechar === 'function') { try { aoFechar(); } catch (e) { /* ok */ } }
         aoFechar = null;
         atual = null;
@@ -416,6 +436,7 @@
                 $('nucleo-sub').textContent = 'ANO: 1995';
                 bip([[300, 0.2], [600, 0.2], [1200, 0.3]], 'triangle', 0.06);
                 toast('⏳ Viagem no tempo! Bem-vindo a 1995. Celulares ainda não existem, então... finja.', 4200);
+                conquistar('1995');
                 setTimeout(function () { tick(); $('nucleo-sub').textContent = 'SISTEMA ONLINE'; }, 7100);
             }, 900);
         });
@@ -465,7 +486,7 @@
             r.className = 'reboot';
             r.innerHTML = '<div class="r-logo">HOLOFONE</div><div>Núcleo superaquecido. Reiniciando…</div><div class="r-barra"><i></i></div><div style="font-size:11px;color:var(--texto-2)">(dica: 7 toques é demais)</div>';
             $('phone').appendChild(r);
-            setTimeout(function () { r.remove(); bloquear(); }, 2400);
+            setTimeout(function () { r.remove(); bloquear(); setTimeout(function () { conquistar('sobrecarga'); }, 400); }, 2400);
         });
     }
 
@@ -484,6 +505,7 @@
                 $('bat-txt').textContent = '3000%';
                 $('bat-nivel').style.background = 'var(--ambar)';
                 toast('🔋 Bateria recarregada com café. Duração estimada: até o fim do render.');
+                conquistar('bateria');
                 setTimeout(function () { $('bat-txt').textContent = '100%'; $('bat-nivel').style.background = ''; }, 6000);
             }
         });
@@ -501,6 +523,7 @@
                 document.body.classList.add('tremer');
                 vibrar(200);
                 toast('Ei! Calma! 🤢 A M.A.I.A. ficou tonta.');
+                conquistar('tonto');
                 setTimeout(function () { document.body.classList.remove('tremer'); }, 900);
             }
         });
@@ -521,7 +544,7 @@
             ini = null;
             if (Math.max(Math.abs(dx), Math.abs(dy)) < 40) {
                 if (pos === seq.length) {
-                    if (Date.now() - ultimoToque < 450) { pos = 0; festa(); }
+                    if (Date.now() - ultimoToque < 450) { pos = 0; festa(); conquistar('konami'); }
                     ultimoToque = Date.now();
                 }
                 return;
@@ -535,7 +558,368 @@
         document.body.classList.add('festa');
         bip([[523, 0.1], [659, 0.1], [784, 0.1], [1047, 0.1], [784, 0.1], [1047, 0.3]], 'square', 0.05);
         toast('🎉 MODO FESTA HOLOGRÁFICO! 🎉', 3500);
+        if (!holoEstado || holoEstado.tipo === 'confete') projetar('confete', {}, { titulo: 'FESTA!' });
         setTimeout(function () { document.body.classList.remove('festa'); }, 8000);
+    }
+
+
+    // =========================================================== placar
+    var guardar = {
+        ler: function (k, padrao) { try { var v = localStorage.getItem('holofone.' + k); return v === null ? padrao : JSON.parse(v); } catch (e) { return padrao; } },
+        gravar: function (k, v) { try { localStorage.setItem('holofone.' + k, JSON.stringify(v)); } catch (e) { /* sem armazenamento */ } },
+    };
+    var pontos = 0;
+    var recorde = guardar.ler('recorde', 0);
+    var conquistas = guardar.ler('conquistas', {});
+    var abertos = {};
+    function seis(n) { return ('000000' + Math.max(0, Math.min(999999, Math.floor(n)))).slice(-6); }
+    function somarPontos(n, x, y) {
+        pontos += n;
+        if (pontos > recorde) { recorde = pontos; guardar.gravar('recorde', recorde); }
+        $('placar-pts').textContent = seis(pontos);
+        var sp = $('sb-placar');
+        sp.classList.remove('pulo');
+        void sp.offsetWidth;
+        sp.classList.add('pulo');
+        if (x !== undefined) {
+            var r = $('phone').getBoundingClientRect();
+            var el = document.createElement('div');
+            el.className = 'mais-pontos';
+            el.textContent = '+' + n;
+            el.style.left = Math.max(4, Math.min(r.width - 70, x - r.left - 16)) + 'px';
+            el.style.top = Math.max(50, y - r.top - 12) + 'px';
+            $('phone').appendChild(el);
+            setTimeout(function () { el.remove(); }, 900);
+        }
+    }
+    var CONQUISTAS = {
+        start: ['PRESS START', 'Desbloqueou o HoloFone.'],
+        turista: ['TURISTA DIGITAL', 'Abriu 5 apps diferentes.'],
+        completista: ['100% COMPLETO', 'Abriu todos os apps do HoloFone.'],
+        sobrecarga: ['DEDO NERVOSO', 'Superaqueceu o núcleo (7 toques).'],
+        '1995': ['VIAJANTE DO TEMPO', 'Voltou para 1995 segurando o núcleo.'],
+        bateria: ['MOVIDO A CAFÉ', 'Bateria em 3000%.'],
+        tonto: ['TERREMOTO', 'Chacoalhou o celular.'],
+        konami: ['CÓDIGO SECRETO', 'Fez o código em gestos.'],
+        holograma: ['TONY QUEM?', 'Projetou o primeiro holograma.'],
+        maia: ['PAPO RETO', 'Conversou 5 vezes com a M.A.I.A.'],
+        scanner: ['CAÇADOR DE TALENTOS', 'Achou todos os talentos no scanner.'],
+        labirinto: ['RENDER CONCLUÍDO', 'Limpou uma fase do labirinto.'],
+        rolinho: ['AMIGO DO ROLINHO', 'Cutucou o Rolinho 5 vezes.'],
+        maestro: ['MAESTRO ESPACIAL', 'Tocou o teremim por 10 segundos.'],
+        diretor: ['TAKE 10', 'Bateu a claquete 10 vezes.'],
+        quiz: ['FÃ NÚMERO 1', 'Acertou tudo no quiz da M.A.I.A.'],
+    };
+    var filaConquistas = [];
+    var mostrandoConquista = false;
+    function conquistar(id) {
+        if (!CONQUISTAS[id] || conquistas[id]) return;
+        conquistas[id] = Date.now();
+        guardar.gravar('conquistas', conquistas);
+        filaConquistas.push(id);
+        proximaConquista();
+    }
+    function proximaConquista() {
+        if (mostrandoConquista || !filaConquistas.length) return;
+        mostrandoConquista = true;
+        var c = CONQUISTAS[filaConquistas.shift()];
+        var el = $('conquista');
+        el.innerHTML = '<div class="cq-a">★ CONQUISTA DESBLOQUEADA ★</div><div class="cq-b"></div><div class="cq-c"></div>';
+        el.querySelector('.cq-b').textContent = c[0] + '  +500';
+        el.querySelector('.cq-c').textContent = c[1];
+        el.classList.add('mostrar');
+        somarPontos(500);
+        bip([[523, 0.08], [659, 0.08], [784, 0.08], [1047, 0.2]], 'square', 0.04);
+        vibrar([30, 40, 30]);
+        setTimeout(function () {
+            el.classList.remove('mostrar');
+            setTimeout(function () { mostrandoConquista = false; proximaConquista(); }, 450);
+        }, 3000);
+    }
+
+    // =========================================================== Rolinho
+    // o mascote: um rolo de filme com tênis vermelhos, desenhado em pixel
+    function desenharRolinho(ctx, x, y, s, quadro, dir) {
+        ctx.save();
+        ctx.translate(Math.round(x), Math.round(y));
+        var passo = Math.sin(quadro * 0.45) * s * 0.35;
+        // pernas e tênis
+        ctx.fillStyle = '#b8f3ff';
+        ctx.fillRect(-s * 0.45 + passo * 0.3, s * 0.7, s * 0.14, s * 0.5);
+        ctx.fillRect(s * 0.3 - passo * 0.3, s * 0.7, s * 0.14, s * 0.5);
+        ctx.fillStyle = '#ff3b3b';
+        ctx.fillRect(-s * 0.6 + passo, s * 1.12, s * 0.5, s * 0.24);
+        ctx.fillRect(s * 0.2 - passo, s * 1.12, s * 0.5, s * 0.24);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(-s * 0.6 + passo, s * 1.3, s * 0.5, s * 0.08);
+        ctx.fillRect(s * 0.2 - passo, s * 1.3, s * 0.5, s * 0.08);
+        // rolo
+        ctx.fillStyle = '#5b5f73';
+        ctx.beginPath(); ctx.arc(0, 0, s, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#a3a8bd';
+        ctx.beginPath(); ctx.arc(0, 0, s * 0.86, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#2a2640';
+        for (var i = 0; i < 5; i++) {
+            var a = i * Math.PI * 2 / 5 + quadro * 0.08 * dir;
+            ctx.beginPath(); ctx.arc(Math.cos(a) * s * 0.55, Math.sin(a) * s * 0.55, s * 0.17, 0, Math.PI * 2); ctx.fill();
+        }
+        // carinha
+        var olhar = dir * s * 0.06;
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(-s * 0.34, -s * 0.2, s * 0.24, s * 0.28);
+        ctx.fillRect(s * 0.1, -s * 0.2, s * 0.24, s * 0.28);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(-s * 0.27 + olhar, -s * 0.12, s * 0.12, s * 0.16);
+        ctx.fillRect(s * 0.17 + olhar, -s * 0.12, s * 0.12, s * 0.16);
+        ctx.fillStyle = '#ff4fa3';
+        ctx.fillRect(-s * 0.12, s * 0.22, s * 0.24, s * 0.08);
+        ctx.restore();
+    }
+
+    (function trilha() {
+        var bt = $('trilha');
+        var c = $('trilha-c');
+        var ctx = c.getContext('2d');
+        var W = 0, H = 0;
+        var pontinhos = [];
+        var rol = { x: 30, dir: 1, v: 1.3, pulo: 0, turbo: 0 };
+        var quadro = 0;
+        var cutucadas = 0;
+        function ajustar() {
+            W = c.width = bt.clientWidth || 358;
+            H = c.height = bt.clientHeight || 46;
+            pontinhos = [];
+            for (var x = 16; x < W - 8; x += 18) pontinhos.push({ x: x, cafe: (x / 18 | 0) % 9 === 4, volta: 0 });
+        }
+        ajustar();
+        window.addEventListener('resize', ajustar);
+        bt.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var r = c.getBoundingClientRect();
+            var x = (e.clientX - r.left) * (W / r.width);
+            if (Math.abs(x - rol.x) < 30) {
+                rol.pulo = 1;
+                cutucadas++;
+                somarPontos(50, e.clientX, e.clientY);
+                bip([[880, 0.05], [1320, 0.08]], 'square', 0.03);
+                toast(['Oi! 👋', 'Ei, isso faz cócegas!', 'Tô comendo os frames, peraí!', 'Quer jogar? O labirinto é logo ali.', 'Rolinho a serviço!'][cutucadas % 5], 1800);
+                if (cutucadas >= 5) conquistar('rolinho');
+            } else abrir('labirinto');
+        });
+        (function q() {
+            requestAnimationFrame(q);
+            if (document.hidden || !$('home').classList.contains('ativa') || atual) return;
+            if (bt.clientWidth && (bt.clientWidth !== W || bt.clientHeight !== H)) ajustar();
+            quadro++;
+            var vel = rol.v * (rol.turbo > 0 ? 2.2 : 1);
+            rol.x += vel * rol.dir;
+            if (rol.turbo > 0) rol.turbo--;
+            if (rol.x > W - 18) rol.dir = -1;
+            if (rol.x < 18) rol.dir = 1;
+            if (rol.pulo > 0) rol.pulo = Math.max(0, rol.pulo - 0.05);
+            ctx.clearRect(0, 0, W, H);
+            // parede de labirinto
+            ctx.strokeStyle = 'rgba(61,85,255,0.7)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(2, 4, W - 4, H - 8);
+            var cy = H / 2;
+            pontinhos.forEach(function (p) {
+                if (p.volta > 0) { p.volta--; return; }
+                if (Math.abs(p.x - rol.x) < 6) {
+                    p.volta = 360;
+                    if (p.cafe) { rol.turbo = 120; bip([[300, 0.05], [600, 0.08]], 'square', 0.02); }
+                    return;
+                }
+                ctx.fillStyle = p.cafe ? '#ffd23f' : '#ffe9b0';
+                var t = p.cafe ? 8 + (quadro % 30 < 15 ? 2 : 0) : 4;
+                ctx.fillRect(Math.round(p.x - t / 2), Math.round(cy - t / 2), t, t);
+            });
+            var salto = Math.sin(rol.pulo * Math.PI) * 14;
+            desenharRolinho(ctx, rol.x, cy - 4 - salto, 11, quadro * (rol.turbo > 0 ? 2 : 1), rol.dir);
+        })();
+    })();
+
+    // =========================================================== hologramas
+    // Na sala 3D, a página "pai" desenha os hologramas de verdade saindo da
+    // tela. Sem a sala (página aberta sozinha), desenhamos uma versão local.
+    var temPai = window.parent !== window;
+    var holo3d = false;
+    var holoEstado = null;     // { tipo, app, i, total, aoAbrir, aoMudar }
+    function paraPai(m) {
+        if (!temPai) return;
+        try { window.parent.postMessage(Object.assign({ fonte: 'holofone' }, m), '*'); } catch (e) { /* ok */ }
+    }
+    window.addEventListener('message', function (e) {
+        if (e.source !== window.parent || !e.data || e.data.fonte !== 'sala3d') return;
+        if (e.data.acao === 'holo-pong') holo3d = true;
+    });
+    [0, 1500, 4000, 9000].forEach(function (ms) { setTimeout(function () { if (!holo3d) paraPai({ acao: 'holo-ping' }); }, ms); });
+
+    var falaNivel = 0;
+    var falaTimer = null;
+    function pulsoFala(n) {
+        falaNivel = n;
+        if (holoEstado && holoEstado.tipo === 'orbe') {
+            if (holo3d) paraPai({ acao: 'holo-fala', nivel: n });
+            else if (local && local.falar) local.falar(n);
+        }
+        clearTimeout(falaTimer);
+        if (n > 0) falaTimer = setTimeout(function () { pulsoFala(0); }, 380);
+    }
+
+    function projetar(tipo, dados, opcoes) {
+        opcoes = opcoes || {};
+        desprojetar(true);
+        holoEstado = { tipo: tipo, app: opcoes.app || atual, i: opcoes.i || 0, total: opcoes.total || 0, aoAbrir: opcoes.aoAbrir, aoMudar: opcoes.aoMudar };
+        if (holo3d) paraPai({ acao: 'holo', tipo: tipo, dados: dados || {} });
+        else holoLocal(tipo, dados || {});
+        document.body.classList.add('holo-on');
+        $('hh-tit').textContent = '✦ ' + (opcoes.titulo || 'HOLOGRAMA');
+        $('holo-hud').classList.toggle('sem-nav', !holoEstado.total);
+        $('hh-abrir').textContent = opcoes.rotuloAbrir || 'VER';
+        $('app-holo').classList.add('ativo');
+        bip([[220, 0.08], [440, 0.08], [880, 0.16]], 'sawtooth', 0.03);
+        vibrar(30);
+        conquistar('holograma');
+        if (tipo === 'confete') setTimeout(function () { if (holoEstado && holoEstado.tipo === 'confete') desprojetar(); }, 3300);
+    }
+    function desprojetar(silencioso) {
+        if (!holoEstado) return;
+        holoEstado = null;
+        if (holo3d) paraPai({ acao: 'holo-off' });
+        holoLocalOff();
+        document.body.classList.remove('holo-on');
+        $('app-holo').classList.remove('ativo');
+        if (!silencioso) bip([[660, 0.06], [330, 0.1]], 'sine', 0.03);
+    }
+    function holoIr(i) {
+        if (!holoEstado || !holoEstado.total) return;
+        var n = holoEstado.total;
+        holoEstado.i = ((i % n) + n) % n;
+        if (holo3d) paraPai({ acao: 'holo-ir', i: holoEstado.i });
+        else if (local && local.ir) local.ir(holoEstado.i);
+        if (holoEstado.aoMudar) holoEstado.aoMudar(holoEstado.i);
+        bip([[740, 0.04]], 'square', 0.02);
+    }
+    $('holo-hud').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-h]');
+        if (!b || !holoEstado) return;
+        var h = b.dataset.h;
+        if (h === 'off') desprojetar();
+        else if (h === 'ant') holoIr(holoEstado.i - 1);
+        else if (h === 'prox') holoIr(holoEstado.i + 1);
+        else if (h === 'abrir' && holoEstado.aoAbrir) holoEstado.aoAbrir(holoEstado.i);
+    });
+    $('app-holo').addEventListener('click', function () {
+        if (holoEstado && holoEstado.app === atual) { desprojetar(); return; }
+        var app = APPS[atual];
+        if (!app || !app.holo) return;
+        var h = app.holo();
+        projetar(h.tipo, h.dados, Object.assign({ app: atual }, h.opcoes));
+    });
+
+    // -------- versão local (CSS 3D) para quando não há sala 3D por trás
+    var local = null;
+    function holoLocalOff() {
+        if (local) { local.vivo = false; local = null; }
+        document.body.classList.remove('holo-local-on');
+        $('holo-local').innerHTML = '';
+    }
+    function holoLocal(tipo, dados) {
+        holoLocalOff();
+        var raiz = $('holo-local');
+        raiz.innerHTML = '<div class="hl-cone"></div><div class="hl-palco"></div>';
+        document.body.classList.add('holo-local-on');
+        var palco = raiz.querySelector('.hl-palco');
+        var L = { vivo: true };
+        local = L;
+        function item(w, h, html) {
+            var d = document.createElement('div');
+            d.className = 'hl-item';
+            d.style.width = w + 'px';
+            d.style.height = h + 'px';
+            d.style.left = -w / 2 + 'px';
+            d.style.top = -h / 2 + 'px';
+            if (html) d.innerHTML = html;
+            palco.appendChild(d);
+            return d;
+        }
+        var anim = function () {};
+        var ang = 0, alvo = 0;
+        if (tipo === 'carrossel') {
+            var itens = dados.itens || [];
+            var passo = 360 / Math.max(1, itens.length);
+            var raio = 190;
+            itens.forEach(function (it, i) {
+                var d = item(200, 120, '<div style="padding:10px"><div style="font:8px var(--pixel);color:var(--amarelo)">' + String(it.categoria || '').toUpperCase() + '</div><div style="margin-top:8px">' + it.titulo + '</div></div>');
+                d.style.transform = 'rotateY(' + (i * passo) + 'deg) translateZ(' + raio + 'px)';
+            });
+            alvo = ang = -(dados.i || 0) * passo;
+            L.ir = function (i) {
+                var destino = -i * passo;
+                alvo = destino + Math.round((alvo - destino) / 360) * 360;
+            };
+            anim = function (t) { ang += (alvo - ang) * 0.12; palco.style.transform = 'translateZ(-120px) rotateX(-8deg) rotateY(' + ang + 'deg)'; };
+        } else if (tipo === 'barras' || tipo === 'aneis') {
+            var lista = dados.itens || [];
+            lista.forEach(function (it, i) {
+                var d = item(300, 30, '<div style="position:absolute;inset:3px;width:0;background:' + ['#ffd23f', '#ff4fa3', '#4de1ff', '#5dffb0', '#ff8a3d', '#a98bff'][i % 6] + ';opacity:.6;transition:width 1.2s ' + (i * 0.12) + 's" data-w="' + it.nivel + '"></div><span style="position:relative;padding-left:8px">' + (it.nome || '') + ' ' + Math.round(it.nivel) + '%</span>');
+                d.style.top = (i - lista.length / 2) * 40 + 'px';
+            });
+            setTimeout(function () { palco.querySelectorAll('[data-w]').forEach(function (b) { b.style.width = 'calc(' + b.dataset.w + '% - 6px)'; }); }, 80);
+            anim = function (t) { palco.style.transform = 'rotateY(' + Math.sin(t * 0.6) * 18 + 'deg) rotateX(' + Math.sin(t * 0.4) * 6 + 'deg)'; };
+        } else if (tipo === 'cartao') {
+            item(300, 170, '<div style="padding:16px"><div style="font:12px var(--pixel);color:#fff">' + String(dados.nome || '').toUpperCase() + '</div><div style="font:8px var(--pixel);color:var(--amarelo);margin:10px 0 18px">' + String(dados.cargo || '').toUpperCase() + '</div><div>' + (dados.email || '') + '</div><div style="font:7px var(--pixel);color:var(--rosa);margin-top:16px">PRESS START ▶ CONTRATAR</div></div>');
+            anim = function (t) { palco.style.transform = 'rotateY(' + Math.sin(t * 0.9) * 30 + 'deg) translateY(' + Math.sin(t * 1.3) * 8 + 'px)'; };
+        } else if (tipo === 'orbe') {
+            var aneis = [0, 1, 2].map(function (i) { var d = item(150 + i * 50, 150 + i * 50); d.style.borderRadius = '50%'; d.style.background = 'transparent'; d.style.borderColor = ['#ffd23f', '#ff4fa3', '#4de1ff'][i]; return d; });
+            var nucleo = item(80, 80);
+            nucleo.style.borderRadius = '50%';
+            nucleo.style.background = 'radial-gradient(circle,#fff,#4de1ff 45%,transparent 70%)';
+            var fala = 0, falaAlvo = 0;
+            L.falar = function (n) { falaAlvo = n; };
+            anim = function (t) {
+                fala += (falaAlvo - fala) * 0.25;
+                aneis.forEach(function (a, i) { a.style.transform = 'rotateX(' + (60 + i * 20) + 'deg) rotateZ(' + t * (40 + i * 30) * (1 + fala * 2) + 'deg)'; });
+                nucleo.style.transform = 'scale(' + (1 + Math.sin(t * 2) * 0.06 + fala * 0.4) + ')';
+            };
+        } else if (tipo === 'rolinho') {
+            var d = item(160, 180);
+            d.style.border = '0'; d.style.background = 'transparent'; d.style.boxShadow = 'none';
+            var cv = document.createElement('canvas');
+            cv.width = 160; cv.height = 180;
+            d.appendChild(cv);
+            var cx = cv.getContext('2d');
+            var q = 0;
+            anim = function (t) {
+                q++;
+                cx.clearRect(0, 0, 160, 180);
+                desenharRolinho(cx, 80, 70 - Math.abs(Math.sin(t * 5)) * 20, 50, q, Math.sin(t * 0.9) > 0 ? 1 : -1);
+                palco.style.transform = 'translateX(' + Math.sin(t * 0.9) * 70 + 'px) rotateY(' + Math.sin(t * 1.2) * 30 + 'deg)';
+            };
+        } else if (tipo === 'confete') {
+            var cores = ['#ffd23f', '#ff4fa3', '#4de1ff', '#5dffb0', '#ff8a3d', '#a98bff'];
+            var ps = [];
+            for (var k = 0; k < 90; k++) {
+                var p = document.createElement('i');
+                p.className = 'hl-pix';
+                p.style.background = cores[k % 6];
+                palco.appendChild(p);
+                ps.push({ el: p, x: 0, y: 0, z: 0, vx: (Math.random() - 0.5) * 9, vy: -4 - Math.random() * 9, vz: Math.random() * 12 });
+            }
+            anim = function () {
+                ps.forEach(function (o) {
+                    o.vy += 0.35; o.x += o.vx; o.y += o.vy; o.z += o.vz;
+                    o.el.style.transform = 'translate3d(' + o.x + 'px,' + o.y + 'px,' + o.z + 'px) rotate(' + o.z + 'deg)';
+                });
+            };
+        }
+        var t0 = performance.now();
+        (function q() {
+            if (!L.vivo) return;
+            requestAnimationFrame(q);
+            anim((performance.now() - t0) / 1000);
+        })();
     }
 
     // =============================================================== API
@@ -554,6 +938,21 @@
         glitch: glitch,
         estado: estado,
         registrar: function (id, def) { APPS[id] = def; if (!def.soDock) ordem.push(id); },
+        pontos: somarPontos,
+        placar: function () { return { pontos: pontos, recorde: recorde, conquistas: conquistas, lista: CONQUISTAS }; },
+        conquistar: conquistar,
+        projetar: projetar,
+        desprojetar: desprojetar,
+        holoIr: holoIr,
+        holoAtivo: function () { return holoEstado ? holoEstado.tipo : null; },
+        holo3d: function () { return holo3d; },
+        pulsoFala: pulsoFala,
+        desenharRolinho: desenharRolinho,
+        atual: function () { return atual; },
+        central: function (k, ligar) {
+            var b = document.querySelector('.cc-btn[data-cc="' + k + '"]');
+            if (b && b.classList.contains('ativo') !== ligar) b.click();
+        },
         desbloquearJa: function () { if (!estado.desbloqueado) desbloquear(); },
     };
     if (/[?&]semtrava/.test(location.search)) setTimeout(function () { window.Holo.desbloquearJa(); }, 50);
