@@ -74,7 +74,14 @@
         '@keyframes p3dPulse{from{transform:scale(1);opacity:.9}to{transform:scale(2.1);opacity:0}}' +
         '#p3d-mark svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}' +
         '#p3d-mark .lb{background:rgba(14,17,30,.85);padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);white-space:nowrap}' +
-        'body.mode-phone.p3d-room #p3d-mark{display:flex}';
+        'body.mode-phone.p3d-room #p3d-mark{display:flex}' +
+        // botões no estilo MiguelOS 95 / HoloFone 95
+        '#p3d-btn{border:0;border-radius:0;background:#c0c0c0;color:#000;font:bold 13px Tahoma,"Segoe UI",sans-serif;padding:5px 14px 5px 5px;' +
+        'box-shadow:inset -1px -1px #0a0a0a,inset 1px 1px #fff,inset -2px -2px #808080,inset 2px 2px #dfdfdf,3px 3px 0 rgba(0,0,0,.35);backdrop-filter:none;-webkit-backdrop-filter:none}' +
+        '#p3d-btn:active{transform:none;box-shadow:inset -1px -1px #fff,inset 1px 1px #0a0a0a,inset -2px -2px #dfdfdf,inset 2px 2px #808080}' +
+        '#p3d-btn .ic{border-radius:0;width:28px;height:28px;background:#000080;box-shadow:none}' +
+        '#p3d-mark .dot{border-radius:0;background:#000080;box-shadow:3px 3px 0 rgba(0,0,0,.4)}#p3d-mark .dot:before,#p3d-mark .dot:after{border-radius:0;border-color:#ffff80}' +
+        '#p3d-mark .lb{background:#ffffe1;color:#000;border:1px solid #000;border-radius:4px;font:12px Tahoma,sans-serif}';
     document.head.appendChild(css);
 
     var ICON_CUBE = '<svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>';
@@ -199,7 +206,8 @@
         }
         function metalFill(x, w, h) {
             var g = x.createLinearGradient(0, 0, w, h);
-            g.addColorStop(0, '#9aa3b8'); g.addColorStop(.45, '#5b6479'); g.addColorStop(.55, '#6d768c'); g.addColorStop(1, '#3a4152');
+            // plástico bege dos anos 90, o mesmo do monitor do PC
+            g.addColorStop(0, '#efe6cc'); g.addColorStop(.45, '#d8ccac'); g.addColorStop(.55, '#ddd2b4'); g.addColorStop(1, '#b8ab8a');
             return g;
         }
         var edgeTex = canvasTex(TW, TH, function (x, w, h) {
@@ -207,28 +215,33 @@
         }, true);
         var frontTex = canvasTex(TW, TH, function (x, w, h) {
             roundRect(x, 0, 0, w, h, TR); x.fillStyle = metalFill(x, w, h); x.fill();
-            roundRect(x, 6, 6, w - 12, h - 12, TR - 5); x.fillStyle = '#05070b'; x.fill();
+            roundRect(x, 6, 6, w - 12, h - 12, TR - 5); x.fillStyle = '#1a1a16'; x.fill();
             var g = x.createLinearGradient(0, 0, 0, h * .3); g.addColorStop(0, 'rgba(255,255,255,.07)'); g.addColorStop(1, 'rgba(255,255,255,0)');
             roundRect(x, 6, 6, w - 12, h - 12, TR - 5); x.fillStyle = g; x.fill();
         }, true);
         var backTex = canvasTex(TW, TH, function (x, w, h) {
             roundRect(x, 0, 0, w, h, TR); x.fillStyle = metalFill(x, w, h); x.fill();
-            roundRect(x, 6, 6, w - 12, h - 12, TR - 5);
-            var g = x.createLinearGradient(0, 0, w, h); g.addColorStop(0, '#2b3350'); g.addColorStop(.5, '#1b2036'); g.addColorStop(1, '#0f1220');
-            x.fillStyle = g; x.fill();
-            // módulo da câmera
-            var bx = 46, by = 46, bw = 210, bh = 210;
-            roundRect(x, bx, by, bw, bh, 44); x.fillStyle = '#0b0d16'; x.fill(); x.lineWidth = 5; x.strokeStyle = '#6f7893'; x.stroke();
-            [[bx + 62, by + 62], [bx + 62, by + 148], [bx + 148, by + 105]].forEach(function (c) {
-                x.fillStyle = '#12141f'; x.beginPath(); x.arc(c[0], c[1], 33, 0, 6.3); x.fill();
-                x.lineWidth = 5; x.strokeStyle = '#7d86a2'; x.stroke();
-                x.fillStyle = '#2a3a78'; x.beginPath(); x.arc(c[0], c[1], 17, 0, 6.3); x.fill();
-                x.fillStyle = 'rgba(255,255,255,.5)'; x.beginPath(); x.arc(c[0] - 6, c[1] - 6, 5, 0, 6.3); x.fill();
+            // textura de plástico
+            for (var i = 0; i < 2600; i++) { x.fillStyle = Math.random() < .5 ? 'rgba(0,0,0,.05)' : 'rgba(255,255,255,.06)'; x.fillRect(Math.random() * w, Math.random() * h, 2, 2); }
+            // grade do alto-falante
+            x.fillStyle = '#6f6650';
+            for (var gy = 0; gy < 6; gy++) for (var gx = 0; gx < 9; gx++) { x.beginPath(); x.arc(w / 2 - 80 + gx * 20, 90 + gy * 20, 5, 0, 6.3); x.fill(); }
+            // faixas coloridas e etiqueta
+            [['#1f6f8b', 0], ['#e0a52b', 1], ['#c8452c', 2]].forEach(function (f) { x.fillStyle = f[0]; x.fillRect(36, h * .5 + f[1] * 22, w - 72, 14); });
+            x.fillStyle = '#3d3628'; x.font = 'bold 54px Arial, sans-serif'; x.textAlign = 'center';
+            x.fillText('HOLOFONE 95', w / 2, h * .5 - 26);
+            x.font = 'bold 22px Arial, sans-serif'; x.fillText('TECNOLOGIA HOLOGRÁFICA', w / 2, h * .5 + 110);
+            // etiqueta prateada e parafusos
+            roundRect(x, w / 2 - 150, h - 240, 300, 120, 10); x.fillStyle = '#b8b8b0'; x.fill();
+            x.fillStyle = '#333'; x.font = '18px monospace';
+            x.fillText('MOD. MA-95  ·  9V ⎓ 0,5A', w / 2, h - 200); x.fillText('FABRICADO NO RIO DE JANEIRO', w / 2, h - 170); x.fillText('S/N 2026-0001', w / 2, h - 140);
+            [[40, 40], [w - 40, 40], [40, h - 40], [w - 40, h - 40]].forEach(function (c) {
+                x.fillStyle = '#8f8670'; x.beginPath(); x.arc(c[0], c[1], 12, 0, 6.3); x.fill();
+                x.strokeStyle = '#4a4436'; x.lineWidth = 3; x.beginPath(); x.moveTo(c[0] - 8, c[1]); x.lineTo(c[0] + 8, c[1]); x.stroke();
             });
-            x.fillStyle = '#f5e7b8'; x.beginPath(); x.arc(bx + 148, by + 42, 11, 0, 6.3); x.fill();
-            // reflexo
-            var r = x.createLinearGradient(0, 0, w, h * .6); r.addColorStop(0, 'rgba(255,255,255,.12)'); r.addColorStop(.5, 'rgba(255,255,255,0)');
-            roundRect(x, 6, 6, w - 12, h - 12, TR - 5); x.fillStyle = r; x.fill();
+            // olho da câmera (uma só, vintage)
+            x.fillStyle = '#222'; x.beginPath(); x.arc(w - 90, 90, 30, 0, 6.3); x.fill();
+            x.fillStyle = '#3a4a78'; x.beginPath(); x.arc(w - 90, 90, 15, 0, 6.3); x.fill();
         }, true);
         function mat(map, color, extra) {
             var o = { side: 2 };
@@ -258,7 +271,7 @@
         back.rotation.y = Math.PI; back.position.z = -P.depth / 2 + 0.6; root.add(back);
 
         // Botões laterais (liga/desliga e volume)
-        var keyMat = mat(null, 0x8790a8);
+        var keyMat = mat(null, 0x9c8f70);
         [[P.bodyH * 0.14, 78], [P.bodyH * 0.02, 54], [-P.bodyH * 0.06, 54]].forEach(function (k, idx) {
             var m = new Mesh(new Plane(P.depth * 0.5, k[1]), keyMat);
             m.rotation.y = Math.PI / 2; m.position.set((idx === 0 ? 1 : 1) * (P.bodyW / 2 + 1.4), k[0], 0); root.add(m);
@@ -290,7 +303,7 @@
         // Brilho da tela espalhando na mesa
         var gc = document.createElement('canvas'); gc.width = gc.height = 128;
         var gx = gc.getContext('2d'), gg = gx.createRadialGradient(64, 64, 2, 64, 64, 62);
-        gg.addColorStop(0, 'rgba(110,130,255,.50)'); gg.addColorStop(.5, 'rgba(80,100,230,.16)'); gg.addColorStop(1, 'rgba(60,80,200,0)');
+        gg.addColorStop(0, 'rgba(90,220,200,.45)'); gg.addColorStop(.5, 'rgba(60,180,170,.15)'); gg.addColorStop(1, 'rgba(40,150,150,0)');
         gx.fillStyle = gg; gx.fillRect(0, 0, 128, 128);
         var gt = new Texture(gc); gt.needsUpdate = true;
         var glow = new Mesh(new Plane(760, 620), new Basic({ map: gt, transparent: true, blending: 2, depthWrite: false, side: 2,

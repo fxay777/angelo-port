@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#03060c">
     <title>{{ dados.nome }} — HoloFone</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/startLogo.png') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/android.css') }}?v=3">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/android.css') }}?v=4">
     <link rel="stylesheet" href="{{ url_for('static', filename='jsdos/js-dos/js-dos.css') }}">
     <script>var emulatorsPathPrefix = "{{ url_for('static', filename='jsdos/js-dos/') }}";</script>
     <script src="{{ url_for('static', filename='jsdos/js-dos/js-dos.js') }}"></script>
@@ -135,13 +135,13 @@
     <!-- Barra de navegação -->
     <div id="navbar">
         <button type="button" id="nav-voltar" aria-label="Voltar"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-        <button type="button" id="nav-home" aria-label="Início"><i></i></button>
+        <button type="button" id="nav-home" aria-label="Início"><img src="{{ url_for('static', filename='icons/startLogo.png') }}" alt="">Início</button>
         <button type="button" id="nav-central" aria-label="Central de controle"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/tetris.js') }}?v=2"></script>
-<script src="{{ url_for('static', filename='js/android.js') }}?v=3"></script>
+<script src="{{ url_for('static', filename='js/android.js') }}?v=4"></script>
 <script src="{{ url_for('static', filename='js/holo-apps.js') }}?v=2"></script>
 <script src="{{ url_for('static', filename='js/touchscroll.js') }}?v=1"></script>
 </body>

@@ -295,13 +295,20 @@
 
     // ----------------------------------------------------------- tela inicial
     var DOCK = ['maia', 'projetos', 'labirinto', 'jogos'];
+    // ícones em pixel no mesmo estilo do MiguelOS 95 do PC
+    var ICONES_95 = {
+        sobre: 'holo/usuario', experiencia: 'folder', projetos: 'trailIcon', contato: 'holo/email', curriculo: 'credits',
+        maia: 'holo/maia', scanner: 'holo/scanner', status: 'holo/status', teremim: 'volumeOn', roteiro: 'notepad',
+        claquete: 'videos', placar: 'holo/trofeu', labirinto: 'holo/labirinto', jogos: 'holo/joystick',
+    };
+    function imgApp(id) { return ICONES_95[id] ? '<img src="/static/icons/' + ICONES_95[id] + '.png" alt="">' : null; }
     function botaoApp(id, atraso) {
         var app = APPS[id];
         var b = document.createElement('button');
         b.type = 'button';
         b.className = 'app-icone' + (app.novo ? ' novo' : '');
         b.dataset.app = id;
-        b.innerHTML = '<span class="hex" style="--cor:' + (app.cor || 'var(--ciano)') + '">' + icone(app.icone) + '</span><span>' + app.rotulo + '</span>';
+        b.innerHTML = '<span class="hex" style="--cor:' + (app.cor || 'var(--ciano)') + '">' + (imgApp(id) || icone(app.icone)) + '</span><span>' + app.rotulo + '</span>';
         if (atraso !== undefined) b.style.animationDelay = atraso + 'ms';
         return b;
     }
@@ -325,7 +332,9 @@
         if (app.link) { window.open(app.link, '_blank', 'noopener'); return; }
         if (atual) fechar(true);
         atual = id;
-        $('app-titulo').textContent = app.titulo || app.rotulo;
+        $('app-titulo').innerHTML = imgApp(id) || '';
+        $('app-titulo').appendChild(document.createTextNode(app.titulo || app.rotulo));
+        $('navbar').dataset.janela = app.rotulo;
         $('app-status').textContent = app.status || '● ONLINE';
         var v = $('appview');
         v.classList.add('aberto');
@@ -354,6 +363,7 @@
         if (typeof aoFechar === 'function') { try { aoFechar(); } catch (e) { /* ok */ } }
         aoFechar = null;
         atual = null;
+        delete $('navbar').dataset.janela;
         var v = $('appview');
         v.classList.remove('aberto');
         v.setAttribute('aria-hidden', 'true');
@@ -484,7 +494,7 @@
             $('nucleo-sub').textContent = 'SISTEMA ONLINE';
             var r = document.createElement('div');
             r.className = 'reboot';
-            r.innerHTML = '<div class="r-logo">HOLOFONE</div><div>Núcleo superaquecido. Reiniciando…</div><div class="r-barra"><i></i></div><div style="font-size:11px;color:var(--texto-2)">(dica: 7 toques é demais)</div>';
+            r.innerHTML = '<div class="r-logo">HOLOFONE 95</div><div>Ocorreu um erro fatal: núcleo superaquecido.</div><div>Reiniciando o sistema…</div><div class="r-barra"><i></i></div><div style="font-size:12px;opacity:.8">(dica: 7 toques é demais)</div>';
             $('phone').appendChild(r);
             setTimeout(function () { r.remove(); bloquear(); setTimeout(function () { conquistar('sobrecarga'); }, 400); }, 2400);
         });
