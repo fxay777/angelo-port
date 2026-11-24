@@ -47,7 +47,29 @@ def desktop():
 
 @app.route("/android")
 def android():
-    return render_template("android.html")
+    dados = {
+        "nome": content.NOME,
+        "cargo": content.CARGO,
+        "email": content.EMAIL,
+        "curriculo": "/static/files/" + content.CURRICULO,
+        "sobre": {
+            "intro": content.HOME["paragrafo_1"],
+            "paragrafos": content.SOBRE["paragrafos"],
+            "hobbies": [content.HOBBIES["paragrafo_1"], content.HOBBIES["paragrafo_2"]],
+            "fotos": [
+                {"src": "/static/images/" + content.SOBRE["foto"], "legenda": content.SOBRE["legenda_foto"]},
+                {"src": "/static/images/" + content.HOBBIES["foto"], "legenda": content.HOBBIES["legenda_foto"]},
+            ],
+        },
+        "experiencia": {
+            "area": content.EXPERIENCIA["area"],
+            "resumo": content.EXPERIENCIA["resumo"],
+            "trabalhos": content.EXPERIENCIA["trabalhos"],
+            "habilidades": [{"nome": n, "desc": d} for n, d in content.EXPERIENCIA["habilidades"]],
+        },
+        "videos": lista_videos(),
+    }
+    return render_template("android.html", dados=dados)
 
 
 @app.route("/showcase")

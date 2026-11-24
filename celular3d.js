@@ -327,7 +327,7 @@
         var fr = document.createElement('iframe');
         fr.src = base + 'android?cena3d=1';
         fr.title = 'Celular';
-        fr.setAttribute('allow', 'autoplay; fullscreen');
+        fr.setAttribute('allow', 'accelerometer; gyroscope; autoplay; encrypted-media; fullscreen');
         fr.style.cssText = 'width:100%;height:100%;border:0;display:block;background:#000;';
         box.appendChild(fr);
 
